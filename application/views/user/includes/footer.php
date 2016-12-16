@@ -966,11 +966,11 @@
                     {
                         //alert(JSON.stringify(result));
                         //return false;
-                        if(result['file_existing'] == true)
+                        /*if(result['file_existing'] == true)
                         {
                           alert("Sorry, You already uploded this file.");
                         }
-                        else if(result['current_processing'] >= 5)
+                        else */if(result['current_processing'] >= 5)
                         {
                           alert("Sorry, You can't process more than 5 files at a moment.");
                         }
