@@ -463,7 +463,7 @@ fa fa-cog fa-spin fa-3x fa-fw
         echo '</script>';
     }
 
-	public function uploadFile() {
+	public function upload_file() {
         $file_name = $_FILES["contactfile"]["name"];
         $file_tmp = $_FILES["contactfile"]["tmp_name"];
 

@@ -136,6 +136,7 @@ $route['paypal_buy/(:any)'] = 'User_controller_msg/paypal_buy/$1';
 
 $route['contact_upload_section'] = 'User_controller/contact_upload_section';
 $route['contact_upload'] = 'User_controller/contact_upload';
+$route['upload_file'] = 'User_controller/upload_file';
 $route['instant_lookup'] = 'User_controller/instant_lookup';
 $route['profile'] = 'User_controller/profile';
 $route['profile_update'] = 'User_controller/profile_update';
