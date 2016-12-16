@@ -80,7 +80,7 @@
                                 <small></small>
                                 <a class="btn red pull-right" href="<?php echo base_url();?>failed_file_delete">Clear Failed Upload</a>
                             </h3>
-                            <form class="" id="contact_upload_form<?php //if($dash_profile['username'] == 'mohiolmis') echo 'contact_upload_for'; else echo 'contact_upload_form'; ?>" action="<?php echo base_url();?>contact_upload" method="POST" enctype="multipart/form-data">
+                            <form class="" id="contact_upload_form<?php //if($dash_profile['username'] == 'mohiolmis') echo 'contact_upload_for'; else echo 'contact_upload_form'; ?>" action="<?php echo base_url();?>uploadFile" method="POST" enctype="multipart/form-data">
                                 <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                 <div class="col-xs-12 nopadding fileupload-buttonbar">
                                     <!--<div class="col-xs-12 text-center" style="font-size:130%;color:red;margin-bottom:20px;">

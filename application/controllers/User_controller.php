@@ -457,6 +457,202 @@ fa fa-cog fa-spin fa-3x fa-fw
 		echo json_encode($output);
 	}
 
+    public function console_log( $data ){
+        echo '<script>';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
+	public function uploadFile() {
+        $file_name = $_FILES["contactfile"]["name"];
+        $file_tmp = $_FILES["contactfile"]["tmp_name"];
+
+        $file_id_str = "";
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        //$file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
+        $column_number_2 = $this->input->post("column_number_2");
+        if($column_number_2 == "")
+        {
+            echo '
+			Sorry, Email not found in this file. 
+			';
+        }
+        /*else if(count($file_check)>0)
+        {
+            echo '
+			Sorry, You already uploded this file. 
+			';
+        }*/
+        else
+        {
+            $column_number_2 = $column_number_2-1;
+            $dash_profile = $this->Mdl_user->fetch_user_profile();
+            $current_package = $this->Mdl_user->fetch_current_package();
+            $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
+
+            if($daily_limit > -1)
+            {
+                $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
+            }
+            else
+            {
+                $daily_limit_left= 0;
+            }
+
+            $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+            $contactfile = $_FILES['contactfile']['tmp_name'];
+            $contactfile_line = file($contactfile);
+
+
+            $contactfile_line = array_reverse($contactfile_line);
+            $result = array();
+            foreach($contactfile_line as $value) {
+                $line = explode(",",$value);
+                $line[$column_number_2] = trim($line[$column_number_2]);
+                $line[$column_number_2] = strtolower($line[$column_number_2]);
+                $result[$line[$column_number_2]] = $value;
+            }
+            $result = array_reverse($result);
+
+            $result_string_full = implode("",$result);
+
+            $contactfile_length = count($result);
+
+            if($contactfile_length > $total_usable_credit)
+            {
+                redirect("User_controller/have_not_balance");
+            }
+
+            //$grid = $this->db->getGridFS();
+
+           /* $file_id = $grid->storeBytes($result_string_full);
+
+            foreach ($file_id as  $file_id_value)
+            {
+                $file_id_str = $file_id_value;
+            }*/
+            $i=0;
+            $status = array();
+            $status['stage'] = "not done";
+            $file_id = null;// TODO:: what to do??
+
+            if($_FILES["contactfile"]["error"] == 0)
+            {
+                $name = trim($_FILES["contactfile"]["name"]);
+                $csv_files_total_row = $contactfile_length;
+                $csv_files_total_row = intval($csv_files_total_row);
+                $data = array(
+                    "fs_file_id" => $file_id,
+                    "user" => $user_id,
+                    "file_name" => $name,
+                    "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
+                    "process_end_time" =>"",
+                    "status" => "Uploaded",
+                    "progress" =>(double)0
+
+                );
+
+                $uploadToFtp = $this->uploadToFTP($user->ftphost, $user->name, $user->ftppassword, $contactfile, $name);
+
+                $this->console_log('user: ');
+                $this->console_log($user);
+                $this->console_log('uploadStatus');
+                $this->console_log($uploadToFtp);
+/*
+                $upload = $this->Mdl_user->contact_upload_file_mdl($data);
+
+                $user_file_data = $this->Mdl_user->fetch_user_file_id($file_id_str);
+                debugger;
+
+                $credit_reduce = $this->credit_reduce($csv_files_total_row,"File Cleanup",$user_file_data['_id']);
+
+                $user_file_data_id = $user_file_data['_id'];*/
+                $status['stage'] = "ok";
+                //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+            }
+            else
+            {
+                echo 'Sorry, Try again';
+            }
+
+        }
+    }
+
+    public function callScrubberAPI($fileName, $userName, $index)
+    {
+
+        $client = new Client();
+        $scrubberURL = 'http://64.187.105.90:3000/clean';
+        $options = json_encode(
+            array(
+                "fileName" => $fileName,
+                "userName" => $userName,
+                "header" => array(
+                    "header" => true,
+                    "emailIndex" => $index
+                ),
+                "options" => array(
+                    "mxOnly" => true,
+                    "mxStandard" => true,
+                    "botClickers" => true,
+                    "blackListed" => true,
+                    "spamTraps" => true,
+                    "hardBounces" => true,
+                    "litigators" => false,
+                    "complainers" => true,
+                    "unSubscribers" => true,
+                    "badWords" => true,
+                    "longEmails" => true,
+                    "syntaxErrors" => true,
+                    "seeds" => false,
+                    "fixedMisSpelledDomains" => true,
+                    "fixedLatinLetters" => true,
+                    "roles" => true,
+                    "duplicates" => true,
+                    "disposables" => true,
+                    "departmentals" => true,
+                    "foreignDomains" => true,
+                    "threatStrings" => true,
+                    "threatEndings" => true
+                )
+            )
+
+        );
+
+        $response = $client->request('POST', $scrubberURL, $options);
+        $response_str = $response->getBody()->getContents();
+    }
+
+    public function uploadToFTP ($host, $usr, $pwd, $local_file, $fileName) {
+
+// file to move:
+        //$local_file = './example.txt';
+        $ftp_path = '/dirty/' . $fileName;
+
+// connect to FTP server (port 21)
+        $conn_id = ftp_connect($host, 21) or die ("Cannot connect to host");
+
+// send access parameters
+        ftp_login($conn_id, $usr, $pwd) or die("Cannot login");
+
+// turn on passive mode transfers (some servers need this)
+// ftp_pasv ($conn_id, true);
+
+// perform file upload
+        $upload = ftp_put($conn_id, $ftp_path, $local_file, FTP_ASCII);
+
+// check upload status:
+
+        print (!$upload) ? 'Cannot upload' : 'Upload complete';
+        print "\n";
+
+// close the FTP stream
+        ftp_close($conn_id);
+        return $upload;
+    }
+
 	public function contact_upload()
 	{
 		$file_name = $_FILES["contactfile"]["name"];
@@ -521,14 +717,9 @@ fa fa-cog fa-spin fa-3x fa-fw
             }
 
 			$grid = $this->db->getGridFS();
-			//$file_id = $grid->storeUpload('contactfile');
 
-			//echo str_replace("\n", "</br>", $bytes);
-			//die();
 			$file_id = $grid->storeBytes($result_string_full);
-			//$file_id = $grid->get($id);
-			//print $id;
-			//die();
+
 			foreach ($file_id as  $file_id_value) 
 			{
 				$file_id_str = $file_id_value;
@@ -565,7 +756,7 @@ fa fa-cog fa-spin fa-3x fa-fw
 
 						$user_file_data_id = $user_file_data['_id'];
 						$status['stage'] = "ok";
-						redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+                            redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
 						//echo 'Successfully Uploaded./'.$user_file_data['_id'];
 					}
 				}
