@@ -625,12 +625,13 @@ fa fa-cog fa-spin fa-3x fa-fw
 
     public function uploadToFTP ($host, $usr, $pwd, $local_file, $fileName) {
 
+        $fp = fopen($local_file, 'r');
         $this->console_log('localfile: '.$local_file);
-        $this->console_log('filename: '.$fileName);
+        $this->console_log('filename: ');
         $ftp_path = '/dirty/' . $fileName;
         $conn_id = ftp_connect($host);
         ftp_login($conn_id, $usr, $pwd);
-        $upload = ftp_put($conn_id, $ftp_path, $local_file, FTP_ASCII);
+        $upload = ftp_fput($conn_id, $ftp_path, $fp, FTP_ASCII);
         ftp_close($conn_id);
 
         return $upload;
