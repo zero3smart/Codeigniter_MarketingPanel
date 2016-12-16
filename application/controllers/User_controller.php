@@ -625,29 +625,14 @@ fa fa-cog fa-spin fa-3x fa-fw
 
     public function uploadToFTP ($host, $usr, $pwd, $local_file, $fileName) {
 
-// file to move:
-        //$local_file = './example.txt';
+        $this->console_log('localfile: '.$local_file);
+        $this->console_log('filename: '.$fileName);
         $ftp_path = '/dirty/' . $fileName;
-
-// connect to FTP server (port 21)
-        $conn_id = ftp_connect($host, 21) or die ("Cannot connect to host");
-
-// send access parameters
-        ftp_login($conn_id, $usr, $pwd) or die("Cannot login");
-
-// turn on passive mode transfers (some servers need this)
-// ftp_pasv ($conn_id, true);
-
-// perform file upload
+        $conn_id = ftp_connect($host);
+        ftp_login($conn_id, $usr, $pwd);
         $upload = ftp_put($conn_id, $ftp_path, $local_file, FTP_ASCII);
-
-// check upload status:
-
-        print (!$upload) ? 'Cannot upload' : 'Upload complete';
-        print "\n";
-
-// close the FTP stream
         ftp_close($conn_id);
+
         return $upload;
     }
 
