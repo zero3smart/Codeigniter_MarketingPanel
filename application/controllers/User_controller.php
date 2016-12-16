@@ -554,14 +554,7 @@ fa fa-cog fa-spin fa-3x fa-fw
 
                 );
 
-                $this->console_log($user->ftphost);
-                $this->console_log('ftphost: '.$user->ftphost);
-                $this->console_log('username: '.$user->username);
-                $this->console_log('ftppassword: '.$user->ftppassword);
-                $this->console_log('$contactfile: '.$contactfile);
-                $this->console_log('$name: '.$name);
-
-                $uploadToFtp = $this->uploadToFTP($user->ftphost, $user->username, $user->ftppassword, $contactfile, $name);
+                $uploadToFtp = $this->uploadToFTP($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
 
                 $this->console_log('uploadStatus');
                 $this->console_log($uploadToFtp);
