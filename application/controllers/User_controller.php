@@ -559,7 +559,7 @@ fa fa-cog fa-spin fa-3x fa-fw
                 $this->console_log('uploadStatus');
                 $this->console_log($uploadToFtp);
 
-                $uploadToFtp = $this->uploadToFTP($user->ftphost, $user->name, $user->ftppassword, $contactfile, $name);
+                $uploadToFtp = $this->uploadToFTP($user->ftphost, $user->username, $user->ftppassword, $contactfile, $name);
 /*
                 $upload = $this->Mdl_user->contact_upload_file_mdl($data);
 
