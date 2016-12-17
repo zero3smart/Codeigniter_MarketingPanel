@@ -397,10 +397,10 @@ class Mdl_user extends CI_Model {
 		return $result;
 	}
 	
-	public function fetch_user_file_id($fs_file_id)
+	public function fetch_user_file_id($clean_id)
 	{
 		$user_id = $this->session->email_lookup_user_id;
-		$result = $this->user_file->findOne(array('user'=>new MongoId($user_id),'fs_file_id'=>new MongoId($fs_file_id)));
+		$result = $this->user_file->findOne(array('user'=>new MongoId($user_id),'clean_id'=>new MongoId($clean_id)));
 		return $result;
 	}
 	
