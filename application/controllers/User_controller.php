@@ -568,8 +568,8 @@ fa fa-cog fa-spin fa-3x fa-fw
 
                     $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2);
 
-                    $this->console_log("$apiResponse");
-                    $this->console_log($apiResponse);
+                    //$this->console_log("$apiResponse");
+                    //$this->console_log($apiResponse);
                     $apiResponse = json_encode(
                         $apiResponse
                     );
