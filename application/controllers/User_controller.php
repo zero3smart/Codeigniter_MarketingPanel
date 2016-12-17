@@ -78,6 +78,13 @@ class User_controller extends CI_Controller
         $result = $this->Mdl_user->fetch_user_file_by_status('processing');
         $this->console_log('lets see the key/value');
         foreach ($result as $key => $value) {
+            //TODO
+            if(isset($value['clean_id'])) {
+                $response = $this->callStatusAPI($value['clean_id']);
+                $response = json_decode($response, true);
+                $this->console_log('Received the status response for '. $value['clean_id']);
+            }
+
             $this->console_log($key);
             $this->console_log($value);
             if ($value['progress'] > 0)
@@ -567,6 +574,21 @@ class User_controller extends CI_Controller
             }
 
         }
+    }
+
+    public function callStatusAPI($clean_id)
+    {
+        $statusURL = 'http://64.187.105.90:3000/status?cleanId=' . $clean_id;
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_URL => $statusURL
+        ));
+
+        $resp = curl_exec($curl);
+        $this->console_log($resp);
+        curl_close($curl);
+        return $resp;
     }
 
     public function callScrubberAPI($fileName, $userName, $index)
