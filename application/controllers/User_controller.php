@@ -651,6 +651,7 @@ fa fa-cog fa-spin fa-3x fa-fw
         ftp_pasv($conn_id, true);
         $upload = ftp_fput($conn_id, $ftp_path, $fp, FTP_ASCII);
         ftp_close($conn_id);
+        return $upload;
     }
 
 	public function contact_upload()
