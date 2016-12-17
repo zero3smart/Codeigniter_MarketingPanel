@@ -640,7 +640,7 @@ fa fa-cog fa-spin fa-3x fa-fw
         $response  = curl_exec($curl);
         curl_close($curl);
 
-        $this->$this->console_log($response);
+        $this->console_log($response);
         //$response = $client->request('POST', $scrubberURL, $options);
         //$response_str = $response->getBody()->getContents();
         return $response;
