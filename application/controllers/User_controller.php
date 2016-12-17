@@ -536,7 +536,7 @@ fa fa-cog fa-spin fa-3x fa-fw
             $i=0;
             $status = array();
             $status['stage'] = "not done";
-            $file_id = null;// TODO:: what to do??
+            $file_id = null;// TODO:: this will be the cleanId which is received from the API
 
             if($_FILES["contactfile"]["error"] == 0)
             {
@@ -554,21 +554,35 @@ fa fa-cog fa-spin fa-3x fa-fw
 
                 );
 
-                $uploadToFtp = $this->uploadToFTP($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
-
+                $this->console_log('uploading file to ftp ...');
+                $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                $this->console_log('upload completed to ftpq');
                 $this->console_log('uploadStatus');
                 $this->console_log($uploadToFtp);
-/*
-                $upload = $this->Mdl_user->contact_upload_file_mdl($data);
+                if(!$uploadToFtp) {
+                    echo '
+                        Failed to upload file to FTP. 
+                        ';
+                }
+                else {
 
-                $user_file_data = $this->Mdl_user->fetch_user_file_id($file_id_str);
+                    $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2);
+
+                    $this->console_log("$apiResponse");
+                    $this->console_log($apiResponse);
+                    //now send the scrub request;
+                    /*
+                $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
+
+                $user_file_data = $this->Mdl_user->fetch_user_file_id($file_id_str); //the same as just inserted
                 debugger;
 
-                $credit_reduce = $this->credit_reduce($csv_files_total_row,"File Cleanup",$user_file_data['_id']);
+                $credit_reduce = $this->credit_reduce($csv_files_total_row,"File Cleanup",$user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
 
                 $user_file_data_id = $user_file_data['_id'];*/
-                $status['stage'] = "ok";
-                //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+                    $status['stage'] = "ok";
+                    //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+                }
             }
             else
             {
@@ -620,21 +634,23 @@ fa fa-cog fa-spin fa-3x fa-fw
         );
 
         $response = $client->request('POST', $scrubberURL, $options);
-        $response_str = $response->getBody()->getContents();
+        //$response_str = $response->getBody()->getContents();
+        return $response;
     }
 
-    public function uploadToFTP ($host, $usr, $pwd, $local_file, $fileName) {
+    public function upload_to_ftp ($host, $usr, $pwd, $local_file, $fileName) {
 
         $fp = fopen($local_file, 'r');
-        $this->console_log('localfile: '.$local_file);
-        $this->console_log('filename: ');
+        /*$this->console_log('localfile: '.$local_file);
+        $this->console_log('filename: '.$fileName);
+        $this->console_log('host: '.$host);
+        $this->console_log('usr: '.$usr);*/
         $ftp_path = '/dirty/' . $fileName;
-        $conn_id = ftp_connect($host);
+        $conn_id = ftp_connect($host, 21);
         ftp_login($conn_id, $usr, $pwd);
+        ftp_pasv($conn_id, true);
         $upload = ftp_fput($conn_id, $ftp_path, $fp, FTP_ASCII);
         ftp_close($conn_id);
-
-        return $upload;
     }
 
 	public function contact_upload()
