@@ -69,20 +69,17 @@ class User_controller extends CI_Controller
 
     public function get_all_file_process_progress()
     {
-        /*
 
-        fa fa-spinner
-        fa fa-magic
-        fa fa-spinner fa-spin
-        fa fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom
-        fa fa-refresh fa-spin fa-3x fa-fw margin-bottom
-        fa fa-refresh fa-spin fa-3x fa-fw margin-bottom
-fa fa-cog fa-spin fa-3x fa-fw
-        */
+        //Need to call the api for the status with all the
+        //http://64.187.105.90:3000/status?cleanId=584d2bfbcbbac24f73ff3445
+
         $icon_array = array();
         $icon_array[0] = "fa fa-spin fa-spinner";
         $result = $this->Mdl_user->fetch_user_file_by_status('processing');
+        $this->console_log('lets see the key/value');
         foreach ($result as $key => $value) {
+            $this->console_log($key);
+            $this->console_log($value);
             if ($value['progress'] > 0)
                 $progress = intval(($value['progress'] * 180) / 100);
             else
@@ -520,11 +517,8 @@ fa fa-cog fa-spin fa-3x fa-fw
                 $csv_files_total_row = $contactfile_length;
                 $csv_files_total_row = intval($csv_files_total_row);
 
-                $this->console_log('uploading file to ftp ...');
                 $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
-                $this->console_log('upload completed to ftpq');
-                $this->console_log('uploadStatus');
-                $this->console_log($uploadToFtp);
+
                 if (!$uploadToFtp) {
                     echo '
                         Failed to upload file to FTP. 
@@ -546,10 +540,16 @@ fa fa-cog fa-spin fa-3x fa-fw
                             "file_name" => $name,
                             "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
                             "process_end_time" => "",
-                            "status" => "Uploaded",
+                            "status" => "processing",
                             "progress" => (double)0
 
                         );
+                        /*
+                         * Available "progress" values could be:
+                         * processing
+                         * processed
+                         * failed
+                         */
 
                         $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
 
@@ -624,10 +624,6 @@ fa fa-cog fa-spin fa-3x fa-fw
     {
 
         $fp = fopen($local_file, 'r');
-        /*$this->console_log('localfile: '.$local_file);
-        $this->console_log('filename: '.$fileName);
-        $this->console_log('host: '.$host);
-        $this->console_log('usr: '.$usr);*/
         $ftp_path = '/dirty/' . $fileName;
         $conn_id = ftp_connect($host, 21);
         ftp_login($conn_id, $usr, $pwd);
