@@ -570,7 +570,7 @@ fa fa-cog fa-spin fa-3x fa-fw
 
                     //$this->console_log("$apiResponse");
                     //$this->console_log($apiResponse);
-                    $apiResponse = array($apiResponse);
+                    $apiResponse = json_decode($apiResponse);
                     $this->console_log("success: " . $apiResponse["success"]);
                     $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);
                     //now send the scrub request;
