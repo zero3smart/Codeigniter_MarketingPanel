@@ -573,8 +573,8 @@ fa fa-cog fa-spin fa-3x fa-fw
                     $apiResponse = json_encode(
                         $apiResponse
                     );
-                    $this->console_log('success: ' . $apiResponse["success"]);
-                    $this->console_log('cleanId: ' . $apiResponse["data"]["cleanId"]);
+                    $this->console_log("success: " . $apiResponse["success"]);
+                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);
                     //now send the scrub request;
                     /*
                 $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
