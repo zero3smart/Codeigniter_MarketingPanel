@@ -571,6 +571,9 @@ fa fa-cog fa-spin fa-3x fa-fw
                     //$this->console_log("$apiResponse");
                     //$this->console_log($apiResponse);
                     //$apiResponse = json_decode($apiResponse, TRUE);
+
+                    $this->$this->console_log(json_decode("{\"success\":true,\"data\":{\"cleanId\":\"58553e68cd4e974f4fd8427f\"}}", true));
+                    $this->console_log("success: " . $apiResponse->success);
                     $this->console_log("success: " . $apiResponse["success"]);
                     $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);
                     //now send the scrub request;
@@ -643,9 +646,6 @@ fa fa-cog fa-spin fa-3x fa-fw
         $response  = curl_exec($curl);
         curl_close($curl);
 
-        $this->console_log($response);
-        //$response = $client->request('POST', $scrubberURL, $options);
-        //$response_str = $response->getBody()->getContents();
         return $response;
     }
 
