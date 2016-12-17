@@ -594,8 +594,6 @@ fa fa-cog fa-spin fa-3x fa-fw
 
     public function callScrubberAPI($fileName, $userName, $index)
     {
-
-        $client = new Client();
         $scrubberURL = 'http://64.187.105.90:3000/clean';
         $options = json_encode(
             array(
@@ -633,7 +631,17 @@ fa fa-cog fa-spin fa-3x fa-fw
 
         );
 
-        $response = $client->request('POST', $scrubberURL, $options);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $scrubberURL);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS,$options);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($curl);
+        curl_close($curl);
+
+        $this->$this->console_log($response);
+        //$response = $client->request('POST', $scrubberURL, $options);
         //$response_str = $response->getBody()->getContents();
         return $response;
     }
