@@ -538,7 +538,7 @@ class Mdl_user extends CI_Model {
         try{
 
             $result = (object)null;
-            $result->progress = $status;
+            $result->status = $status;
             if(isset($response)) {
                 $result->result = $response;
             }
