@@ -83,18 +83,35 @@ class User_controller extends CI_Controller
                 $response = $this->callStatusAPI($value['clean_id']);
                 $response = json_decode($response, true);
                 $this->console_log('Received the status response for '. $value['clean_id']);
-            }
+                /*
+                         * Available "progress" values could be:
+                         * processing
+                         * processed
+                         * failed
+                         */
 
-            $this->console_log($key);
-            $this->console_log($value);
-            if ($value['progress'] > 0)
-                $progress = intval(($value['progress'] * 180) / 100);
-            else
-                $progress = 0;
+                /*
+                 * scrubbingStatus: {
+                    upload: 'upload',
+                    syntax: 'syntax',
+                    validation: 'validation',
+                    completion: 'completion',
+                    error: 'error'
+                }
+                 */
+                if ($response["success"] && $response["data"]["status"] == "completion") { //completed
+                    //lets update the record with the result and progress=processed
+                    $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
+                }
+                else {
+                    if ($value['progress'] > 0)
+                        $progress = intval(($value['progress'] * 180) / 100);
+                    else
+                        $progress = 0;
 
-            $progress_percent = intval($value['progress']);
-            shuffle($icon_array);
-            echo '
+                    $progress_percent = intval($value['progress']);
+                    shuffle($icon_array);
+                    echo '
 				<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="col-xs-12 file_data">
@@ -114,6 +131,11 @@ class User_controller extends CI_Controller
                                     </div>
                                 </div>
 			';
+                }
+
+            }
+
+
         }
     }
 
@@ -551,12 +573,6 @@ class User_controller extends CI_Controller
                             "progress" => (double)0
 
                         );
-                        /*
-                         * Available "progress" values could be:
-                         * processing
-                         * processed
-                         * failed
-                         */
 
                         $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
 

@@ -526,6 +526,27 @@ class Mdl_user extends CI_Model {
 
 		return $result_2;
 	}
+
+	public function set_status_on_completion($id, $status, $response)
+    {
+
+        /*$foo = (object)null; //create an empty object
+        $foo->bar = "12345";
+        $foo->test="good";
+        $foo = json_encode($foo);
+        echo($foo); //12345*/
+        try{
+
+            $result = (object)null;
+            $result->progress = $status;
+            if(isset($response)) {
+                $result->result = $response;
+            }
+            return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
+        }
+        catch (MongoCursorException $e){
+        }
+    }
 			
 	public function fetch_user_file_by_status($status)
 	{
