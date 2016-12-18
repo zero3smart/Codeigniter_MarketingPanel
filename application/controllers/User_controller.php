@@ -76,13 +76,13 @@ class User_controller extends CI_Controller
         $icon_array = array();
         $icon_array[0] = "fa fa-spin fa-spinner";
         $result = $this->Mdl_user->fetch_user_file_by_status('processing');
-        $this->console_log('lets see the key/value');
+        //$this->console_log('lets see the key/value');
         foreach ($result as $key => $value) {
             //TODO
             if(isset($value['clean_id'])) {
                 $response = $this->callStatusAPI($value['clean_id']);
                 $response = json_decode($response, true);
-                $this->console_log('Received the status response for '. $value['clean_id']);
+                //$this->console_log('Received the status response for '. $value['clean_id']);
                 /*
                          * Available "progress" values could be:
                          * processing
