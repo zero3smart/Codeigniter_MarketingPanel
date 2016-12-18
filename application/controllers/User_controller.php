@@ -558,8 +558,8 @@ class User_controller extends CI_Controller
 
                     $apiResponse = json_decode($apiResponse, true);
 
-                    $this->console_log("success: " . $apiResponse["success"]);
-                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);
+                    /*$this->console_log("success: " . $apiResponse["success"]);
+                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
                     if ($apiResponse["success"]) {
                         $clean_id = $apiResponse["data"]["cleanId"];
                         $clean_id = new MongoId($clean_id);
@@ -602,7 +602,7 @@ class User_controller extends CI_Controller
         ));
 
         $resp = curl_exec($curl);
-        $this->console_log($resp);
+        //$this->console_log($resp);
         curl_close($curl);
         return $resp;
     }
