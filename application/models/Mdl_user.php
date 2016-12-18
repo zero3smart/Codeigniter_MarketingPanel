@@ -539,8 +539,10 @@ class Mdl_user extends CI_Model {
 
             $result = (object)null;
             $result->status = $status;
+            $result->messsage = "File processed successful";
             if(isset($response)) {
                 $result->result = $response;
+
             }
             return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
         }
