@@ -80,6 +80,9 @@ if ($view['msg'] != "")
             $inside_chart_index = 0;
             $total_summary_value = 0;
             $reports = $summary["files"][0]["reports"];
+            $data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
+            $data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
+            $inside_chart_index++;
             foreach ($reports as $report_key => $report_value) {
                 $chart_index = $report_value['reportName'];
                 $chart_index = strtolower($chart_index);
@@ -98,9 +101,6 @@ if ($view['msg'] != "")
                 }
                 $inside_chart_index++;
             }
-
-            $data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
-            $data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
 
             echo '
                             validation_chart_data_conatiner[' . $validation_chart_data_counter . '] = "#conatiner_validation_pie_chart_' . $file_status_value_value['_id'] . '";
