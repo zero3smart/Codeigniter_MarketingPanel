@@ -489,7 +489,8 @@ class User_controller extends CI_Controller
         //$file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
         $column_number_2 = $this->input->post("column_number_2");
         $containsHeader = $this->input->post("header");
-        echo ($containsHeader);
+        echo $containsHeader;
+        return;
         if ($column_number_2 == "") {
             echo '
 			Sorry, Email not found in this file. 
