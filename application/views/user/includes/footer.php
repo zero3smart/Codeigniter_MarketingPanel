@@ -1786,7 +1786,7 @@ console.log(jsonDataSend);
                                             type: 'GET',
                                             dataType: 'JSON',
                                             data: data,
-                                            url: http://205.134.243.198:3001/search',
+                                            url: 'http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
                                                 console.log(result);
@@ -1794,7 +1794,7 @@ console.log(jsonDataSend);
                                                 result_json = JSON.stringify(result,undefined,4);
                                                 
 
-                                                document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest';
+                                                //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest';
                                                 document.getElementById("instant_check_field_response").innerHTML = result_json;
                                                 custom_spinner_hide();
                                                 $("#instant_check_field_respose_con").slideDown("slow");
@@ -1825,7 +1825,7 @@ console.log(data_email);
                                             type: 'GET',
                                             dataType: 'JSON',
                                             data: data,
-                                            url: http://205.134.243.198:3001/search',
+                                            url: 'http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
                                                 submit_btn.html(submit_btn_text);
@@ -1836,7 +1836,7 @@ console.log(data_email);
                                                 result_json = JSON.stringify(result,undefined,4);
                                                 
 
-                                                document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
+                                                //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
                                                 document.getElementById("instant_check_field_response").innerHTML = result_json;
                                                 custom_spinner_hide();
                                                 $("#instant_check_field_respose_con").slideDown("slow");

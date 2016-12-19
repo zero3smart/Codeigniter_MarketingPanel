@@ -43,8 +43,8 @@
                     <div class="search-bar">
                         <div class="row">
                             <div class="col-md-12">
-                                <form id="instant_check_form" action="<?php echo base_url();?>sendInstantCheckupRequest" method="post">
-                                <!--<form id="instant_check_form" action="http://205.134.243.198:3001/search" method="GET">-->
+                                <!--<form id="instant_check_form" action="<?php /*echo base_url();*/?>sendInstantCheckupRequest" method="post">-->
+                                <form id="instant_check_form" action="http://205.134.243.198:3001/search" method="GET">
                                 <div class="input-group">
                                     <input type="email" id="instant_check_field" required name="email" class="form-control" placeholder="Enter email . . . (Example1@domain.com)">
                                     <span class="input-group-btn">
