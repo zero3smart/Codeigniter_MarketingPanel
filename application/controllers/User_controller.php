@@ -99,15 +99,11 @@ class User_controller extends CI_Controller
                     error: 'error'
                 }
                  */
-                echo $response["data"];
-                if(isset($response["data"]["errorMessage"])) {
-                    echo "hello test";
-                }
 
                 if(!$response["success"]) {
                     $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
                 }
-                else if(response["success"] && isset($response["data"]["errorMessage"])) {
+                else if($response["success"] && isset($response["data"]["errorMessage"])) {
                     $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
                 }
                 else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
