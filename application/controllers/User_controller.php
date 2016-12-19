@@ -681,7 +681,7 @@ class User_controller extends CI_Controller
         return $upload;
     }
 
-    public function download_from_ftp($cleanId, $onlyReport = false)
+    public function download_from_ftp_problem($cleanId, $onlyReport = false)
     {
 
         $user = $this->Mdl_user->fetch_user_profile();
@@ -729,7 +729,7 @@ class User_controller extends CI_Controller
 
     }
 
-    public function download_from_ftp_problem($cleanId, $onlyReport = false)
+    public function download_from_ftp($cleanId, $onlyReport = false)
     {
 
         $user = $this->Mdl_user->fetch_user_profile();
@@ -740,29 +740,27 @@ class User_controller extends CI_Controller
         ftp_pasv($conn_id, true);
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
-        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
 
-        $fileTo = tmpfile();
+        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/test.verifyrocket.com/tmp/' . $cleanId . $extension;
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
-        //$handle = fopen($fileTo, 'w');
+
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
-        $downloadFromFTP = ftp_fget($conn_id, $fileTo, $fileFrom, FTP_ASCII, 0);
+        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_ASCII, 0);
         ftp_close($conn_id);
         //fclose($handle);
 
         if($downloadFromFTP) {
             //if (file_exists($fileTo)) {
-                header('Content-Description: File Transfer');
-                header('Content-Type: ' . $contentType);
-                header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($fileTo));
-                readfile($fileTo);
-                fclose($fileTo);
+            header('Content-Description: File Transfer');
+            header('Content-Type: ' . $contentType);
+            header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileTo));
+            readfile($fileTo);
             //}
         }
         else {
