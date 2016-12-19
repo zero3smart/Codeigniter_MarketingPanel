@@ -697,19 +697,13 @@ class User_controller extends CI_Controller
         //$fileTo = tmpfile();
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
-        $handle = fopen($fileFrom, 'w');
+        $handle = fopen($fileTo, 'w');
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
         $downloadFromFTP = ftp_fget($conn_id, $handle, $fileFrom, FTP_ASCII);
         ftp_close($conn_id);
         fclose($handle);
         if($downloadFromFTP) {
-            /*header("Content-type: text/csv");
-            header("Content-Disposition: attachment; filename=" . $user_file_row['file_name']);
-            header("Pragma: no-cache");
-            header("Expires: 0");
-            $data = $image->getBytes();
-            echo str_replace("\n", "\",\n", $data);*/
             if (file_exists($fileTo)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: ' . $contentType);
