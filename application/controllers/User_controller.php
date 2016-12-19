@@ -695,7 +695,7 @@ class User_controller extends CI_Controller
 
         $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
 
-        $handle = fopen($fileTo, 'w');
+        $handle = fopen($fileTo, 'a+');
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
 
