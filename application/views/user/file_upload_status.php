@@ -170,7 +170,7 @@ if ($view['msg'] != "")
                                             <a class="btn green col-xs-12" href="' . base_url() . 'report_file_download/' . $file_status_value_value['clean_id'] . '"><i class="fa fa-download"></i>  Report File Download</a>
                                         </div>
                                         <div class="col-xs-12">
-                                            <a class="btn red col-xs-12 confirm_delete" href="' . base_url() . 'file_delete/' . $file_status_value_value['_id'] . '"><i class="fa fa-remove"></i> Delete</a>
+                                            <a class="btn red col-xs-12 confirm_delete" href="' . base_url() . 'file_delete/' . $file_status_value_value['clean_id'] . '"><i class="fa fa-remove"></i> Delete</a>
                                         </div>
                                     </div>
                                 </div>
@@ -210,7 +210,7 @@ if ($view['msg'] != "")
                                             <a class="btn green col-xs-12" href="' . base_url() . 'report_file_download/' . $file_status_value_value['clean_id'] . '"><i class="fa fa-download"></i>  Report File Download</a>
                                         </div>
                                         <div class="col-xs-12">
-                                            <a class="btn red col-xs-12 confirm_delete" href="' . base_url() . 'file_delete/' . $file_status_value_value['_id'] . '"><i class="fa fa-remove"></i> Delete</a>
+                                            <a class="btn red col-xs-12 confirm_delete" href="' . base_url() . 'file_delete/' . $file_status_value_value['clean_id'] . '"><i class="fa fa-remove"></i> Delete</a>
                                         </div>
                                     </div>
                                 </div>

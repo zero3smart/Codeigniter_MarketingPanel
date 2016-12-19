@@ -681,6 +681,50 @@ class User_controller extends CI_Controller
         return $upload;
     }
 
+    public function download_from_ftp($cleanId, $onlyReport = false)
+    {
+
+        $user = $this->Mdl_user->fetch_user_profile();
+
+        $conn_id = ftp_connect($user["ftphost"], 21);
+
+        ftp_login($conn_id, $user["username"], $user["ftppassword"]);
+        ftp_pasv($conn_id, true);
+
+        $extension = ($onlyReport ? '.pdf' : '.zip');
+        $fileTo = './tmp/' . $cleanId;
+        $fileFrom = '/clean/' . $cleanId . $extension;
+        $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
+
+        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_ASCII);
+        ftp_close($conn_id);
+
+        if($downloadFromFTP) {
+            /*header("Content-type: text/csv");
+            header("Content-Disposition: attachment; filename=" . $user_file_row['file_name']);
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            $data = $image->getBytes();
+            echo str_replace("\n", "\",\n", $data);*/
+            if (file_exists($fileTo)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: ' . $contentType);
+                header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($fileTo));
+                readfile($fileTo);
+            }
+        }
+        else {
+            echo '
+                Failed to download file from FTP. 
+                ';
+        }
+
+    }
+
     public function contact_upload()
     {
         $file_name = $_FILES["contactfile"]["name"];
@@ -1810,14 +1854,15 @@ class User_controller extends CI_Controller
     public function report_file_download($id)
     {
 
-        $images = $this->db->getGridFS();
+        $this->download_from_ftp($id, true);
+        /*$images = $this->db->getGridFS();
         $image = $images->findOne(array('_id' => new MongoId($id)));
         header("Content-type: application/pdf");
         header("Content-Disposition: attachment; filename=report_" . $id . ".pdf");
         header("Pragma: no-cache");
         header("Expires: 0");
         $data = $image->getBytes();
-        echo $data;
+        echo $data;*/
         /*$a = new PDF2Text();
         $a->setFilename($data); //grab the test file at http://www.newyorklivearts.org/Videographer_RFP.pdf
         $a->decodePDF();
@@ -1843,14 +1888,15 @@ class User_controller extends CI_Controller
     public function clean_file_download($id)
     {
 
-        $images = $this->db->getGridFS();
+        $this->download_from_ftp($id);
+        /*$images = $this->db->getGridFS();
         $image = $images->findOne(array('_id' => new MongoId($id)));
         header("Content-type: text/csv");
         header("Content-Disposition: attachment; filename=clean_" . $id . ".csv");
         header("Pragma: no-cache");
         header("Expires: 0");
         $data = $image->getBytes();
-        echo $data;
+        echo $data;*/
         //echo str_replace("\n","\",\n",$data);
 
     }
