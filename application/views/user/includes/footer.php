@@ -1779,10 +1779,10 @@ dataSend[0] = data;
 jsonDataSend = JSON.stringify(dataSend);
 console.log(jsonDataSend);
                                         $.ajax({
-                                            type: 'post',
+                                            type: 'GET',
                                             dataType: 'JSON',
-                                            data : {data : jsonDataSend},
-                                            url: base_url+'sendInstantCheckupRequest',
+                                            data : data,
+                                            url: http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
                                                 console.log(result);
