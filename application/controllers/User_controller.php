@@ -2082,6 +2082,7 @@ class User_controller extends CI_Controller
     {
 
         $this->session->set_flashdata(array('msg' => 'Under development! Not implemented yet.', 'msg_type' => 'danger'));
+        redirect("report/file_upload_status");
         return;
         /*$user_id = $this->session->email_lookup_user_id;
         $delete = $this->db->user_file->remove(array('_id' => new MongoId($id), 'user' => new MongoId($user_id)));
