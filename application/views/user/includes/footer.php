@@ -912,7 +912,7 @@
         }
 
         fn_file_process_progress();
-        setInterval(fn_file_process_progress,30000);
+        setInterval(fn_file_process_progress,15000);
 
         function file_size_show(size)
         {
