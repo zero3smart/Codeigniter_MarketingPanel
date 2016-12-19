@@ -705,7 +705,7 @@ class User_controller extends CI_Controller
         //fclose($handle);
 
         if($downloadFromFTP) {
-            if (file_exists($fileTo)) {
+            //if (file_exists($fileTo)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: ' . $contentType);
                 header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
@@ -715,7 +715,7 @@ class User_controller extends CI_Controller
                 header('Content-Length: ' . filesize($fileTo));
                 readfile($fileTo);
                 fclose($fileTo);
-            }
+            //}
         }
         else {
             echo '
