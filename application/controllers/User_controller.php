@@ -697,11 +697,12 @@ class User_controller extends CI_Controller
         //$fileTo = tmpfile();
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
+        $handle = fopen($fileFrom, 'w');
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
-        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_ASCII);
+        $downloadFromFTP = ftp_fget($conn_id, $handle, $fileFrom, FTP_ASCII);
         ftp_close($conn_id);
-
+        fclose($handle);
         if($downloadFromFTP) {
             /*header("Content-type: text/csv");
             header("Content-Disposition: attachment; filename=" . $user_file_row['file_name']);
