@@ -489,14 +489,11 @@ class User_controller extends CI_Controller
         //$file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
         $column_number_2 = $this->input->post("column_number_2");
         $containsHeader = $this->input->post("header");
-        if($containsHeader) {
-            echo ("Got the value for header: " .  $containsHeader);
-        }
-        else {
-            echo "No value set, so there is no header";
+
+        if(!$containsHeader) {
+            $containsHeader = false;
         }
 
-        return;
         if ($column_number_2 == "") {
             echo '
 			Sorry, Email not found in this file. 
@@ -569,7 +566,7 @@ class User_controller extends CI_Controller
                         ';
                 } else {
 
-                    $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $user["ftphost"], $user["ftppassword"]);
+                    $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
 
                     $apiResponse = json_decode($apiResponse, true);
 
@@ -624,7 +621,7 @@ class User_controller extends CI_Controller
         return $resp;
     }
 
-    public function callScrubberAPI($fileName, $userName, $index, $ftpHost, $ftpPassword)
+    public function callScrubberAPI($fileName, $userName, $index, $header, $ftpHost, $ftpPassword)
     {
         $scrubberURL = 'http://64.187.105.90:3000/clean';
         $options = json_encode(
@@ -634,7 +631,7 @@ class User_controller extends CI_Controller
                 "ftpHost" => $ftpHost,
                 "ftpPassword" => $ftpPassword,
                 "header" => array(
-                    "header" => "true",
+                    "header" => $header,
                     "emailIndex" => $index
                 ),
                 "options" => array(
