@@ -212,6 +212,21 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="note note-danger col-xs-12" style="margin:0;">
+                                        <div class="col-xs-12" style="padding:0;">
+                                            <div class="col-xs-6" style="padding:0;margin-top:7px;">
+                                                <span>This file contains header</span>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <input type="checkbox" name="header">
+                                            </div>
+                                            <div class="col-xs-3 text-left">
+                                                <a class="btn yellow" href="#" id="get_column_number" onclick="fn_contact_upload_file()">Change</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="note note-warning  col-xs-12" style="margin:0;">
                                             <span id="balance_deduction_part"></span>
                                         
