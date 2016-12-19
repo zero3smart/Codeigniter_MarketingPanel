@@ -219,7 +219,7 @@
                                                 <span>This file contains header</span>
                                             </div>
                                             <div class="col-xs-3">
-                                                <input type="checkbox" name="header">
+                                                <input type="checkbox" name="header" value="true">
                                             </div>
                                         </div>
                                     </div>
