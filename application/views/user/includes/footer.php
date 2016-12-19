@@ -1824,7 +1824,9 @@ console.log(data_email);
                                         $.ajax({
                                             type: 'GET',
                                             dataType: 'JSON',
-                                            data: data,
+                                            data: {
+                                                email: data_email
+                                            },
                                             url: 'http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
