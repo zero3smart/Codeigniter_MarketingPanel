@@ -588,6 +588,8 @@ class User_controller extends CI_Controller
 
                         $user_file_data_id = $user_file_data['_id'];
                         $status['stage'] = "ok";
+                        //$this->get_all_file_process_progress();
+                        echo 'Successfully Uploaded./' . $name;
                         //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
                     }
                 }
