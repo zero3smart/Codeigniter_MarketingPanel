@@ -696,7 +696,7 @@ class User_controller extends CI_Controller
 
         $fileTo = tmpfile();
 
-        $fileFrom = 'clean/' . $cleanId . $extension;
+        $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
         $downloadFromFTP = ftp_fget($conn_id, $fileTo, $fileFrom, FTP_ASCII, 0);
