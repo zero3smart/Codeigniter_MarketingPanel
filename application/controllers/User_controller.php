@@ -79,7 +79,7 @@ class User_controller extends CI_Controller
         //$this->console_log('lets see the key/value');
         foreach ($result as $key => $value) {
             //TODO
-            if(isset($value['clean_id'])) {
+            if (isset($value['clean_id'])) {
                 $response = $this->callStatusAPI($value['clean_id']);
                 $response = json_decode($response, true);
                 //$this->console_log('Received the status response for '. $value['clean_id']);
@@ -99,11 +99,16 @@ class User_controller extends CI_Controller
                     error: 'error'
                 }
                  */
-                if ($response["success"] && $response["data"]["status"] == "completion") { //completed
+                if(!$response["success"]) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
+                }
+                else if(response["success"] && isset($response["data"]["errorMessage"])) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
+                }
+                else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
                     //lets update the record with the result and progress=processed
                     $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
-                }
-                else {
+                } else {
                     if ($value['progress'] > 0)
                         $progress = intval(($value['progress'] * 180) / 100);
                     else
@@ -1529,8 +1534,8 @@ class User_controller extends CI_Controller
         $this->pagination->initialize($config);
 
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data["file_status"] = $this->Mdl_user->
-        fetch_user_file($config["per_page"], $page);
+        debugger;
+        $data["file_status"] = $this->Mdl_user->fetch_user_file($config["per_page"], $page);
         //print_r($data["file_status"]);die();
         $data["pagination_links"] = $this->pagination->create_links();
         //print_r($data["pagination_links"]);

@@ -549,6 +549,20 @@ class Mdl_user extends CI_Model {
         catch (MongoCursorException $e){
         }
     }
+
+    public function set_status_on_failure($id, $message)
+    {
+        try{
+
+            $result = (object)null;
+            $result->status = 'failed';
+            $result->messsage = $message;
+
+            return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
+        }
+        catch (MongoCursorException $e){
+        }
+    }
 			
 	public function fetch_user_file_by_status($status)
 	{
