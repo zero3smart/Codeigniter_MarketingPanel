@@ -692,13 +692,14 @@ class User_controller extends CI_Controller
         ftp_pasv($conn_id, true);
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
-        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
-        $fp = fopen($fileTo,"wb");
-        fclose($fp);
+        //$fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
+
+        $fileTo = tmpfile();
+
         $fileFrom = '/clean/' . $cleanId . $extension;
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
-        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_ASCII);
+        $downloadFromFTP = ftp_fget($conn_id, $fileTo, $fileFrom, FTP_ASCII, 0);
         ftp_close($conn_id);
 
         if($downloadFromFTP) {
@@ -717,6 +718,8 @@ class User_controller extends CI_Controller
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($fileTo));
                 readfile($fileTo);
+
+                fclose($fileTo);
             }
         }
         else {
