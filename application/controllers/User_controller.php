@@ -693,7 +693,7 @@ class User_controller extends CI_Controller
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
 
-        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
+        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/test.verifyrocket.com/tmp/' . $cleanId . $extension;
 
         $handle = fopen($fileTo, 'w');
         if(!file_exists($fileTo)) {
