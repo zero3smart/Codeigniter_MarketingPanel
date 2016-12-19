@@ -1779,9 +1779,13 @@ dataSend[0] = data;
 jsonDataSend = JSON.stringify(dataSend);
 console.log(jsonDataSend);
                                         $.ajax({
+                                            /*type: 'post',
+                                            dataType: 'JSON',
+                                            data : {data : jsonDataSend},
+                                            url: base_url+'sendInstantCheckupRequest',*/
                                             type: 'GET',
                                             dataType: 'JSON',
-                                            data : data,
+                                            data: data,
                                             url: http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
@@ -1818,10 +1822,10 @@ console.log(jsonDataSend);
 //jsonDataSend = JSON.stringify(dataSend);
 console.log(data_email);
                                         $.ajax({
-                                            type: 'post',
-                                            dataType:'json',
-                                            data:{email:data_email},
-                                            url: base_url+'sendInstantCheckupRequest',
+                                            type: 'GET',
+                                            dataType: 'JSON',
+                                            data: data,
+                                            url: http://205.134.243.198:3001/search',
                                             success:function(result){
                                                 //alert(data);
                                                 submit_btn.html(submit_btn_text);
