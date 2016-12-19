@@ -1535,7 +1535,7 @@ class User_controller extends CI_Controller
         $this->pagination->initialize($config);
 
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        debugger;
+
         $data["file_status"] = $this->Mdl_user->fetch_user_file($config["per_page"], $page);
         //print_r($data["file_status"]);die();
         $data["pagination_links"] = $this->pagination->create_links();
