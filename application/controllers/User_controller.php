@@ -709,7 +709,7 @@ class User_controller extends CI_Controller
             header("Expires: 0");
             $data = $image->getBytes();
             echo str_replace("\n", "\",\n", $data);*/
-            if (file_exists($fileTo)) {
+            //if (file_exists($fileTo)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: ' . $contentType);
                 header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
@@ -720,7 +720,7 @@ class User_controller extends CI_Controller
                 readfile($fileTo);
 
                 fclose($fileTo);
-            }
+            //}
         }
         else {
             echo '
