@@ -695,7 +695,10 @@ class User_controller extends CI_Controller
 
         $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
 
-        $handle = fopen($fileTo, 'a+');
+        $handle = fopen($fileTo, 'w');
+        if(!file_exists($fileTo)) {
+            echo 'Could not create that shit file';
+        }
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
 
