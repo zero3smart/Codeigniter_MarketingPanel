@@ -221,9 +221,6 @@
                                             <div class="col-xs-3">
                                                 <input type="checkbox" name="header">
                                             </div>
-                                            <div class="col-xs-3 text-left">
-                                                <a class="btn yellow" href="#" id="get_column_number" onclick="fn_contact_upload_file()">Change</a>
-                                            </div>
                                         </div>
                                     </div>
 
