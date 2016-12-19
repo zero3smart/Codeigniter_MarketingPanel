@@ -560,7 +560,7 @@ class User_controller extends CI_Controller
                         ';
                 } else {
 
-                    $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2);
+                    $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $user["ftphost"], $user["ftppassword"]);
 
                     $apiResponse = json_decode($apiResponse, true);
 
@@ -615,13 +615,15 @@ class User_controller extends CI_Controller
         return $resp;
     }
 
-    public function callScrubberAPI($fileName, $userName, $index)
+    public function callScrubberAPI($fileName, $userName, $index, $ftpHost, $ftpPassword)
     {
         $scrubberURL = 'http://64.187.105.90:3000/clean';
         $options = json_encode(
             array(
                 "fileName" => $fileName,
                 "userName" => $userName,
+                "ftpHost" => $ftpHost,
+                "ftpPassword" => $ftpPassword,
                 "header" => array(
                     "header" => "true",
                     "emailIndex" => $index
