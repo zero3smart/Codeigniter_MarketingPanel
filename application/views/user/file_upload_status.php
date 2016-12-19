@@ -99,6 +99,9 @@ if ($view['msg'] != "")
                 $inside_chart_index++;
             }
 
+            $data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
+            $data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
+
             echo '
                             validation_chart_data_conatiner[' . $validation_chart_data_counter . '] = "#conatiner_validation_pie_chart_' . $file_status_value_value['_id'] . '";
                             validation_chart_data_title[' . $validation_chart_data_counter . '] = "' . $file_status_value_value['file_name'] . '";
