@@ -181,7 +181,7 @@ if ($view['msg'] != "")
                                     <div class="col-xs-12" >
                                         <table class="table nomargin">
                                             <tr>
-                                                <tr><td>' . $data_of_summary['total_preclean_records']['name'] . ' : <b>' . $data_of_summary['total_preclean_records']['value'] . '</b></td></tr>
+                                                <tr><td>Total preclean records : <b>' . $summary['totalPreCleanRecords'] . '</b></td></tr>
                                                 <tr><td>Uploaded at : <b>' . $date_2 . '</b></td></tr>
                                                 <tr><td>Completed at : <b>' . $date . '</b></td></tr>
                                                 <tr><td></td></tr>
