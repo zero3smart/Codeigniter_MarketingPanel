@@ -2081,13 +2081,15 @@ class User_controller extends CI_Controller
     public function file_delete($id)
     {
 
-        $user_id = $this->session->email_lookup_user_id;
+        $this->session->set_flashdata(array('msg' => 'Under development! Not implemented yet.', 'msg_type' => 'danger'));
+        return;
+        /*$user_id = $this->session->email_lookup_user_id;
         $delete = $this->db->user_file->remove(array('_id' => new MongoId($id), 'user' => new MongoId($user_id)));
         if ($delete['ok'] == 1)
             $this->session->set_flashdata(array('msg' => 'Successfully Deleted that file.', 'msg_type' => 'success'));
         else
             $this->session->set_flashdata(array('msg' => 'Sorry, Please try again.', 'msg_type' => 'danger'));
-        redirect("report/file_upload_status");
+        redirect("report/file_upload_status");*/
     }
 
     public function failed_file_delete()
