@@ -692,14 +692,14 @@ class User_controller extends CI_Controller
         ftp_pasv($conn_id, true);
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
-        //$fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
+        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
 
-        $fileTo = tmpfile();
+        //$fileTo = tmpfile();
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
-        $downloadFromFTP = ftp_fget($conn_id, $fileTo, $fileFrom, FTP_ASCII, 0);
+        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_ASCII);
         ftp_close($conn_id);
 
         if($downloadFromFTP) {
@@ -709,7 +709,7 @@ class User_controller extends CI_Controller
             header("Expires: 0");
             $data = $image->getBytes();
             echo str_replace("\n", "\",\n", $data);*/
-            //if (file_exists($fileTo)) {
+            if (file_exists($fileTo)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: ' . $contentType);
                 header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
@@ -719,8 +719,8 @@ class User_controller extends CI_Controller
                 header('Content-Length: ' . filesize($fileTo));
                 readfile($fileTo);
 
-                fclose($fileTo);
-            //}
+                //fclose($fileTo);
+            }
         }
         else {
             echo '
