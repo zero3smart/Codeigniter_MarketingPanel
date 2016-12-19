@@ -132,7 +132,7 @@ if ($view['msg'] != "")
                                     <div class="col-xs-12" >
                                         <table class="table nomargin text-right">
                                             <tr>
-                                                <tr><td>' . $data_of_summary['total_preclean_records']['name'] . ' : <b>' . $data_of_summary['total_preclean_records']['value'] . '</b></td></tr>
+                                                <tr><td>Total preclean records : <b>' . $summary['totalPreCleanRecords'] . '</b></td></tr>
                                                 <tr><td>Uploaded at : <b>' . $date_2 . '</b></td></tr>
                                                 <tr><td>Completed at : <b>' . $date . '</b></td></tr>
                                                 <tr><td></td></tr>
@@ -157,7 +157,7 @@ if ($view['msg'] != "")
                 echo '
 
                                         <div class="col-xs-12" style="padding-bottom:5px;">
-                                            <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_file_download/' . $file_status_value_value['clean_file'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
+                                            <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_file_download/' . $file_status_value_value['clean_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
                                                                     
                                         </div>
                                         <div class="col-xs-12" style="padding-bottom:5px;">
