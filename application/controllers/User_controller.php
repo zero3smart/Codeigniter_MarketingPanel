@@ -692,7 +692,7 @@ class User_controller extends CI_Controller
         ftp_pasv($conn_id, true);
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
-        $fileTo = './tmp/' . $cleanId;
+        $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId;
         $fileFrom = '/clean/' . $cleanId . $extension;
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
