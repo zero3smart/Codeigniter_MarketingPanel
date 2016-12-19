@@ -693,6 +693,8 @@ class User_controller extends CI_Controller
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
         $fileTo = $_SERVER["DOCUMENT_ROOT"] . '/tmp/' . $cleanId . $extension;
+        $fp = fopen($fileTo,"wb");
+        fclose($fp);
         $fileFrom = '/clean/' . $cleanId . $extension;
         $contentType = ($onlyReport ? 'text/csv' : 'application/octet-stream');
 
