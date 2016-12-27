@@ -69,7 +69,11 @@ $count_processing_user_file = $this->Mdl_user->count_processing_user_file();
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="dashboard-stat purple-c white line">
                 <div class="visual">
-                    <i class="fa fa-spin fa-circle-o-notch"></i>
+                    <?php
+                        if($count_processing_user_file > 0) {
+                            echo '<i class="fa fa-spin fa-circle-o-notch"></i>';
+                        }
+                    ?>
                 </div>
                 <div class="details">
                     <div class="number">
