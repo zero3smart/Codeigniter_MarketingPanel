@@ -654,7 +654,7 @@ class User_controller extends CI_Controller
                     "duplicates" => "true",
                     "disposables" => "true",
                     "departmentals" => "true",
-                    "foreignDomains" => "true",
+                    "foreignDomains" => "false",
                     "threatStrings" => "true",
                     "threatEndings" => "true"
                 )
