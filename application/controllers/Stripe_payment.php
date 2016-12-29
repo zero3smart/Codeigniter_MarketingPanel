@@ -32,7 +32,7 @@ class Stripe_payment extends CI_Controller {
  		$total_price = $credit_count * $dash_profile['price_per_credit'];
  		$total_price = number_format((double)$total_price, 2, '.', '');
  		$total_price_cent = $total_price*100;
- 		\Stripe\Stripe::setApiKey("sk_test_oFbGeoPytgtzxqPR8Rvb8kaQ"); //Replace with your Secret Key
+ 		\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
 
 			$charge = \Stripe\Charge::create(array(
 				"amount" => (double)$total_price_cent,
@@ -117,7 +117,7 @@ class Stripe_payment extends CI_Controller {
 			//echo json_encode($product);
 			//echo $price; die();
 			//echo $_POST['stripeToken'];
-	 			\Stripe\Stripe::setApiKey("sk_test_oFbGeoPytgtzxqPR8Rvb8kaQ"); //Replace with your Secret Key
+	 			\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
 
 			$charge = \Stripe\Charge::create(array(
 				"amount" => (double)$total_price_cent,
