@@ -558,7 +558,13 @@ class User_controller extends CI_Controller
                 $csv_files_total_row = $contactfile_length;
                 $csv_files_total_row = intval($csv_files_total_row);
 
-                $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                try {
+                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                }
+                catch (Exception $e) {
+                    echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
+                    return;
+                }
 
                 if (!$uploadToFtp) {
                     echo '
