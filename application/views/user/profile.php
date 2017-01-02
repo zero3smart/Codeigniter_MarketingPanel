@@ -179,7 +179,7 @@
 				</td>
 				<?php
 				    $contact = isset($profile_document["contact"]) ? $profile_document["contact"] : "";
-				?>
+				
 				<td class="custom_edit td_2" data_field="username">
 					<div class="col-xs-12 col-md-8">
 					<form class="custom_edit_single_field_form">
@@ -198,6 +198,7 @@
 					</form>
 					</div>
 				</td>
+				?>
 			</tr>
 
 			<tr><td class="text-right td_1">
