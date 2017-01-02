@@ -649,7 +649,7 @@ class User_controller extends CI_Controller
                     "hardBounces" => "true",
                     "litigators" => "false",
                     "complainers" => "true",
-                    "unSubscribers" => "true",
+                    "unSubscribers" => "false",
                     "badWords" => "true",
                     "longEmails" => "true",
                     "syntaxErrors" => "true",
