@@ -204,11 +204,11 @@
 					<div class="col-xs-12 col-md-8">
 					<form class="custom_edit_single_field_form">
 						<div class="col-xs-12 field_element">
-							<span class="value">'.nl2br($profile_document['address']).'</span>
+							<span class="value">'.nl2br(isset($profile_document['address']) ? $profile_document['address'] : "").'</span>
 							<i class="fa fa-pencil pull_field_form"></i>
 						</div>
 						<div class="col-xs-12 form_element">
-							<textarea class="form-control" style="" name="field_value">'.$profile_document['address'].'</textarea>
+							<textarea class="form-control" style="" name="field_value">'.(isset($profile_document['address']) ? $profile_document['address'] : "").'</textarea>
 							<input type="hidden" value="user" name="collection">
 							<input type="hidden" value="address" name="field">
 							<input type="hidden" value="'.$profile_document['_id'].'" name="_id">
