@@ -14,7 +14,7 @@
             .page-content{min-height:400px;}
             .page-header.navbar .page-logo
             {
-                background: #b5f1dd;
+                background: transparent;
                 position: relative;
                 padding-right:10px;padding-left: 10px;
             }
