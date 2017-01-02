@@ -753,7 +753,7 @@ class User_controller extends CI_Controller
 
         $extension = ($onlyReport ? '.pdf' : '.zip');
 
-        $fileTo = getcwd() . $cleanId . $extension;
+        $fileTo = getcwd() . '/' . $cleanId . $extension;
 
         $fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
 
