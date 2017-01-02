@@ -177,15 +177,18 @@
 			<tr><td class="text-right td_1">
 					Contact :
 				</td>
+				<?php
+				    $contact = isset($profile_document["contact"]) ? $profile_document["contact"] : "";
+				?>
 				<td class="custom_edit td_2" data_field="username">
 					<div class="col-xs-12 col-md-8">
 					<form class="custom_edit_single_field_form">
 						<div class="col-xs-12 field_element">
-							<span class="value">'.(isset($profile_document['contact']) ? $profile_document['contact'] : "").'</span>
+							<span class="value">'.$contact.'</span>
 							<i class="fa fa-pencil pull_field_form"></i>
 						</div>
 						<div class="col-xs-12 form_element">
-							<input class="form-control" style="" value="'.$profile_document['contact'].'" name="field_value">
+							<input class="form-control" style="" value="'.$contact.'" name="field_value">
 							<input type="hidden" value="user" name="collection">
 							<input type="hidden" value="contact" name="field">
 							<input type="hidden" value="'.$profile_document['_id'].'" name="_id">
