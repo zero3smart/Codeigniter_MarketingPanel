@@ -181,7 +181,7 @@
 					<div class="col-xs-12 col-md-8">
 					<form class="custom_edit_single_field_form">
 						<div class="col-xs-12 field_element">
-							<span class="value">'.$profile_document['contact'].'</span>
+							<span class="value">'.(isset($profile_document['contact']) ? $profile_document['contact'] : "").'</span>
 							<i class="fa fa-pencil pull_field_form"></i>
 						</div>
 						<div class="col-xs-12 form_element">
