@@ -250,11 +250,11 @@
 					<div class="col-xs-12 col-md-8">
 					<form class="custom_edit_single_field_form">
 						<div class="col-xs-12 field_element">
-							<span class="value">'.$profile_document['state'].'</span>
+							<span class="value">'.(isset($profile_document['state']) ? $profile_document['state'] : "").'</span>
 							<i class="fa fa-pencil pull_field_form"></i>
 						</div>
 						<div class="col-xs-12 form_element">
-							<input class="form-control" style="" value="'.$profile_document['state'].'" name="field_value">
+							<input class="form-control" style="" value="'.(isset($profile_document['state']) ? $profile_document['state'] : "").'" name="field_value">
 							<input type="hidden" value="user" name="collection">
 							<input type="hidden" value="state" name="field">
 							<input type="hidden" value="'.$profile_document['_id'].'" name="_id">
