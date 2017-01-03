@@ -45,14 +45,34 @@
 
 				<div style="margin-bottom:15px;"><span style="color:red;" class="payment-errors"></span></div>
 			   <table class="table">
-			   		<tr>
+			   		<!--<tr>
 			   			<td>Price per Credit</td>
-			   			<td colspan="2"><?php echo $dash_profile['price_per_credit']; ?></td>
+			   			<td colspan="2"><?php /*echo $dash_profile['price_per_credit']; */?></td>
 			   		</tr>
 			   		<tr>
 			   			<td>Credit</td>
-			   			<td colspan="2"><input class="form-control" id="get_credit_count" type="number" name="credit_count" onkeyup="set_total_price_during_buy(<?php echo $dash_profile['price_per_credit']; ?>,this.value)"></td>
-			   		</tr>
+			   			<td colspan="2"><input class="form-control" id="get_credit_count" type="number" name="credit_count" onkeyup="set_total_price_during_buy(<?php /*echo $dash_profile['price_per_credit']; */?>,this.value)"></td>
+			   		</tr>-->
+                   <tr>
+                       <td>
+                           Credit
+                       </td>
+                       <td colspan="2">
+                           <select>
+                               <option value="50" selected>50,000 credits, $50</option>
+                               <option value="100">100,000 credits, $100</option>
+                               <option value="200">200,000 credits, $200</option>
+                               <option value="300">300,000 credits, $300</option>
+                               <option value="400">400,000 credits, $400</option>
+                               <option value="500">500,000 credits, $500</option>
+                               <option value="600">600,000 credits, $600</option>
+                               <option value="700">700,000 credits, $700</option>
+                               <option value="800">800,000 credits, $800</option>
+                               <option value="900">900,000 credits, $900</option>
+                               <option value="1000">1000,000 credits, $1000</option>
+                           </select>
+                       </td>
+                   </tr>
 			   		<tr>
 			   			<td>Price</td>
 			   			<td colspan="2">$ <span id="price_during_buy">0.00</span></td>
