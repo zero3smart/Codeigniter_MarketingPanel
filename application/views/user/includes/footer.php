@@ -1906,11 +1906,11 @@ console.log(data_email);
                 $form.submit(function(event) {
                   // Disable the submit button to prevent repeated clicks:
                   price_during_buy = document.getElementById("price_during_buy").innerHTML;
-                  get_credit_count = document.getElementById("get_credit_count").value;
-                  get_credit_count = parseInt(get_credit_count); if(isNaN(get_credit_count)) get_credit_count=0;
+                  credit_count = document.getElementById("credit_count").value;
+                  credit_count = parseInt(credit_count); if(isNaN(credit_count)) credit_count=0;
                   price_during_buy = parseInt(price_during_buy); if(isNaN(price_during_buy)) price_during_buy=0;
                   //alert(price_during_buy);
-                  document.getElementById("get_credit_count").value=get_credit_count;
+                  document.getElementById("credit_count").value=credit_count;
                   if(price_during_buy < 50)
                   {
                     $form.find('.payment-errors').text("You have to buy credits of at least $50.");
