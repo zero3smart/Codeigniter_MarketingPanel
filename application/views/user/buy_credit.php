@@ -62,7 +62,6 @@
         price_during_buy.textContent = selectedPrice;
         total_price.value = selectedPrice;
         credit_count.value = selectedCredits;
-        alert(selectedPrice);
     }
 </script>
 
@@ -121,22 +120,22 @@ if ($view['buy'] == 2) {
                         <td colspan="2">
                             <select id="package" name="package" onchange="changePrice()">
                                 <option value="47" selected>50,000 credits, $47</option>
-                                <option value="97">100,000 credits, $97</option>
-                                <option value="197">200,000 credits, $197</option>
-                                <option value="297">300,000 credits, $297</option>
-                                <option value="400">400,000 credits, $397</option>
-                                <option value="497">500,000 credits, $497</option>
-                                <option value="597">600,000 credits, $597</option>
-                                <option value="697">700,000 credits, $697</option>
-                                <option value="797">800,000 credits, $797</option>
-                                <option value="897">900,000 credits, $897</option>
-                                <option value="997">1000,000 credits, $997</option>
+                                <option value="97">100,000</option>
+                                <option value="197">200,000</option>
+                                <option value="297">300,000</option>
+                                <option value="400">400,000</option>
+                                <option value="497">500,000</option>
+                                <option value="597">600,000</option>
+                                <option value="697">700,000</option>
+                                <option value="797">800,000</option>
+                                <option value="897">900,000</option>
+                                <option value="997">1000,000</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td colspan="2">$ <span id="price_during_buy">$47</span></td>
+                        <td colspan="2">$ <span id="price_during_buy">47</span></td>
                     </tr>
 
 
