@@ -119,7 +119,7 @@ if ($view['buy'] == 2) {
                         </td>
                         <td colspan="2">
                             <select id="package" name="package" onchange="changePrice()">
-                                <option value="47" selected>50,000 credits, $47</option>
+                                <option value="47" selected>50,000</option>
                                 <option value="97">100,000</option>
                                 <option value="197">200,000</option>
                                 <option value="297">300,000</option>
