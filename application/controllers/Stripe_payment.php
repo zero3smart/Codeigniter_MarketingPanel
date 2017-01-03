@@ -29,7 +29,7 @@ class Stripe_payment extends CI_Controller {
  		$dash_profile = $this->Mdl_user->fetch_user_profile();
 
  		$credit_count = $this->input->post('credit_count');
- 		$total_price = $credit_count * $dash_profile['price_per_credit'];
+ 		$total_price = $this->input->post('total_price');
  		$total_price = number_format((double)$total_price, 2, '.', '');
  		$total_price_cent = $total_price*100;
  		\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
