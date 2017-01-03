@@ -6,7 +6,7 @@
 	</style>
 
     <script type="text/javascript">
-        function jsFunction(){
+        function changePrice(){
             var myselect = document.getElementById("package");
             alert(myselect.options[myselect.selectedIndex].value);
         }
