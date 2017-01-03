@@ -1911,9 +1911,9 @@ console.log(data_email);
                   price_during_buy = parseInt(price_during_buy); if(isNaN(price_during_buy)) price_during_buy=0;
                   //alert(price_during_buy);
                   document.getElementById("credit_count").value=credit_count;
-                  if(price_during_buy < 50)
+                  if(price_during_buy < 47)
                   {
-                    $form.find('.payment-errors').text("You have to buy credits of at least $50.");
+                    $form.find('.payment-errors').text("You have to buy credits of at least $47.");
                     
                   }
                   else
