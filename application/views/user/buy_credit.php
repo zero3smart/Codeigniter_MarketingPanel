@@ -3,7 +3,16 @@
 		.container{padding:20px;}
 		.payment_form_box{/*box-shadow:0px 0px 5px rgba(0,0,0,.8),0px 0px 50px rgba(0,0,0,.2) inset;*/background:#fff;padding:35px 25px 0 25px;}
 		.table td{vertical-align: middle;}
-	</style><?php 
+	</style>
+
+    <script type="text/javascript">
+        function jsFunction(){
+            var myselect = document.getElementById("package");
+            alert(myselect.options[myselect.selectedIndex].value);
+        }
+    </script>
+
+    <?php
                     if($view['buy'] == 2)
                     {
                         if($view['msg'] != "" ) 
@@ -58,18 +67,18 @@
                            Credit
                        </td>
                        <td colspan="2">
-                           <select>
-                               <option value="50" selected>50,000 credits, $50</option>
-                               <option value="100">100,000 credits, $100</option>
-                               <option value="200">200,000 credits, $200</option>
-                               <option value="300">300,000 credits, $300</option>
-                               <option value="400">400,000 credits, $400</option>
-                               <option value="500">500,000 credits, $500</option>
-                               <option value="600">600,000 credits, $600</option>
-                               <option value="700">700,000 credits, $700</option>
-                               <option value="800">800,000 credits, $800</option>
-                               <option value="900">900,000 credits, $900</option>
-                               <option value="1000">1000,000 credits, $1000</option>
+                           <select id="package" name="package" onchange="changePrice()">
+                               <option value="47" selected>50,000 credits, $47</option>
+                               <option value="97">100,000 credits, $97</option>
+                               <option value="197">200,000 credits, $197</option>
+                               <option value="297">300,000 credits, $297</option>
+                               <option value="400">400,000 credits, $397</option>
+                               <option value="497">500,000 credits, $497</option>
+                               <option value="597">600,000 credits, $597</option>
+                               <option value="697">700,000 credits, $697</option>
+                               <option value="797">800,000 credits, $797</option>
+                               <option value="897">900,000 credits, $897</option>
+                               <option value="997">1000,000 credits, $997</option>
                            </select>
                        </td>
                    </tr>
