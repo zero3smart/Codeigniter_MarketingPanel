@@ -129,7 +129,7 @@ if ($view['buy'] == 2) {
                                 <option value="697">700,000</option>
                                 <option value="797">800,000</option>
                                 <option value="897">900,000</option>
-                                <option value="997">1000,000</option>
+                                <option value="997">1,000,000</option>
                             </select>
                         </td>
                     </tr>
