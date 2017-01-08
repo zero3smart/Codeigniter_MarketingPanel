@@ -22,7 +22,7 @@ class User_controller extends CI_Controller
             redirect('login');
         }
         $this->load->model("Mdl_user");
-        $this->connection = new MongoClient();
+        $this->connection = new MongoClient("mongodb://127.0.0.1:27017");
         $this->db = $this->connection->email_cleanup;
         $this->sa = $this->db->sa;
         $this->user = $this->db->users;
