@@ -293,9 +293,10 @@ class User_controller extends CI_Controller
         $data['package_document'] = $this->Mdl_user->fetch_package_single($package_id);
 
         $this->load->view("user/dashboard", $data);*/
-        $data['view']['section'] = 'activation_token';
+        echo $activation_token;
+        /*$data['view']['section'] = 'activation_token';
         $data['activation_token'] = $activation_token;
-        $this->load->view("user/dashboard", $data);
+        $this->load->view("user/dashboard", $data);*/
     }
 
     public function packages()
