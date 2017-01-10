@@ -19,7 +19,9 @@ class User_controller extends CI_Controller
             $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
             $this->session->set_flashdata(array('request' => $actual_link));
-            //redirect('login');
+            if(strpos($actual_link, "http://$_SERVER[HTTP_HOST]/activate") === false) {
+                redirect('login');
+            }
         }
         $this->load->model("Mdl_user");
         $this->connection = new MongoClient("mongodb://127.0.0.1:27017");
