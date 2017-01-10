@@ -230,6 +230,11 @@
                             include_once'dashboard_content.php';
                         }
 
+                        if($view['section'] == 'activation_token')
+                        {
+                            include_once 'activate_account.php';
+                        }
+
                         if($view['section'] == 'packages')                         
                         {
                             include_once'package.php';

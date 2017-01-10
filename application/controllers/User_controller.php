@@ -295,7 +295,7 @@ class User_controller extends CI_Controller
         $this->load->view("user/dashboard", $data);*/
         $data['view']['section'] = 'activation_token';
         $data['activation_token'] = $activation_token;
-        $this->load->view("user/activate_account", $data);
+        $this->load->view("user/dashboard", $data);
     }
 
     public function packages()
