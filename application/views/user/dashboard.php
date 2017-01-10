@@ -232,7 +232,7 @@
 
                         if($view['section'] == 'activation_token')
                         {
-                            include_once 'activate_account.php';
+                            include_once'activate_account.php';
                         }
 
                         if($view['section'] == 'packages')                         
