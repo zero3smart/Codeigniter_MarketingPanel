@@ -236,7 +236,7 @@ $route['dashboard/:any()'] = 'User_controller/index/$1';
 $route['buy_credit'] = 'User_controller/buy_credit';
 $route['global_balance'] = 'User_controller/global_balance';
 $route['buy_package/(:any)'] = 'User_controller/package_stripe_form/$1';
-$route['activate'] = 'User_controller/activate_account';
+$route['activate/(:any)'] = 'User_controller/activate_account/$1';
 
 
 
