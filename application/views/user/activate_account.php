@@ -6,6 +6,6 @@
  * Time: 1:30 AM
  */
 
-echo activation_token;
+echo $activation_token;
 echo $user;
 echo "Your account has been successfully activated";
