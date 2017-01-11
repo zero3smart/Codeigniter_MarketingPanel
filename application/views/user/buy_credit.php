@@ -53,7 +53,7 @@
                 selectedCredits = 900000;
                 break;
             case '997':
-                selectedCredits = 100000;
+                selectedCredits = 1000000;
                 break;
             default:
                 selectedCredits = 50000;
