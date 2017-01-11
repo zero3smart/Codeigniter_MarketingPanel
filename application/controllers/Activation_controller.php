@@ -29,18 +29,8 @@ class Activation_controller extends CI_Controller
 
     public function activate_account($activation_token)
     {
-        /*$data['view']['page_title'] = 'Purchase';
-        $data['view']['page_sub_title'] = 'Monthly Packages';
-        $data['view']['section'] = 'package_stripe_form';
-        $data['view']['menu'] = 'store';
-        $data['view']['submenu'] = 'packages';
-        $data['view']['msg'] = $this->session->flashdata('msg');
-        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
-        $data['package_document'] = $this->Mdl_user->fetch_package_single($package_id);
-
-        $this->load->view("user/dashboard", $data);*/
-        $data['view']['section'] = 'activation_token';
         $data['activation_token'] = $activation_token;
+        $data['user'] = $this->Mdl_user->get_user_by_token($activation_token);
         $this->load->view("user/activate_account", $data);
     }
 

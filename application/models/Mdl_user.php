@@ -369,6 +369,12 @@ class Mdl_user extends CI_Model {
 		return $result;
 	}
 
+    public function get_user_by_token($token)
+    {
+        $result = $this->user->findOne(array('activation_token'=> $token));
+        return $result;
+    }
+
 	public function update_user($data){
 		$user_id = $this->session->email_lookup_user_id;
 		$this->user->update(array('_id' => new MongoId($user_id)), array('$set'=> $data), array("multiple" => false));
