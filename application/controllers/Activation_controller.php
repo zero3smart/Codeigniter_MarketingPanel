@@ -37,6 +37,7 @@ class Activation_controller extends CI_Controller
                 '</script>';
 
             if($user && $user["active"] == false) {
+                $this->user->update(array('_id' => new MongoId($user['_id'])), array('$set'=> array('active' => true)), array("multiple" => false));
                 $data["msg"] = 'Your account has been successfully activated';
             }
             else {
