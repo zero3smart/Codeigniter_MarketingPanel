@@ -29,9 +29,28 @@ class Activation_controller extends CI_Controller
 
     public function activate_account($activation_token)
     {
-        $data['activation_token'] = $activation_token;
-        $data['user'] = $this->Mdl_user->get_user_by_token($activation_token);
-        $this->load->view("user/activate_account", $data);
+        if(isset($activation_token)) {
+
+            $user = $this->Mdl_user->get_user_by_token($activation_token);
+            $script = '<script type="text/javascript">'.
+                'setTimeout(function(){window.location="http://app.verifyrocket.com/login"}, 2000);'.
+                '</script>';
+
+            if($user && $user["active"] == false) {
+                $data["msg"] = 'Your account has been successfully activated';
+            }
+            else {
+                if(!$user){
+                    $data["msg"] = "No user found";
+                }
+                else if($user["active"] == true) {
+                    $data["msg"] = "Your account is already activated.";
+                }
+            }
+
+            $data["script"] = $script;
+            $this->load->view("user/activate_account", $data);
+        }
     }
 
 }
