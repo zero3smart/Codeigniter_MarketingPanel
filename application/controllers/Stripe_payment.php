@@ -127,7 +127,7 @@ class Stripe_payment extends CI_Controller
                 \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm");
 
                 $customer = \Stripe\Customer::create(array(
-                    "description" => "Customer for david.thomas@example.com",
+                    "description" => "Customer for " . $this->session->email_lookup_user_username,
                     "plan" => $package_id,
                     "card" => $_POST['stripeToken']
                 ));
