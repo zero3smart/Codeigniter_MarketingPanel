@@ -115,23 +115,37 @@ class Stripe_payment extends CI_Controller
                 //echo $_POST['stripeToken'];
                 \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
 
-                $charge = \Stripe\Charge::create(array(
+               /* $charge = \Stripe\Charge::create(array(
                     "amount" => (double)$total_price_cent,
                     "currency" => "usd",
                     "card" => $_POST['stripeToken'],
                     "description" => "Number Lookup credit buy."
+                ));*/
+
+                /*-------------------------------------------------*/
+
+                \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm");
+
+                $customer = \Stripe\Customer::create(array(
+                    "description" => "Customer for david.thomas@example.com",
+                    "plan" => $package_id,
+                    "card" => $_POST['stripeToken']
                 ));
+
+                /*-------------------------------------------------*/
+
+
                 //print_r($charge);
 
                 //echo $charge;
                 //echo '</br></br></br></br>';
-                $charge_arr = json_decode($charge);
+                //$charge_arr = json_decode($charge);
                 //print_r($charge_arr);
                 //die();
                 //echo "<h1>Your payment has been completed.</h1>";
                 /*$response = json_decode($charge);
                 print $charge->id; print $charge->source->name; die();*/
-                if ($charge->status == 'succeeded') {
+                if ($customer) {
                     $data = array();
                     $data_2 = array();
                     $data_3 = array();
@@ -153,6 +167,8 @@ class Stripe_payment extends CI_Controller
                     $data_3['is_valid'] = true;
                     $data_3['date'] = new MongoDate(strtotime(date('Y-m-d 00:00:00')));
                     $data_3['datetime'] = new MongoDate(strtotime(date('Y-m-d h:i:s')));
+                    $data_3['stripe_customer_id'] = $customer["id"];
+
                     $end_datetime = date('Y-m-d 23:59:59');
                     $end_datetime = strtotime($end_datetime);
                     $end_datetime = strtotime("+29 day", $end_datetime);
