@@ -1906,6 +1906,9 @@ console.log(data_email);
               $(function() {
                 var $form = $('#payment-form');
                 $form.submit(function(event) {
+                    if(changePrice) {
+                        changePrice();
+                    }
                   // Disable the submit button to prevent repeated clicks:
                   price_during_buy = document.getElementById("price_during_buy").innerHTML;
                   credit_count = document.getElementById("credit_count").value;

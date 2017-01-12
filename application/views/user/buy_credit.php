@@ -15,6 +15,7 @@
 
 <script type="text/javascript">
     function changePrice() {
+        console.log('change price called');
         var package = document.getElementById("package");
         var price_during_buy = document.getElementById('price_during_buy');
         var total_price = document.getElementById('total_price');
