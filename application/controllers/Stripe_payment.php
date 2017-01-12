@@ -35,7 +35,8 @@ class Stripe_payment extends CI_Controller
         $total_price = $this->input->post('total_price');
         $total_price = number_format((double)$total_price, 2, '.', '');
         $total_price_cent = $total_price * 100;
-        \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
+        //\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); // Test Secret Key
+        \Stripe\Stripe::setApiKey("sk_live_SU0r2bQyN8hs8LNc5b6RuLl9"); // Live Secret Key
 
         $charge = \Stripe\Charge::create(array(
             "amount" => (double)$total_price_cent,
@@ -113,7 +114,8 @@ class Stripe_payment extends CI_Controller
                 //echo json_encode($product);
                 //echo $price; die();
                 //echo $_POST['stripeToken'];
-                \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); //Replace with your Secret Key
+                //\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); // Test Secret Key
+                \Stripe\Stripe::setApiKey("sk_live_SU0r2bQyN8hs8LNc5b6RuLl9"); // Live Secret Key
 
                /* $charge = \Stripe\Charge::create(array(
                     "amount" => (double)$total_price_cent,
@@ -124,7 +126,8 @@ class Stripe_payment extends CI_Controller
 
                 /*-------------------------------------------------*/
 
-                \Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm");
+                //\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); // Test Secret Key
+                \Stripe\Stripe::setApiKey("sk_live_SU0r2bQyN8hs8LNc5b6RuLl9"); // Live Secret Key
 
                 $customer = \Stripe\Customer::create(array(
                     "description" => "Customer for " . $dash_profile['email'],

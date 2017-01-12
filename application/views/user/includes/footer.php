@@ -249,8 +249,9 @@
                     $('#stripe_submit_form').append($input).submit();
                   };
 
+                  // test publishable key is: pk_test_wRl9xX9XsOj1fUSwzsebPV05
                   StripeCheckout.open({
-                    key:         'pk_test_wRl9xX9XsOj1fUSwzsebPV05',
+                    key:         'pk_live_oPE2lWuZcUJy3DNDAIh6aPvU',
                     address:     false,
                     amount:      parseFloat(document.getElementById("package_price").innerHTML)*100,
                     currency:    'usd',
@@ -1900,7 +1901,8 @@ console.log(data_email);
           ?>
           <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
           <script type="text/javascript">
-              Stripe.setPublishableKey('pk_test_wRl9xX9XsOj1fUSwzsebPV05');
+              //Stripe.setPublishableKey('pk_test_wRl9xX9XsOj1fUSwzsebPV05'); // test publishable key
+              Stripe.setPublishableKey('pk_live_oPE2lWuZcUJy3DNDAIh6aPvU'); //live publishable key
               $(function() {
                 var $form = $('#payment-form');
                 $form.submit(function(event) {

@@ -2,7 +2,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.js"></script>
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script type="text/javascript">
-	    Stripe.setPublishableKey('pk_test_wRl9xX9XsOj1fUSwzsebPV05');
+	    //Stripe.setPublishableKey('pk_test_wRl9xX9XsOj1fUSwzsebPV05'); //Test Publishable Key
+	    Stripe.setPublishableKey('pk_live_oPE2lWuZcUJy3DNDAIh6aPvU'); //Live Publishable Key
 	    $(function() {
 	      var $form = $('#payment-form');
 	      $form.submit(function(event) {
