@@ -115,7 +115,6 @@ class Stripe_payment extends CI_Controller
                 //echo $price; die();
                 //echo $_POST['stripeToken'];
                 //\Stripe\Stripe::setApiKey("sk_test_uf7di1vW51TKwuBaceT54rwm"); // Test Secret Key
-                \Stripe\Stripe::setApiKey("sk_live_SU0r2bQyN8hs8LNc5b6RuLl9"); // Live Secret Key
 
                /* $charge = \Stripe\Charge::create(array(
                     "amount" => (double)$total_price_cent,
