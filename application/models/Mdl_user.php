@@ -550,7 +550,14 @@ class Mdl_user extends CI_Model {
                 $result->result = $response;
 
             }
+
+            $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+            $txt = "End time before: ".$result["result"]["data"]['summary']['endTime']."\n";
+            fwrite($myfile, $txt);
             $result["result"]["data"]['summary']['endTime'] = new MongoDate($result["result"]["data"]['summary']['endTime']);
+            $txt = "End time after: ".$result["result"]["data"]['summary']['endTime']."\n";
+            fwrite($myfile, $txt);
+            fclose($myfile);
             return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
         }
         catch (MongoCursorException $e){
