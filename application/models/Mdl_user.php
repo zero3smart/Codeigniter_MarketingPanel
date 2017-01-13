@@ -551,7 +551,7 @@ class Mdl_user extends CI_Model {
 
             }
 
-            $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+            $myfile = fopen(getcwd() . "/newfile.txt", "w") or die("Unable to open file!");
             $txt = "End time before: ".$result["result"]["data"]['summary']['endTime']."\n";
             fwrite($myfile, $txt);
             $result["result"]["data"]['summary']['endTime'] = new MongoDate($result["result"]["data"]['summary']['endTime']);
