@@ -63,7 +63,7 @@ if ($view['msg'] != "")
             $summary = $file_status_value_value["result"]["data"]['summary'];
             if ($summary['endTime'] != "") {
                 //$date_array = explode(" ", $summary['endTime']);
-                $date = date('F j, Y, g:i a', $summary['endTime']/1000);
+                $date = date('F j, Y, g:i a', $summary['endTime']);
             }
 
             $date_2 = "";
