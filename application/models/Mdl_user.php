@@ -550,6 +550,7 @@ class Mdl_user extends CI_Model {
                 $result->result = $response;
 
             }
+            $result["result"]["data"]['summary']['endTime'] = new MongoDate($result["result"]["data"]['summary']['endTime']/1000);
             return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
         }
         catch (MongoCursorException $e){
