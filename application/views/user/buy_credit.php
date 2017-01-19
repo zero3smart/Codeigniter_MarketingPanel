@@ -28,32 +28,20 @@
             case '97':
                 selectedCredits = 100000;
                 break;
-            case '197':
-                selectedCredits = 200000;
-                break;
-            case '297':
-                selectedCredits = 300000;
-                break;
-            case '397':
-                selectedCredits = 400000;
+            case '247':
+                selectedCredits = 250000;
                 break;
             case '497':
                 selectedCredits = 500000;
                 break;
-            case '597':
-                selectedCredits = 600000;
-                break;
-            case '697':
-                selectedCredits = 700000;
-                break;
-            case '797':
-                selectedCredits = 800000;
-                break;
-            case '897':
-                selectedCredits = 900000;
-                break;
             case '997':
                 selectedCredits = 1000000;
+                break;
+            case '2497':
+                selectedCredits = 2500000;
+                break;
+            case '4997':
+                selectedCredits = 5000000;
                 break;
             default:
                 selectedCredits = 50000;
@@ -119,17 +107,13 @@ if ($view['buy'] == 2) {
                         </td>
                         <td colspan="2">
                             <select id="package" name="package" onchange="changePrice()">
-                                <option value="47" selected>50,000</option>
-                                <option value="97">100,000</option>
-                                <option value="197">200,000</option>
-                                <option value="297">300,000</option>
-                                <option value="397">400,000</option>
-                                <option value="497">500,000</option>
-                                <option value="597">600,000</option>
-                                <option value="697">700,000</option>
-                                <option value="797">800,000</option>
-                                <option value="897">900,000</option>
-                                <option value="997">1,000,000</option>
+                                <option value="47" selected>50K</option>
+                                <option value="97">100K</option>
+                                <option value="247">250K</option>
+                                <option value="497">500K</option>
+                                <option value="997">1mm</option>
+                                <option value="2497">2.5mm</option>
+                                <option value="4997">5mm</option>
                             </select>
                         </td>
                     </tr>
