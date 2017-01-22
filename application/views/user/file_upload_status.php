@@ -81,7 +81,7 @@ if ($view['msg'] != "")
             $total_summary_value = 0;
             $reports = $summary["files"][0]["reports"];
 
-            $reports[]= array('reportName' => 'Total Clean Emails', 'numOfRecords' => ($summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean']));
+            $reports[]= array('reportName' => 'Total Clean Emails', 'numOfRecords' => ($summary['totalRecordsAfterClean']));
             //$data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
             //$data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
 
