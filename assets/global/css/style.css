@@ -1,0 +1,8 @@
+.scrub-status-container {
+    position: absolute;
+    top: -15px;
+    right: 30px;
+    float: right;
+    margin-top: 10px;
+    font-size: 2.5em;
+}
