@@ -6,3 +6,15 @@
     margin-top: 10px;
     font-size: 2.5em;
 }
+
+.expanded-button {
+    background-image: url(/assets/global/img/expanded.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+}
+
+.collapsed-button {
+    background-image: url(/assets/global/img/collapsed.png.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+}

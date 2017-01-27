@@ -142,6 +142,7 @@
                  else {
                      button.html(' + ');
                  }
+                 button.toggleClass('expanded-button');
              }
 
          }
