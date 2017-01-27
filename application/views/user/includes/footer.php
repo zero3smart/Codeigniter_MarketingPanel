@@ -1958,6 +1958,9 @@ console.log(data_email);
           </script>
 
           <script type="text/javascript">
+              function toggleCollapse(id) {
+                  $('#'+id).toggleSlide('slow');
+              }
             function set_total_price_during_buy(unit,credit)
             {
               unit = parseFloat(unit);
