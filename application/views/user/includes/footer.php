@@ -134,14 +134,6 @@
              $('#'+id).slideToggle('slow');
              if(buttonId) {
                  var button = $('#' + buttonId);
-                 var buttonText = button.html().trim();
-
-                 if(buttonText === '+') {
-                     button.html(' - ');
-                 }
-                 else {
-                     button.html(' + ');
-                 }
                  button.toggleClass('expanded-button');
                  button.toggleClass('collapsed-button');
              }
