@@ -28,7 +28,7 @@
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
-                <div id="button_collapse" class="scrub-status-container" onclick="toggleCollapse('file_process_progress', 'button_collapse')"> + </div>
+                <div id="button_collapse" class="scrub-status-container" onclick="toggleCollapse('file_process_progress', 'button_collapse')" style="display: none"> + </div>
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files are scrubbing right now
                 </div>
