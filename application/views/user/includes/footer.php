@@ -143,6 +143,7 @@
                      button.html(' + ');
                  }
                  button.toggleClass('expanded-button');
+                 button.toggleClass('collapsed-button');
              }
 
          }
