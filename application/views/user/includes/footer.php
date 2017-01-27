@@ -130,8 +130,20 @@
 
         setInterval(get_balance_and_limit, 30000);
         //setInterval( function() { get_balance_and_limit(); }, 500 );
-         function toggleCollapse(id) {
+         function toggleCollapse(id, buttonId) {
              $('#'+id).slideToggle('slow');
+             if(buttonId) {
+                 var button = $('#' + buttonId);
+                 var buttonText = button.html().trim();
+
+                 if(buttonText === '+') {
+                     button.html(' - ');
+                 }
+                 else {
+                     button.html(' + ');
+                 }
+             }
+
          }
         function custom_spinner_show()
         {

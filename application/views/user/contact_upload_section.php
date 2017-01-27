@@ -28,7 +28,7 @@
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
-                <div style="position: absolute;top: -15px;right: 30px;float: right;margin-top: 10px;font-size: 2.5em;" onclick="toggleCollapse('file_process_progress')"> + </div>
+                <div id="button_collapse" style="position: absolute;top: -15px;right: 30px;float: right;margin-top: 10px;font-size: 2.5em;" onclick="toggleCollapse('file_process_progress', 'button_collapse')"> + </div>
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files are scrubbing right now
                 </div>
