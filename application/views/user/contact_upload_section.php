@@ -24,6 +24,21 @@
                     
                     ?>
 <div class="row">
+
+    <div class="col-xs-12">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Files are scrubbing right now
+                </div>
+            </div>
+            <div class="portlet-body" id="group_list">
+                <div class="row">
+                    <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
@@ -304,11 +319,11 @@
                             }
 
                             </style>
-                            <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress">
+                            <!--<div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress">
 
-                                
 
-                            </div>
+
+                            </div>-->
                             <div class="col-xs-12"  >
                             <p>&nbsp;</p>
                             </div>
