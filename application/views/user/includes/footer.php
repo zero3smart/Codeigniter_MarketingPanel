@@ -131,7 +131,7 @@
         setInterval(get_balance_and_limit, 30000);
         //setInterval( function() { get_balance_and_limit(); }, 500 );
          function toggleCollapse(id) {
-             $('#'+id).toggleSlide('slow');
+             $('#'+id).slideToggle('slow');
          }
         function custom_spinner_show()
         {
