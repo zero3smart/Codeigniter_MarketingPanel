@@ -6,4 +6,4 @@
  * Time: 2:10 PM
  */
 
-echo "<h3>Your file failed to upload. Please contact support@verifyrocket.com for assistance</h3>";
+echo "<h3>Your file failed to upload. Please contact <a href='support@verifyrocket.com?Subject=Failed Upload' target='_top'>support@verifyrocket.com</a> for assistance</h3>";

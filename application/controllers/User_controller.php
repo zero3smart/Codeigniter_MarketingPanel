@@ -1036,7 +1036,7 @@ class User_controller extends CI_Controller
     public function failed_upload($parm1 = '')
     {
         $data['view']['page_title'] = 'Reports';
-        $data['view']['page_sub_title'] = 'Instant Clean';
+        $data['view']['page_sub_title'] = 'Failed Upload';
         $data['view']['menu'] = 'report';
         $data['view']['submenu'] = 'failed_upload';
         $data['view']['section'] = 'failed_upload';
