@@ -357,7 +357,10 @@
                         {
                             include_once'pricing_contact_us.php';
                         }
-                        
+                        if($view['section'] == 'failed_upload')
+                        {
+                            include_once'failed_upload.php';
+                        }
 
 
 

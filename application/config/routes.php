@@ -226,6 +226,8 @@ $route['report/invoice/(:any)'] = 'User_controller/report_invoice/$1';
 $route['report/invoice_by_date/(:any)/(:any)'] = 'User_controller/report_invoice_by_date/$1/$2';
 $route['report/invoice_by_date/(:any)/(:any)/(:any)'] = 'User_controller/report_invoice_by_date/$1/$2/$3';
 
+$route['report/failed_upload'] = 'User_controller/failed_upload';
+
 $route['old_pass_check'] = 'User_controller/old_pass_check';
 $route['old_pass_check/(:any)'] = 'User_controller/old_pass_check/$1';
 $route['password_update/(:any)/(:any)/(:any)'] = 'User_controller/password_update/$1/$2/$3';
