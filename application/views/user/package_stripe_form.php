@@ -16,6 +16,29 @@
 	        // Prevent the form from being submitted:
 	        return false;
 	      });
+          
+          $('select[name=payment_type]').change(function(){
+                var tval = $(this).val();
+                var $form = $('#payment-form');
+                if(tval == 'stripe')
+                {
+                    $('.hide_stripe').css('display','');
+                    $('.hide_paypal').css('display','none');
+                    $form.attr('action','<?php echo base_url(); ?>Stripe_payment/checkout');
+                }else if(tval == 'paypal')
+                {
+                    $('.hide_paypal').css('display','');
+                    $('.hide_stripe').css('display','none');
+                    $form.attr('action','<?php echo base_url(); ?>paypal_payment/checkout');
+                }
+          });
+          
+          $('button.paypal_submit').click(function(){
+                var $form = $('#payment-form');
+                // Submit the form:
+	           $form.get(0).submit();
+          });
+          
 	    });
 	    function stripeResponseHandler(status, response) {
 	      // Grab the form:
@@ -58,7 +81,16 @@
 			   				<input type="hidden" name="package_id" value="<?php echo $package_document['_id'];?>">
 			   			</td>
 			   		</tr>
-			   		<tr>
+                    <tr>
+			   			<td><span>Payment type</span></td>
+			   			<td colspan="2">
+						   <select id="payment_type" name="payment_type">
+                                <option value="stripe" selected="">Stripe</option>
+                                <option value="paypal">Paypal</option>
+                            </select>
+			   			</td>
+			   		</tr>                    
+			   		<tr class="hide_stripe">
 			   			<td><span>Card Number</span></td>
 			   			<td colspan="2">
 												<div class="input-group">
@@ -69,7 +101,7 @@
                                                   </div>
 			   			</td>
 			   		</tr>
-			   		<tr>
+			   		<tr class="hide_stripe">
 			   			<td><span>Expiration (MM/YY)</span></td>
 			   			<td>
 			   				<div class="input-group">
@@ -81,7 +113,7 @@
 			   			</td>
 			   			<td><input class="form-control" type="text" placeholder="YY" data-stripe="exp_year" value="16"></td>
 			   		</tr>
-			   		<tr>
+			   		<tr class="hide_stripe">
 			   			<td><span>CVC</span></td>
 			   			<td colspan="2">
 			   				<div class="input-group">
@@ -92,8 +124,11 @@
                                                   </div>
 			   			</td>
 			   		</tr>
-			   		<tr>
+			   		<tr class="hide_stripe">
 			   			<td colspan="3"><button type="submit" class="col-xs-12 btn btn-lg green submit"><i class="fa fa-shopping-cart"></i> Pay</button></td>
+			   		</tr>
+                    <tr class="hide_paypal" style="display: none;">
+			   			<td colspan="3"><button type="button" class="col-xs-12 btn btn-lg green paypal_submit"><i class="fa fa-shopping-cart"></i> Pay</button></td>
 			   		</tr>
 			   		<tr>
 			   			<td colspan="3">

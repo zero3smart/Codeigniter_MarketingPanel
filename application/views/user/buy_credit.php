@@ -13,6 +13,7 @@
     }
 </style>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.js"></script>
 <script type="text/javascript">
     function changePrice() {
         var package = document.getElementById("package");
@@ -51,6 +52,31 @@
         total_price.value = selectedPrice;
         credit_count.value = selectedCredits;
     }
+    
+    $(document).ready(function(){
+        changePrice();
+        $('select[name=payment_type]').change(function(){
+                var tval = $(this).val();
+                var $form = $('#payment-form');
+                if(tval == 'stripe')
+                {
+                    $('.hide_stripe').css('display','');
+                    $('.hide_paypal').css('display','none');
+                    $form.attr('action','<?php echo base_url(); ?>Stripe_payment/checkout_buy_credit');
+                }else if(tval == 'paypal')
+                {
+                    $('.hide_paypal').css('display','');
+                    $('.hide_stripe').css('display','none');
+                    $form.attr('action','<?php echo base_url(); ?>paypal_payment/checkout_buy_credit');
+                }
+          });
+          
+          $('button.paypal_submit').click(function(){
+                var $form = $('#payment-form');
+                // Submit the form:
+	           $form.get(0).submit();
+          });
+    });
 </script>
 
 <?php
@@ -121,9 +147,18 @@ if ($view['buy'] == 2) {
                         <td>Price</td>
                         <td colspan="2">$ <span id="price_during_buy">47</span></td>
                     </tr>
-
-
+                    
                     <tr>
+			   			<td><span>Payment type</span></td>
+			   			<td colspan="2">
+						   <select id="payment_type" name="payment_type">
+                                <option value="stripe" selected="">Stripe</option>
+                                <option value="paypal">Paypal</option>
+                            </select>
+			   			</td>
+			   		</tr>   
+
+                    <tr class="hide_stripe">
                         <td><span>Card Number</span></td>
                         <td colspan="2">
                             <div class="input-group">
@@ -135,7 +170,7 @@ if ($view['buy'] == 2) {
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="hide_stripe">
                         <td><span>Expiration (MM/YY)</span></td>
                         <td>
                             <div class="input-group">
@@ -149,7 +184,7 @@ if ($view['buy'] == 2) {
                         <td><input class="form-control" type="text" placeholder="YY" data-stripe="exp_year" value="17">
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="hide_stripe">
                         <td><span>CVC</span></td>
                         <td colspan="2">
                             <div class="input-group">
@@ -160,13 +195,18 @@ if ($view['buy'] == 2) {
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="hide_stripe">
                         <td colspan="3">
                             <button type="submit" class="col-xs-12 btn btn-lg green submit"><i
                                         class="fa fa-shopping-cart"></i> Pay
                             </button>
                         </td>
                     </tr>
+                    
+                    <tr class="hide_paypal" style="display: none;">
+			   			<td colspan="3"><button type="button" class="col-xs-12 btn btn-lg green paypal_submit"><i class="fa fa-shopping-cart"></i> Pay</button></td>
+			   		</tr>
+                    
                     <tr>
                         <td colspan="3">
                             <img class="col-xs-12" style="padding:0;"
