@@ -6,7 +6,7 @@
  * Time: 10:11 AM
  */
 
-require  MY_PATH . '/application/third_party/MongoDB.php';
+require  'application/third_party/MongoDB.php';
 class Mongolib
 {
 
