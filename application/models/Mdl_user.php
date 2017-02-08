@@ -32,9 +32,6 @@ class Mdl_user extends CI_Model {
 		$this->bulk_broadcast_candidate_failed = $this->db->bulk_broadcast_candidate_failed;
 		$this->instant_lookup = $this->db->instant_lookup;
 		$this->invoice = $this->db->invoice;
-
-
-		$this->db2 = $this->connection->big_sms_1;
 		
     }
 
