@@ -11,8 +11,8 @@ class Mdl_user extends CI_Model {
 			redirect('login');
 		}
 		*/
-		$this->connection = new MongoClient("mongodb://127.0.0.1:27017");
-		$this->db = $this->connection->email_cleanup;
+        $this->load->library('mongolib');
+        $this->db = $this->mongolib->db;
 		$this->user_template = $this->db->user_template;
 		$this->user_file = $this->db->user_file;
 		$this->user = $this->db->users;

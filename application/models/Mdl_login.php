@@ -7,8 +7,8 @@ class Mdl_login extends CI_Model {
         parent::__construct();
 
     	//$this->load->library('encrypt');
-		$this->connection = new MongoClient("mongodb://127.0.0.1:27017");
-		$this->db = $this->connection->email_cleanup;
+        $this->load->library('mongolib');
+        $this->db = $this->mongolib->db;
 		$this->sa = $this->db->super_admin;
 		$this->user = $this->db->users;
 		//if($this->sa->insert(array('username'=>'admin','password'=>sha1('123456')))) echo "Success";die();
