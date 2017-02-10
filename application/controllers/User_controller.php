@@ -128,7 +128,7 @@ class User_controller extends CI_Controller
         }
         if(strlen($htmlToReturn) > 0) {
             $htmlToReturn =
-                '<div class="portlet-body">'.
+                '<div style="background-color: #fff;padding: 15px;">'.
                 '<div class="table-responsive">'.
 
                 '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
