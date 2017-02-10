@@ -648,6 +648,7 @@
         }
 
         function fn_contact_upload_file_name_set(event){
+            console.log('clicked the fn_contact_upload+file_name_set');
             event.preventDefault();
             document.getElementById("set_column_number").value = '';
             fn_contact_upload_file();
