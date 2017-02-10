@@ -60,17 +60,26 @@ if ($view['msg'] != "")
                 ';
             $date = "";
             $date_array = array();
-            $summary = $file_status_value_value["result"]["data"]['summary'];
-            if ($summary['endTime'] != "") {
-                $end_date = explode(" ", $summary['endTime']);
-                $date = date('F j, Y, g:i a', $end_date[1]);
+            if(isset($file_status_value_value->result)) {
+                $summary = $file_status_value_value["result"]["data"]['summary'];
+                if ($summary['endTime'] != "") {
+                    $end_date = explode(" ", $summary['endTime']);
+                    if(is_array($end_date) && count($end_date) > 1) {
+                        $date = date('F j, Y, g:i a', $end_date[1]);
+                    }
+                }
+            }
+            else {
+                $summary = new stdClass();
             }
 
             $date_2 = "";
             $date_2_array = array();
             if ($file_status_value_value['upload_time'] != "") {
                 $date_2_array = explode(" ", $file_status_value_value['upload_time']);
-                $date_2 = date('F j, Y, g:i a', $date_2_array[1]);
+                if(is_array($date_2_array) && count($date_2_array) > 1) {
+                    $date_2 = date('F j, Y, g:i a', $date_2_array[1]);
+                }
             }
 
             echo '
@@ -79,7 +88,10 @@ if ($view['msg'] != "")
 
             $inside_chart_index = 0;
             $total_summary_value = 0;
-            $reports = $summary["files"][0]["reports"];
+
+            if(isset($summary->files) && is_array($summary->files)) {
+                $reports = $summary["files"][0]["reports"];
+            }
 
             $reports[]= array('reportName' => 'Total Clean Emails', 'numOfRecords' => ($summary['totalRecordsAfterClean']));
             //$data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
