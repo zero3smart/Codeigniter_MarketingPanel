@@ -60,7 +60,7 @@ if ($view['msg'] != "")
                 ';
             $date = "";
             $date_array = array();
-            if(isset($file_status_value_value->result)) {
+            if(isset($file_status_value_value["result"])) {
                 $summary = $file_status_value_value["result"]["data"]['summary'];
                 if ($summary['endTime'] != "") {
                     $end_date = explode(" ", $summary['endTime']);
@@ -89,7 +89,7 @@ if ($view['msg'] != "")
             $inside_chart_index = 0;
             $total_summary_value = 0;
 
-            if(isset($summary->files) && is_array($summary->files)) {
+            if(isset($summary["files"]) && is_array($summary["files"])) {
                 $reports = $summary["files"][0]["reports"];
             }
 
