@@ -69,36 +69,15 @@ class User_controller extends CI_Controller
 
     public function get_all_file_process_progress()
     {
-
-        //Need to call the api for the status with all the
-        //http://64.187.105.90:3000/status?cleanId=584d2bfbcbbac24f73ff3445
-
         $icon_array = array();
         $icon_array[0] = "fa fa-spin fa-spinner";
         $result = $this->Mdl_user->fetch_user_file_by_status('processing');
-        //$this->console_log('lets see the key/value');
+        $htmlToReturn = '';
+
         foreach ($result as $key => $value) {
-            //TODO
             if (isset($value['clean_id'])) {
                 $response = $this->callStatusAPI($value['clean_id']);
                 $response = json_decode($response, true);
-                //$this->console_log('Received the status response for '. $value['clean_id']);
-                /*
-                         * Available "progress" values could be:
-                         * processing
-                         * processed
-                         * failed
-                         */
-
-                /*
-                 * scrubbingStatus: {
-                    upload: 'upload',
-                    syntax: 'syntax',
-                    validation: 'validation',
-                    completion: 'completion',
-                    error: 'error'
-                }
-                 */
 
                 if(!$response["success"]) {
                     $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
@@ -117,8 +96,14 @@ class User_controller extends CI_Controller
 
                     $progress_percent = intval($value['progress']);
                     shuffle($icon_array);
-                    echo '
-				<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
+                    $htmlToReturn = $htmlToReturn . '
+                        <tr>
+                            <td>'. $value['file_name'] .'</td>
+                            <td>'. $value['upload_time'] .'</td>
+                        </tr>
+                    ';
+
+				/*echo '<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="col-xs-12 file_data">
                                             <div class="col-xs-12" style="padding:10px 15px 20px 15px;">
@@ -136,13 +121,18 @@ class User_controller extends CI_Controller
                                         <div class="icon"><span class="' . $icon_array[0] . '"></span></div>
                                     </div>
                                 </div>
-			';
+			';*/
                 }
 
             }
-
-
         }
+        if(strlen($htmlToReturn) > 0) {
+            $htmlToReturn = '<table>'.
+                '<tr><th>File Name</th><th>Uploaded At</th></tr>'
+                . $htmlToReturn
+                .'</table>>';
+        }
+        echo  $htmlToReturn;
     }
 
     public function getdate_all()
