@@ -245,7 +245,12 @@
                             include_once'contact_upload_section.php';
                     
                         }
-                           
+                        
+                        if($view['section'] == 'phone_upload_section')
+                        {
+                            include_once'phone_upload_section.php';
+                    
+                        }                           
 
 
                         if($view['section'] == 'file_upload_status')

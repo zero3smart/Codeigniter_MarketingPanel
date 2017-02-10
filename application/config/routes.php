@@ -135,6 +135,7 @@ $route['msg_bulk_delete'] = 'User_controller_msg/messageTemplateBulkDelete';
 $route['paypal_buy/(:any)'] = 'User_controller_msg/paypal_buy/$1';
 
 $route['contact_upload_section'] = 'User_controller/contact_upload_section';
+$route['phone_upload_section'] = 'User_controller/phone_upload_section';
 $route['contact_upload'] = 'User_controller/contact_upload';
 $route['upload_file'] = 'User_controller/upload_file';
 $route['instant_lookup'] = 'User_controller/instant_lookup';

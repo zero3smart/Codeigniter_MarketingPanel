@@ -444,11 +444,24 @@ class User_controller extends CI_Controller
 
     public function contact_upload_section()
     {
-        $data['view']['page_title'] = 'Clean Data';
+        $data['view']['page_title'] = 'Email Validation';
         $data['view']['page_sub_title'] = '';
-        $data['view']['menu'] = 'contact_upload_section';
-        $data['view']['submenu'] = '';
+        $data['view']['menu'] = 'contact';
+        $data['view']['submenu'] = 'contact_upload_section';
         $data['view']['section'] = 'contact_upload_section';
+        $data['view']['msg'] = $this->session->flashdata('msg');
+        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
+
+        $this->load->view("user/dashboard", $data);
+    }
+    
+    public function phone_upload_section()
+    {
+        $data['view']['page_title'] = 'Carrier Lookup';
+        $data['view']['page_sub_title'] = '';
+        $data['view']['menu'] = 'contact';
+        $data['view']['submenu'] = 'phone_upload_section';
+        $data['view']['section'] = 'phone_upload_section';
         $data['view']['msg'] = $this->session->flashdata('msg');
         $data['view']['msg_type'] = $this->session->flashdata('msg_type');
 

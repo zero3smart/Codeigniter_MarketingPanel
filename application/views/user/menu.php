@@ -43,12 +43,30 @@
             <span class="title">Profile</span>
         </a>                 
     </li>
-    <li class="nav-item menu_contact_upload_section">
-        <a class="nav-link nav-toggle" href="<?php echo base_url(); ?>contact_upload_section">
+    
+    <li class="nav-item menu_contact">
+        <a class="nav-link nav-toggle" href="javascript:;">
             <i class="fa fa-upload"></i>
-            <span class="title">Clean Data</span>
-        </a>                 
+            <span class="title">Process Data</span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item submenu_contact_upload_section">
+                <a class="nav-link " href="<?php echo site_url('contact_upload_section'); ?>">
+                    <i class="fa fa-upload"></i>
+                    <span class="title">Email Validation</span>
+                </a>
+            </li>
+            <li class="nav-item submenu_phone_upload_section">
+                <a class="nav-link " href="<?php echo site_url('phone_upload_section'); ?>">
+                    <i class="fa fa-search"></i>
+                    <span class="title">Carrier Lookup</span>
+                </a>
+            </li>
+
+        </ul>
     </li>
+    
     <!--<li class="nav-item menu_instant_lookup">
         <a class="nav-link nav-toggle" href="<?php echo base_url(); ?>instant_lookup">
             <i class="fa fa-search"></i>
