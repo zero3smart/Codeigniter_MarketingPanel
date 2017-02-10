@@ -28,7 +28,7 @@
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
-                <div id="button_collapse" class="scrub-status-container collapsed-button" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
+                <div id="button_collapse" class="scrub-status-container" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
                 <div class="caption">
                     <i class="fa fa-globe"></i>Validating Files
                 </div>
