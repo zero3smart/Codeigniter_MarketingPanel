@@ -33,7 +33,7 @@
                     <i class="fa fa-globe"></i>Validating Files
                 </div>
             </div>
-            <div class="portlet-body" id="group_list" style="height: 250px;overflow: auto;">
+            <div class="portlet-body" id="group_list" style="height: 150px;overflow: auto;">
                 <div class="row">
                     <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress" style="display: block"></div>
                 </div>
