@@ -119,7 +119,7 @@
                                             <div  id="clickHere">
                                                 <i class="fa fa-plus"></i>
                                                 <span> Browse File... </span>
-                                                <input name="contactfile" id="contact_upload_file" onchange="fn_contact_upload_file_name_set(event)"  type="file" accept=".txt,.csv"> 
+                                                <input name="contactfile" id="contact_upload_file" onchange="fn_contact_upload_file_name_set(event)"  type="file" accept=".txt,.csv" style="position: fixed;top: -1000px;">
                                             </div>
                                         </div>
                                         <!--<![endif]-->

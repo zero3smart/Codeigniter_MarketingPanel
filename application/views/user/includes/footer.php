@@ -612,7 +612,7 @@
 
     }, true);
 
-    if (buttonId != "") {
+    /*if (buttonId != "") {
         var clickZone = $("#" + buttonId);
 
         var oleft = clickZone.offset().left;
@@ -629,7 +629,7 @@
                 inputFile.offset({ top: -400, left: -400 });
             }
         });
-    }
+    }*/
 
     document.getElementById(dropZoneId).addEventListener("drop", function (e) {
         $("#" + dropZoneId).removeClass(mouseOverClass);
