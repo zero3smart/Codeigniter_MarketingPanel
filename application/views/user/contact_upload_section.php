@@ -24,6 +24,22 @@
                     
                     ?>
 <div class="row">
+
+    <div class="col-xs-12">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Validating Files
+                </div>
+            </div>
+            <div class="portlet-body" id="group_list" style="height: 150px;overflow: auto;">
+                <div class="row">
+                    <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress" style="display: block"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
@@ -103,7 +119,7 @@
                                             <div  id="clickHere">
                                                 <i class="fa fa-plus"></i>
                                                 <span> Browse File... </span>
-                                                <input name="contactfile" id="contact_upload_file" onchange="fn_contact_upload_file_name_set(event)"  type="file" accept=".txt,.csv"> 
+                                                <input name="contactfile" id="contact_upload_file" onchange="fn_contact_upload_file_name_set(event)"  type="file" accept=".txt,.csv">
                                             </div>
                                         </div>
                                         <!--<![endif]-->
@@ -304,11 +320,11 @@
                             }
 
                             </style>
-                            <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress">
+                            <!--<div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress">
 
-                                
 
-                            </div>
+
+                            </div>-->
                             <div class="col-xs-12"  >
                             <p>&nbsp;</p>
                             </div>

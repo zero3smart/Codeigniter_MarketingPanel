@@ -1,0 +1,23 @@
+.scrub-status-container {
+    position: absolute;
+    top: -3px;
+    right: 30px;
+    float: right;
+    margin-top: 10px;
+    font-size: 2.5em;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.expanded-button {
+    background-image: url(/assets/global/img/expanded.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+}
+
+.collapsed-button {
+    background-image: url(/assets/global/img/collapsed.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+}
