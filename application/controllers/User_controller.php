@@ -462,10 +462,10 @@ class User_controller extends CI_Controller
         $output['file_name'] = $file_name;
         $output['file_existing'] = false;
         $output['current_processing'] = 0;
-        $file_check = $this->Mdl_user->fetch_user_file_by_name($file_name);
+        /*$file_check = $this->Mdl_user->fetch_user_file_by_name($file_name);
         if (count($file_check) > 0) {
             $output['file_existing'] = true;
-        }
+        }*/
         $output['current_processing'] = $this->db->user_file->find(array('user' => new MongoId($this->session->email_lookup_user_id), 'status' => 'processing'))->count();
 
         echo json_encode($output);
