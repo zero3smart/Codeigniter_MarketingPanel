@@ -166,7 +166,7 @@ if ($view['buy'] == 2) {
                                                           <span class="fa fa-credit-card"></span>
                                                        </span>
                                 <input class="form-control" type="text" size="20" name="card_number"
-                                       data-stripe="number" value="5555555555554444">
+                                       data-stripe="number" value="">
                             </div>
                         </td>
                     </tr>
@@ -178,10 +178,10 @@ if ($view['buy'] == 2) {
                                                           <span class="fa fa-calendar-o"></span>
                                                        </span>
                                 <input class="form-control" type="text" placeholder="MM" data-stripe="exp_month"
-                                       value="07">
+                                       value="">
                             </div>
                         </td>
-                        <td><input class="form-control" type="text" placeholder="YY" data-stripe="exp_year" value="17">
+                        <td><input class="form-control" type="text" placeholder="YY" data-stripe="exp_year" value="">
                         </td>
                     </tr>
                     <tr class="hide_stripe">
@@ -191,7 +191,7 @@ if ($view['buy'] == 2) {
                                                       <span class="input-group-addon">
                                                           <span class="fa fa-lock"></span>
                                                        </span>
-                                <input class="form-control" type="text" data-stripe="cvc" value="123">
+                                <input class="form-control" type="text" data-stripe="cvc" value="">
                             </div>
                         </td>
                     </tr>
