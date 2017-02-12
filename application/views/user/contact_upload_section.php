@@ -30,7 +30,7 @@
             <div class="portlet-title">
                 <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
                 <div class="caption">
-                    <i class="fa fa-globe"></i>Validating Files
+                    <i class="fa fa-globe"></i>Files Currently Processing
                 </div>
             </div>
             <div class="portlet-body" id="group_list" style="height: 150px;overflow: auto;">

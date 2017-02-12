@@ -973,19 +973,13 @@
                     dataType:'JSON',
                     success:function(result)
                     {
-                        //alert(JSON.stringify(result));
-                        //return false;
-                        /*if(result['file_existing'] == true)
-                        {
-                          alert("Sorry, You already uploded this file.");
-                        }
-                        else */if(result['current_processing'] >= 5)
+                        if(result['current_processing'] >= 5)
                         {
                           alert("Sorry, You can't process more than 5 files at a moment.");
                         }
                         else
                         {
-                          //alert('You can upload');
+
                             $.ajax({
                                 xhr: function()
                                   {
@@ -995,10 +989,13 @@
                                       if (evt.lengthComputable) {
                                         var percentComplete = (evt.loaded / evt.total) * 100;
                                         percentComplete = parseInt(percentComplete);
-                                        if(percentComplete > 80) percentComplete = percentComplete-1;
+                                        //if(percentComplete > 80) percentComplete = percentComplete-1;
                                         //Do something with upload progress
                                         $(".progress-bar").css({"width":percentComplete+"%"});
                                         $(".progress-bar").html(percentComplete+"% Complete");
+                                        if(percentComplete === 100) {
+                                            $(".progress-bar").html("File upload completed. Preparing file for processing.");
+                                        }
                                       }
                                     }, false);
                                     //Download progress
@@ -1029,9 +1026,10 @@
                                     result_array = result.split('/');
                                     if($(".progress-bar").hasClass("progress-bar-success"));
                                     {
-                                      $(".progress-bar").html("100% Complete");
-                                      $(".progress-bar").removeClass("progress-bar-success");
-                                      $(".progress-bar").addClass("progress-bar-warning");
+                                      $(".progress-bar").html("");
+                                      $(".progress-bar").css({"width:0%"});
+                                      //$(".progress-bar").removeClass("progress-bar-success");
+                                      //$(".progress-bar").addClass("progress-bar-warning");
                                     }
                                     //fn_file_process_progress(result_array[1],1);
                                     //console.log(result);
