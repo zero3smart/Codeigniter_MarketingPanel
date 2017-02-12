@@ -1027,7 +1027,7 @@
                                     if($(".progress-bar").hasClass("progress-bar-success"));
                                     {
                                       $(".progress-bar").html("");
-                                      $(".progress-bar").css({"width:0%"});
+                                      $(".progress-bar").css({"width": "0%"});
                                       //$(".progress-bar").removeClass("progress-bar-success");
                                       //$(".progress-bar").addClass("progress-bar-warning");
                                     }
