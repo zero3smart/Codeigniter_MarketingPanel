@@ -647,31 +647,33 @@
             
         }
 
-        function fn_contact_upload_file_name_set(event){
+        function fn_contact_upload_file_name_set(event) {
             event.preventDefault();
+
             document.getElementById("set_column_number").value = '';
+
             fn_contact_upload_file();
-                    var control = document.getElementById("contact_upload_file");
+
+            var control = document.getElementById("contact_upload_file");
             var i = 0,
                 files = control.files,
                 len = files.length;
-                file_size = file_size_show(files[0].size);
-                $(".file_details").slideDown("slow");
-                $("#contact_upload_file_name_set").html("File Name: " + files[0].name);
-                $("#contact_upload_file_size_set").html("Size: " + file_size);
-                if($(".progress-bar").hasClass("progress-bar-warning"));
-                {
-                  $(".progress-bar").removeClass("progress-bar-warning");
-                  $(".progress-bar").addClass("progress-bar-success");
-                }
-                $(".progress-bar").css({"width":"0%"});
-                                    $(".progress-bar").html("");
-                
 
- 
+            file_size = file_size_show(files[0].size);
 
-        
-    }
+            $(".file_details").slideDown("slow");
+            $("#contact_upload_file_name_set").html("File Name: " + files[0].name);
+            $("#contact_upload_file_size_set").html("Size: " + file_size);
+            if ($(".progress-bar").hasClass("progress-bar-warning"));
+            {
+                $(".progress-bar").removeClass("progress-bar-warning");
+                $(".progress-bar").addClass("progress-bar-success");
+            }
+            $(".progress-bar").css({"width": "0%"});
+            $(".progress-bar").html("");
+
+
+        }
 /*    window.onload = function () { 
  //Check the support for the File API support 
  if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1028,6 +1030,10 @@
                                     {
                                       $(".progress-bar").html("");
                                       $(".progress-bar").css({"width": "0%"});
+                                      $(".get_data_from_csv_file_container").slideUp("slow");
+                                      $("#show_contacts_status_at_file").slideUp("slow");
+                                      $(".show_file_upload_button").slideUp("slow");
+                                      $(".file_details").slideUp("slow");
                                       //$(".progress-bar").removeClass("progress-bar-success");
                                       //$(".progress-bar").addClass("progress-bar-warning");
                                     }
