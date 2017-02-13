@@ -1752,7 +1752,6 @@ if ($view['section'] == 'contact_upload_section') {
         }
         $("#instant_check_form").submit(function (e) {
             e.preventDefault();
-            //console.log("here");
             form = $(this);
             $("#instant_check_field_respose_con").slideUp("slow");
             submit_btn = form.find('.submit_btn');
@@ -1761,9 +1760,6 @@ if ($view['section'] == 'contact_upload_section') {
             submit_btn.attr('type', 'button').addClass('disabled');
             instant_check_field = document.getElementById("instant_check_field").value;
             data_email = instant_check_field;
-            //dataSend = [];
-//dataSend[0] = data;
-//jsonDataSend = JSON.stringify(dataSend);
             console.log(data_email);
             $.ajax({
                 type: 'GET',

@@ -902,37 +902,43 @@ class User_controller extends CI_Controller
 
     public function sendInstantCheckupRequest()
     {
-        /*
-        $data = $_POST['data'];
-        $data_array = json_decode($data);
-        $numbers = $data_array[0];
-        //$client = new Client();
-        //$request = 'URL : "http://localhost:34389/CarrierLookupEngine/lookup",<br>Data : { "form_params" : { "file_id" : "'.$fileID.'" } }';
-        //$response = $client->request('POST', 'http://localhost:34389/CarrierLookupEngine/numbers?numbers='.$numbers);
-        //$response_str = $response->getBody()->getContents();
-        */
+
+
+        /*// create curl resource
+        $ch = curl_init();
+
+        // set url
+        curl_setopt($ch, CURLOPT_URL, "example.com");
+
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // $output contains the output string
+        $output = curl_exec($ch);
+
+        // close curl resource to free up system resources
+        curl_close($ch);*/
 
         $numbers = trim($this->input->post('email'));
-        $api_key = $this->user_prifile['api_key'];
+        //$api_key = $this->user_prifile['api_key'];
 
-        $service_url = 'http://54.187.12.50:8080/EmailCleanupRESTAPI/email';
+        $service_url = 'http://205.134.243.198:3001/search?email='.$numbers;
 
         $curl = curl_init($service_url);
 
-        $curl_post_data = array(
-
+        /*$curl_post_data = array(
 
             'api_key' => $api_key,
             'email' => $numbers
 
         );
-        $fields_string = http_build_query($curl_post_data);
+        $fields_string = http_build_query($curl_post_data);*/
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($curl, CURLOPT_POST, true);
+        //curl_setopt($curl, CURLOPT_POST, true);
 
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
 
         $response_str = curl_exec($curl);
 
@@ -954,25 +960,25 @@ class User_controller extends CI_Controller
         */
 
 
-        $numbers_array = explode(",", $numbers);
+       /* $numbers_array = explode(",", $numbers);
         $numbers_count = count($numbers_array);
-        $expense = $numbers_count;
+        $expense = $numbers_count;*/
 
         //$credit_reduce = $this->credit_reduce($expense,'Instant Lookup');
-
+/*
         $instant_lookup = array();
         $instant_lookup['user'] = $this->session->email_lookup_user_id;
         $instant_lookup['numbers'] = $numbers;
         $instant_lookup['numbers_count'] = intval($numbers_count);
         $instant_lookup['response'] = $response_str;
-        $instant_lookup['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));
+        $instant_lookup['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));*/
 
         //echo $response_str;
         //$result = $this->Mdl_user->contact_upload_file_api_response_mdl($request,$response_str,$fileID);
         //$this->Mdl_user->insert_any_collection('instant_lookup',$instant_lookup);
 
         //$response = json_decode($response_str);
-        print $response_str;
+        echo $response_str;
         //echo 'Successfully Uploaded. ';
         //['form_params' => [  'file_id' => $fileID ] ]
         //{'form_params' => {  'file_id' => $fileID } }
