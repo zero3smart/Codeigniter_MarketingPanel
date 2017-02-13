@@ -152,7 +152,7 @@ if ($view['buy'] == 2) {
 			   			<td><span>Payment type</span></td>
 			   			<td colspan="2">
 						   <select id="payment_type" name="payment_type">
-                                <option value="stripe" selected="">Stripe</option>
+                                <option value="stripe" selected="">Credit Card</option>
                                 <option value="paypal">Paypal</option>
                             </select>
 			   			</td>
