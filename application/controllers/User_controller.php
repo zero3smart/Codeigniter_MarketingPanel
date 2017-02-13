@@ -919,10 +919,10 @@ class User_controller extends CI_Controller
         // close curl resource to free up system resources
         curl_close($ch);*/
 
-        $numbers = trim($this->input->post('email'));
+        $email = trim($this->input->get('email'));
         //$api_key = $this->user_prifile['api_key'];
 
-        $service_url = 'http://205.134.243.198:3001/search?email='.$numbers;
+        $service_url = 'http://205.134.243.198:3001/search?email='.$email;
 
         $curl = curl_init($service_url);
 
