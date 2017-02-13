@@ -1767,7 +1767,8 @@ if ($view['section'] == 'contact_upload_section') {
                 data: {
                     email: data_email
                 },
-                url: 'http://205.134.243.198:3001/search',
+                //url: 'http://205.134.243.198:3001/search',
+                url: window.location.protocol + "//" + window.location.host + "/"+'sendInstantCheckupRequest',
                 success: function (result) {
                     //alert(data);
                     submit_btn.html(submit_btn_text);
