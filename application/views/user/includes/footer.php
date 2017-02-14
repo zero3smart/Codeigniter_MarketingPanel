@@ -672,7 +672,7 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
          */
         function fn_contact_upload_file() {
-            //event.preventDefault();
+            debugger;
             global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
             global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
             global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
@@ -680,8 +680,8 @@
 
             //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
 
-            set_column_number = document.getElementById("set_column_number").value;
-            set_column_number = parseInt(set_column_number);
+            var set_column_number = document.getElementById("set_column_number").value;
+            var set_column_number = parseInt(set_column_number);
             if (isNaN(set_column_number))
                 set_column_number = 0;
             var fileSelected = document.getElementById('contact_upload_file');
@@ -692,6 +692,7 @@
 
 
             //Get the file object
+            debugger;
             var fileTobeRead = fileSelected.files[0];
 
 
@@ -701,15 +702,18 @@
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
-                    var fileContents = document.getElementById('filecontents');
-                    fileContents_data_array = [];
-                    fileContents_data_array = fileReader.result.split("\n");
-                    fileContents_data_str = "";
-                    position_track = [];
-                    get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
-                    data_for_serial = [];
-                    data_for_serial = fileContents_data_array[0].split(',');
-                    for (i = 1; i <= data_for_serial.length; i++) {
+                    var fileContents = document.getElementById('filecontents'),
+                        fileContents_data_array = [],
+                        fileContents_data_array = fileReader.result.split("\n"),
+                        fileContents_data_str = "",
+                        position_track = [],
+                        get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>',
+                        data_for_serial = [],
+                        data_for_serial = fileContents_data_array[0].split(','),
+                        loop_length = 0,
+                        fileContents_data_array_2 = [];
+
+                    for (var i = 1; i <= data_for_serial.length; i++) {
 
                         get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
                     }
@@ -718,7 +722,7 @@
                         loop_length = 11;
                     else
                         loop_length = fileContents_data_array.length;
-                    for (i = 0; i < loop_length; i++) {
+                    for (var i = 0; i < loop_length; i++) {
 
                         get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
@@ -728,14 +732,14 @@
 
                         position_track[i] = false;
 
-                        for (j = 0; j < fileContents_data_array_2.length; j++) {
-                            jj = j + 1;
+                        for (var j = 0; j < fileContents_data_array_2.length; j++) {
+                            var jj = j + 1;
                             if (i > 0)
                                 get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
                             else
                                 get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
 
-                            test = fileContents_data_array_2[j];
+                            var test = fileContents_data_array_2[j];
 
                             test = test.replace(" ", '');
                             var isnum = validate_email(test);
@@ -755,11 +759,11 @@
 
                         get_data_from_csv_file = get_data_from_csv_file + '</tr>';
                     }
-                    position_track_str = position_track.join(",");
+                    var position_track_str = position_track.join(",");
                     //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
-                    test_column = position_track[1];
-                    test_column_check = 0;
-                    for (i = 1; i < position_track.length; i++) {
+                    var test_column = position_track[1];
+                    var test_column_check = 0;
+                    for (var i = 1; i < position_track.length; i++) {
                         if (position_track[i] != false) {
                             if (test_column == position_track[i])
                                 test_column_check = position_track[i];
@@ -775,8 +779,8 @@
 
                     }
                     console.log('here');
-                    uploadable = 0;
-                    have_balance = 0;
+                    var uploadable = 0;
+                    var have_balance = 0;
 
                     if (position_track[0] == false)
                         fileContents_data_array_count = fileContents_data_array.length - 2;
@@ -829,7 +833,7 @@
                             document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
                         }
                         else {
-                            remains_credit = global_balance;
+                            var remains_credit = global_balance;
                             if (fileContents_data_array_count > global_daily_limit_left)
                                 remains_credit = global_total_usable_credit - fileContents_data_array_count;
 
