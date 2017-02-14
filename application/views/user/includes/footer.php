@@ -921,7 +921,7 @@
 
         }
 
-        $("#contact_upload_form").on('submit', (function (event) {
+        /*$("#contact_upload_form").on('submit', (function (event) {
                 event.preventDefault();
 
                 url_ = $(this).attr("action");
@@ -953,13 +953,10 @@
                                 $.ajax({
                                     xhr: function () {
                                         var xhr = new window.XMLHttpRequest();
-                                        //Upload progress
                                         xhr.upload.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
                                                 var percentComplete = (evt.loaded / evt.total) * 100;
                                                 percentComplete = parseInt(percentComplete);
-                                                //if(percentComplete > 80) percentComplete = percentComplete-1;
-                                                //Do something with upload progress
                                                 $(".progress-bar").css({"width": percentComplete + "%"});
                                                 $(".progress-bar").html(percentComplete + "% Complete");
                                                 if (percentComplete === 100) {
@@ -967,30 +964,26 @@
                                                 }
                                             }
                                         }, false);
-                                        //Download progress
                                         xhr.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
                                                 var percentComplete = (evt.loaded / evt.total) * 100;
                                                 percentComplete = parseInt(percentComplete);
                                                 if (percentComplete > 80) percentComplete = percentComplete - 1;
-                                                //Do something with download progress
                                                 $(".progress-bar").css({"width": percentComplete + "%"});
                                             }
                                         }, false);
                                         return xhr;
                                     },
-                                    url: url_, // Url to which the request is send
-                                    type: "POST",             // Type of request to be send, called as method
-                                    data: send_form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                                    url: url_,
+                                    type: "POST",
+                                    data: send_form_data,
 
-                                    contentType: false,       // The content type used when sending data to the server.
-                                    cache: false,             // To unable request pages to be cached
-                                    processData: false,        // To send DOMDocument or non processed data file it is set to false
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
 
-                                    success: function (result)   // A function to be called if request succeeds
-                                    {
+                                    success: function (result) {
                                         console.log(result);
-                                        //document.getElementById("response_test").innerHTML = result;
                                         result_array = [];
                                         result_array = result.split('/');
                                         if ($(".progress-bar").hasClass("progress-bar-success"));
@@ -1001,12 +994,7 @@
                                             $("#show_contacts_status_at_file").slideUp("slow");
                                             $(".show_file_upload_button").slideUp("slow");
                                             $(".file_details").slideUp("slow");
-                                            //$(".progress-bar").removeClass("progress-bar-success");
-                                            //$(".progress-bar").addClass("progress-bar-warning");
                                         }
-                                        //fn_file_process_progress(result_array[1],1);
-                                        //console.log(result);
-                                        //console.log("called fn_file_process_progress");
                                         alert(result_array[0]);
                                     },
                                     complete: function (result) {
@@ -1020,14 +1008,7 @@
                         }
                     });
                 }
-
-
-                    /*
-
-                     */
-
-
-            })
+            })*/
         );
     </script>
 <?php } ?>
