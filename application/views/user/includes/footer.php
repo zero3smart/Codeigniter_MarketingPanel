@@ -1008,8 +1008,8 @@
                         }
                     });
                 }
-            })*/
-        );
+            })
+        );*/
     </script>
 <?php } ?>
     <!-- Contact Upload Section Footer JS End-->
