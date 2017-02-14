@@ -361,22 +361,19 @@
         }
 
         function fn_check_old_password(str) {
-            for_return = false;
+            var for_return = false;
             // alert(str);
-            url_ = document.getElementById("base_url").innerHTML;
+            var url_ = document.getElementById("base_url").innerHTML;
             $.ajax({
                 type: 'GET',
                 url: url_ + 'old_pass_check/' + str,
                 success: function (data) {
                     data = parseInt(data);
-                    //alert(data);
                     document.getElementById("password_update_btn").setAttribute("type", "button");
                     if (data == 0) {
-
                         $(".check_old_password_result").slideDown("slow");
                         document.getElementById("check_password_match_1").setAttribute("readonly", "");
                         document.getElementById("check_password_match_2").setAttribute("readonly", "");
-
                         for_return = false;
                         return for_return;
                     }
@@ -920,6 +917,97 @@
             return size_to_show;
 
         }
+
+        $("#contact_upload_form").on('submit', (function (event) {
+                event.preventDefault();
+
+                var url_ = $(this).attr("action");
+                var send_form_data = new FormData(this);
+
+                var files = document.getElementById("contact_upload_file").files;
+                var file_size = parseInt(files[0].size);
+
+                if (isNaN(file_size)) {
+                    file_size = 0;
+                }
+
+                var file_size_to_show = file_size_show(file_size);
+
+                if (file_size > 52428800) {
+                    alert('Sorry, Max File Upload is 50 MB. Contact support if you require help with a larger file');
+                }
+                else {
+                    $.ajax({
+                        type: "post",
+                        url: '<?php echo base_url();?>check_file_status',
+                        data: {file_name: files[0].name},
+                        dataType: 'JSON',
+                        success: function (result) {
+                            if (result['current_processing'] >= 5) {
+                                alert("Sorry, You can't process more than 5 files at a moment.");
+                            }
+                            else {
+
+                                $.ajax({
+                                    /*xhr: function () {
+                                        var xhr = new window.XMLHttpRequest();
+                                        xhr.upload.addEventListener("progress", function (evt) {
+                                            if (evt.lengthComputable) {
+                                                var percentComplete = (evt.loaded / evt.total) * 100;
+                                                percentComplete = parseInt(percentComplete);
+                                                $(".progress-bar").css({"width": percentComplete + "%"});
+                                                $(".progress-bar").html(percentComplete + "% Complete");
+                                                if (percentComplete === 100) {
+                                                    $(".progress-bar").html("File upload completed. Preparing file for processing.");
+                                                }
+                                            }
+                                        }, false);
+                                        xhr.addEventListener("progress", function (evt) {
+                                            if (evt.lengthComputable) {
+                                                var percentComplete = (evt.loaded / evt.total) * 100;
+                                                percentComplete = parseInt(percentComplete);
+                                                if (percentComplete > 80) percentComplete = percentComplete - 1;
+                                                $(".progress-bar").css({"width": percentComplete + "%"});
+                                            }
+                                        }, false);
+                                        return xhr;
+                                    },*/
+                                    url: url_,
+                                    type: "POST",
+                                    data: send_form_data,
+
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
+
+                                    success: function (result) {
+                                        console.log(result);
+                                        result_array = [];
+                                        result_array = result.split('/');
+                                        if ($(".progress-bar").hasClass("progress-bar-success"));
+                                        {
+                                            $(".progress-bar").html("");
+                                            $(".progress-bar").css({"width": "0%"});
+                                            $(".get_data_from_csv_file_container").slideUp("slow");
+                                            $("#show_contacts_status_at_file").slideUp("slow");
+                                            $(".show_file_upload_button").slideUp("slow");
+                                            $(".file_details").slideUp("slow");
+                                        }
+                                        alert(result_array[0]);
+                                    },
+                                    complete: function (result) {
+
+                                    }
+
+                                });
+                            }
+
+
+                        }
+                    });
+                }
+            })
+        );
 
         /*$("#contact_upload_form").on('submit', (function (event) {
                 event.preventDefault();
