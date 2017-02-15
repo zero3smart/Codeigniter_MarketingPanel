@@ -839,7 +839,7 @@
                     $("#show_contacts_status_at_file").slideDown("slow");
                 } //  fileReader.onload
 
-                Papa.parse(fileSelected, {
+                $('#contact_upload_file').parse({
                     config: {
                         // base config to use for each file
                     },
