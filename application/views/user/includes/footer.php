@@ -64,15 +64,15 @@
 
         $("#report_action_by_date_btn").click(function (event) {
             event.preventDefault();
-            report_action_from_date = document.getElementById('report_action_from_date').value;
-            report_action_to_date = document.getElementById('report_action_to_date').value;
-            report_action_url = document.getElementById('report_action_url').value;
+            var report_action_from_date = document.getElementById('report_action_from_date').value;
+            var report_action_to_date = document.getElementById('report_action_to_date').value;
+            var report_action_url = document.getElementById('report_action_url').value;
             if (report_action_from_date == '' || report_action_to_date == '') {
                 alert('Please select 2 dates.');
                 return false;
             }
-            report_action_from_date_arr = report_action_from_date.split('/');
-            report_action_to_date_arr = report_action_to_date.split('/');
+            var report_action_from_date_arr = report_action_from_date.split('/');
+            var report_action_to_date_arr = report_action_to_date.split('/');
             report_action_from_date = report_action_from_date_arr[2] + '-' + report_action_from_date_arr[0] + '-' + report_action_from_date_arr[1];
             report_action_to_date = report_action_to_date_arr[2] + '-' + report_action_to_date_arr[0] + '-' + report_action_to_date_arr[1];
 
@@ -81,14 +81,14 @@
 
         $(".confirm_delete").click(function (event) {
             event.preventDefault();
-            href_ = $(this).attr("href");
+            var href_ = $(this).attr("href");
             var r = confirm("Are you sure, you want to delete this?");
             if (r == true) {
                 document.location.href = href_;
             }
         });
         function global_balance_set() {
-            top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
+            var top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
             $.ajax({
                 type: 'GET',
                 url: base_url + 'global_balance',
@@ -103,9 +103,9 @@
             });
         }
         function get_balance_and_limit(parm1) {
-            top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
-            top_menu_global_usable_credit = document.getElementById("top_menu_global_usable_credit").innerHTML;
-            top_menu_global_daily_limit = document.getElementById("top_menu_global_daily_limit").innerHTML;
+            var top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
+            var top_menu_global_usable_credit = document.getElementById("top_menu_global_usable_credit").innerHTML;
+            var top_menu_global_daily_limit = document.getElementById("top_menu_global_daily_limit").innerHTML;
 
             $.ajax({
                 type: 'GET',
@@ -132,7 +132,7 @@
         }
 
         setInterval(get_balance_and_limit, 30000);
-        //setInterval( function() { get_balance_and_limit(); }, 500 );
+
         function toggleCollapse(id, buttonId) {
             $('#' + id).slideToggle('slow');
             if (buttonId) {
@@ -156,8 +156,8 @@
             body.stop().animate({scrollTop: 0}, '500', 'swing');
         }
         $(".toggle").click(function () {
-            data_toggle = $(this).attr("data-toggle");
-            data_duration = $(this).attr("data-duration");
+            var data_toggle = $(this).attr("data-toggle");
+            var data_duration = $(this).attr("data-duration");
             $(data_toggle).slideToggle(data_duration);
         });
         <?php
@@ -311,8 +311,8 @@
         //alert("ok");});
         // $(".form_element_show").click(function(){alert("ok");});
         $('.custom_edit_single_field_form .cancel').click(function () {
-            form_element = $(this).parents().eq(1).children(".form_element");
-            field_element = $(this).parents().eq(1).children(".field_element");
+            var form_element = $(this).parents().eq(1).children(".form_element");
+            var field_element = $(this).parents().eq(1).children(".field_element");
 
             form_element.slideUp("slow");
             field_element.slideDown("slow");
@@ -322,8 +322,8 @@
 
 
         function fn_check_password_match_1(str) {
-            for_return = false;
-            new_1 = document.getElementById("check_password_match_1").value;
+            var for_return = false;
+            var new_1 = document.getElementById("check_password_match_1").value;
             document.getElementById("check_password_match_2").value = "";
             if (new_1.length < 6) {
                 $(".check_new_password_length").slideDown("slow");
@@ -341,8 +341,8 @@
             return for_return;
         }
         function fn_check_password_match_2(new_2) {
-            for_return = false;
-            new_1 = document.getElementById("check_password_match_1").value;
+            var for_return = false;
+            var new_1 = document.getElementById("check_password_match_1").value;
             if (new_1 == new_2) {
 
                 $(".check_match_password").slideUp("slow");
@@ -362,7 +362,6 @@
 
         function fn_check_old_password(str) {
             var for_return = false;
-            // alert(str);
             var url_ = document.getElementById("base_url").innerHTML;
             $.ajax({
                 type: 'GET',
@@ -381,11 +380,11 @@
                         $(".check_old_password_result").slideUp("slow");
                         $("#check_password_match_1,#check_password_match_2").slideDown("slow");
                         $("#check_password_match_1").removeAttr("readonly");
-                        new_1 = document.getElementById("check_password_match_1").value;
-                        new_2 = document.getElementById("check_password_match_2").value;
+                        var new_1 = document.getElementById("check_password_match_1").value;
+                        var new_2 = document.getElementById("check_password_match_2").value;
                         if (new_1.length > 5)
                             $("#check_password_match_2").removeAttr("readonly");
-                        new_2_check = fn_check_password_match_2(new_2);
+                        var new_2_check = fn_check_password_match_2(new_2);
                         if (new_2_check == true && new_2.length > 5) {
 
                             document.getElementById("password_update_btn").setAttribute("type", "submit");
@@ -403,36 +402,29 @@
         }
 
         $(document).on('submit', ".custom_edit_single_field_form", function () {
-            form_element = $(this).children(".form_element");
-            field_element = $(this).children(".field_element");
+            var form_element = $(this).children(".form_element");
+            var field_element = $(this).children(".field_element");
             if ($(this).hasClass("password_update")) {
 
-                old = document.getElementById("check_old_password").value;
-                /*
-
-                 old_check = fn_check_old_password(old);
-                 */
-                url_ = document.getElementById("base_url").innerHTML;
+                var old = document.getElementById("check_old_password").value,
+                    url_ = document.getElementById("base_url").innerHTML;
                 $.ajax({
                     type: 'GET',
                     url: url_ + 'old_pass_check/' + old,
                     success: function (data) {
                         data = parseInt(data);
-                        //alert(data);
                         if (data == 0) {
                             alert("Current Password is incorrect.")
                         }
                         else {
-                            new_1 = document.getElementById("check_password_match_1").value;
-                            new_2 = document.getElementById("check_password_match_2").value;
+                            var new_1 = document.getElementById("check_password_match_1").value;
+                            var new_2 = document.getElementById("check_password_match_2").value;
 
                             if (new_1 == new_2 && new_1.length > 5) {
                                 $.ajax({
                                     type: 'GET',
                                     url: url_ + 'password_update/' + old + '/' + new_1 + '/' + new_2,
                                     success: function (data) {
-                                        //alert(data);
-
                                         data = parseInt(data);
                                         if (data == 1) {
                                             form_element.slideUp("slow");
@@ -464,7 +456,7 @@
             }
             else {
 
-                url_ = document.getElementById("base_url").innerHTML;
+                var url_ = document.getElementById("base_url").innerHTML;
                 $.ajax({
                     type: 'POST',
                     url: url_ + 'profile_update',
@@ -503,7 +495,7 @@
         ;
 
         $("#profile_picture_update").on('submit', (function (e) {
-                url_ = document.getElementById("base_url").innerHTML;
+                var url_ = document.getElementById("base_url").innerHTML;
                 e.preventDefault();
                 $.ajax({
                     url: url_ + "profile_picture_update", // Url to which the request is send
@@ -629,7 +621,7 @@
                 $("#" + dropZoneId).removeClass(mouseOverClass);
             }, true);
 
-        })
+        });
 
         function validate_email(email) {
             var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
@@ -652,7 +644,7 @@
                 files = control.files,
                 len = files.length;
 
-            file_size = file_size_show(files[0].size);
+            var file_size = file_size_show(files[0].size);
 
             $(".file_details").slideDown("slow");
             $("#contact_upload_file_name_set").html("File Name: " + files[0].name);
@@ -672,10 +664,9 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
          */
         function fn_contact_upload_file() {
-            debugger;
-            global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
-            global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
-            global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
+            var global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
+            var global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
+            var global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
 
 
             //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
@@ -690,12 +681,8 @@
             var fileExtension_2 = 'text/csv';
             var fileExtension_3 = 1;
 
-
             //Get the file object
-            debugger;
             var fileTobeRead = fileSelected.files[0];
-
-
             //Check of the extension match
 
             if (fileExtension_3 == 1) {
@@ -703,12 +690,10 @@
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
                     var fileContents = document.getElementById('filecontents'),
-                        fileContents_data_array = [],
                         fileContents_data_array = fileReader.result.split("\n"),
                         fileContents_data_str = "",
                         position_track = [],
                         get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>',
-                        data_for_serial = [],
                         data_for_serial = fileContents_data_array[0].split(','),
                         loop_length = 0,
                         fileContents_data_array_2 = [];
@@ -753,14 +738,11 @@
                                 get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
                             else
                                 get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
-                            //if(fileContents_data_array_2[j].length )
                         }
-
 
                         get_data_from_csv_file = get_data_from_csv_file + '</tr>';
                     }
                     var position_track_str = position_track.join(",");
-                    //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
                     var test_column = position_track[1];
                     var test_column_check = 0;
                     for (var i = 1; i < position_track.length; i++) {
@@ -778,9 +760,10 @@
                         }
 
                     }
-                    console.log('here');
+
                     var uploadable = 0;
                     var have_balance = 0;
+                    var fileContents_data_array_count = 0;
 
                     if (position_track[0] == false)
                         fileContents_data_array_count = fileContents_data_array.length - 2;
@@ -1014,95 +997,6 @@
             })
         );
 
-        /*$("#contact_upload_form").on('submit', (function (event) {
-                event.preventDefault();
-
-                url_ = $(this).attr("action");
-                send_form_data = new FormData(this);
-
-                var files = document.getElementById("contact_upload_file").files;
-                file_size = parseInt(files[0].size);
-                if (isNaN(file_size))
-                    file_size = 0;
-
-                file_size_to_show = file_size_show(file_size);
-
-                //alert(file_size_to_show);
-                if (file_size > 52428800) {
-                    alert('Sorry, Max File Upload is 50 MB. Contact support if you require help with a larger file');
-                }
-                else {
-                    $.ajax({
-                        type: "post",
-                        url: '<?php echo base_url();?>check_file_status',
-                        data: {file_name: files[0].name},
-                        dataType: 'JSON',
-                        success: function (result) {
-                            if (result['current_processing'] >= 5) {
-                                alert("Sorry, You can't process more than 5 files at a moment.");
-                            }
-                            else {
-
-                                $.ajax({
-                                    xhr: function () {
-                                        var xhr = new window.XMLHttpRequest();
-                                        xhr.upload.addEventListener("progress", function (evt) {
-                                            if (evt.lengthComputable) {
-                                                var percentComplete = (evt.loaded / evt.total) * 100;
-                                                percentComplete = parseInt(percentComplete);
-                                                $(".progress-bar").css({"width": percentComplete + "%"});
-                                                $(".progress-bar").html(percentComplete + "% Complete");
-                                                if (percentComplete === 100) {
-                                                    $(".progress-bar").html("File upload completed. Preparing file for processing.");
-                                                }
-                                            }
-                                        }, false);
-                                        xhr.addEventListener("progress", function (evt) {
-                                            if (evt.lengthComputable) {
-                                                var percentComplete = (evt.loaded / evt.total) * 100;
-                                                percentComplete = parseInt(percentComplete);
-                                                if (percentComplete > 80) percentComplete = percentComplete - 1;
-                                                $(".progress-bar").css({"width": percentComplete + "%"});
-                                            }
-                                        }, false);
-                                        return xhr;
-                                    },
-                                    url: url_,
-                                    type: "POST",
-                                    data: send_form_data,
-
-                                    contentType: false,
-                                    cache: false,
-                                    processData: false,
-
-                                    success: function (result) {
-                                        console.log(result);
-                                        result_array = [];
-                                        result_array = result.split('/');
-                                        if ($(".progress-bar").hasClass("progress-bar-success"));
-                                        {
-                                            $(".progress-bar").html("");
-                                            $(".progress-bar").css({"width": "0%"});
-                                            $(".get_data_from_csv_file_container").slideUp("slow");
-                                            $("#show_contacts_status_at_file").slideUp("slow");
-                                            $(".show_file_upload_button").slideUp("slow");
-                                            $(".file_details").slideUp("slow");
-                                        }
-                                        alert(result_array[0]);
-                                    },
-                                    complete: function (result) {
-
-                                    }
-
-                                });
-                            }
-
-
-                        }
-                    });
-                }
-            })
-        );*/
     </script>
 <?php } ?>
     <!-- Contact Upload Section Footer JS End-->
@@ -1264,15 +1158,6 @@ if ($view['section'] == 'dashboard') {
                     data: [<?php echo $total_successful_chart; ?>]
 
                 }
-                    /*, {
-                     name: 'SMTP Exists',
-                     data: [<?php echo $total_smtp_clean_chart; ?>]
-
-                     }, {
-                     name: 'SMTP Not Exists',
-                     data: [<?php echo $total_failed_chart; ?>]
-
-                     }*/
                 ]
             });
         });
@@ -1749,11 +1634,12 @@ if ($view['section'] == 'contact_upload_section') {
         function instant_check_numbers_validation(numbers) {
 
             numbers = numbers.replace(/[^\d,]/g, '');
-            numbers_array = numbers.split(",");
+            var numbers_array = numbers.split(",");
+            var check = null;
+            var keep_invalid_data = "";
 
-            keep_invalid_data = "";
             if (numbers.length > 0) {
-                for (i = 0; i < numbers_array.length; i++) {
+                for (var i = 0; i < numbers_array.length; i++) {
                     if (numbers_array[i].length == 11 || numbers_array[i].length == 10) {
                         if (numbers_array[i].length == 11) {
                             check = numbers_array[i].substring(0, 1);
@@ -1778,43 +1664,23 @@ if ($view['section'] == 'contact_upload_section') {
             data = data.replace(/[^\d,]/g, '');
             t.value = data;
             setInputSelection(t, sel.end, sel.end);
-            /*data = document.getElementById("instant_check_field").value;
-             data = data.replace(/[^\d,]/g,'');
-             document.getElementById("instant_check_field").value = data;
-             /*console.log(data);
-             data_array = [];
-             data_array = data.split(",");
-             //console.log(data_array.length);
-             data_str = data_array.join('</span>,<span class="invalid_in_instant_check">');
-             data_str = '<span class="invalid_in_instant_check">'+data_str+'</span>';
-             document.getElementById("instant_check_field_validation_show").innerHTML = data_str;
-             //console.log(data_str);*/
+
         }
         function instant_check_request(data) {
-
-            //document.location.href = base_url+'sendInstantCheckupRequest/'+data;
-//console.log(data);
-            dataSend = [];
+            var dataSend = [];
             dataSend[0] = data;
-            jsonDataSend = JSON.stringify(dataSend);
+            var jsonDataSend = JSON.stringify(dataSend);
             console.log(jsonDataSend);
             $.ajax({
-                /*type: 'post',
-                 dataType: 'JSON',
-                 data : {data : jsonDataSend},
-                 url: base_url+'sendInstantCheckupRequest',*/
                 type: 'GET',
                 dataType: 'JSON',
                 data: data,
                 url: 'http://205.134.243.198:3001/search',
                 success: function (result) {
-                    //alert(data);
                     console.log(result);
 
                     result_json = JSON.stringify(result, undefined, 4);
 
-
-                    //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest';
                     document.getElementById("instant_check_field_response").innerHTML = result_json;
                     custom_spinner_hide();
                     $("#instant_check_field_respose_con").slideDown("slow");
@@ -1826,14 +1692,14 @@ if ($view['section'] == 'contact_upload_section') {
         }
         $("#instant_check_form").submit(function (e) {
             e.preventDefault();
-            form = $(this);
+            var form = $(this);
             $("#instant_check_field_respose_con").slideUp("slow");
-            submit_btn = form.find('.submit_btn');
-            submit_btn_text = submit_btn.html();
+            var submit_btn = form.find('.submit_btn');
+            var submit_btn_text = submit_btn.html();
             submit_btn.html('<i class="fa fa-spin fa-circle-o-notch"></i> ' + submit_btn_text);
             submit_btn.attr('type', 'button').addClass('disabled');
-            instant_check_field = document.getElementById("instant_check_field").value;
-            data_email = instant_check_field;
+            var instant_check_field = document.getElementById("instant_check_field").value;
+            var data_email = instant_check_field;
             console.log(data_email);
             $.ajax({
                 type: 'GET',
@@ -1842,7 +1708,7 @@ if ($view['section'] == 'contact_upload_section') {
                     email: data_email
                 },
                 //url: 'http://205.134.243.198:3001/search',
-                url: window.location.protocol + "//" + window.location.host + "/"+'sendInstantCheckupRequest',
+                url: window.location.protocol + "//" + window.location.host + "/" + 'sendInstantCheckupRequest',
                 success: function (result) {
                     //alert(data);
                     submit_btn.html(submit_btn_text);
@@ -1850,7 +1716,7 @@ if ($view['section'] == 'contact_upload_section') {
                     console.log(result);
                     //alert(result);
 
-                    result_json = JSON.stringify(result, undefined, 4);
+                    var result_json = JSON.stringify(result, undefined, 4);
 
 
                     //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
@@ -1876,10 +1742,10 @@ if ($view['section'] == 'report_instant_lookup') {
     ?>
     <script type="text/javascript">
         $(".response_show_in_pre").each(function () {
-            data = $(this).html();
+            var data = $(this).html();
             var obj_array = $.parseJSON(data);
 
-            obj = JSON.stringify(obj_array, undefined, 4);
+            var obj = JSON.stringify(obj_array, undefined, 4);
             $(this).html(obj);
             if ($(this).height() > 150) {
                 $(this).parent().children(".see_more_container").append('<a class="response_pre_full_height" href="#">[..See more..]</a>');
@@ -1920,8 +1786,8 @@ if ($view['section'] == 'buy_credit') {
                     changePrice();
                 }
                 // Disable the submit button to prevent repeated clicks:
-                price_during_buy = document.getElementById("price_during_buy").innerHTML;
-                credit_count = document.getElementById("credit_count").value;
+                var price_during_buy = document.getElementById("price_during_buy").innerHTML;
+                var credit_count = document.getElementById("credit_count").value;
                 credit_count = parseInt(credit_count);
                 if (isNaN(credit_count)) credit_count = 0;
                 price_during_buy = parseInt(price_during_buy);
@@ -1974,7 +1840,7 @@ if ($view['section'] == 'buy_credit') {
             credit = parseInt(credit);
             if (isNaN(credit))
                 credit = 0;
-            price = unit * credit;
+            var price = unit * credit;
             price = price.toFixed(2);
             document.getElementById("price_during_buy").innerHTML = price;
             document.getElementById("price_during_buy").innerHTML = price;
