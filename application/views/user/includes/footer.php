@@ -692,6 +692,30 @@
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
+
+                    Papa.parse(fileReader.result, {
+                        config: {
+                            // base config to use for each file
+                        },
+                        before: function(file, inputElem)
+                        {
+                            // executed before parsing each file begins;
+                            // what you return here controls the flow
+                        },
+                        error: function(err, file, inputElem, reason)
+                        {
+                            debugger;
+                            // executed if an error occurs while loading the file,
+                            // or if before callback aborted for some reason
+                        },
+                        complete: function(result, file)
+                        {
+                            debugger;
+                            // executed after all files are complete
+                        }
+                    });
+
+
                     var fileContents = document.getElementById('filecontents'),
                         fileContents_data_array = fileReader.result.split("\n"),
                         fileContents_data_str = "",
