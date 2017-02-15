@@ -98,6 +98,18 @@
                                 <a class="btn red pull-right" href="<?php echo base_url();?>failed_file_delete">Clear Failed Upload</a>
                             </h3>
 
+                            <!-- <?php /*echo $error;*/?>
+
+                            <?php /*echo form_open_multipart('upload/do_upload');*/?>
+
+                            <input type="file" name="userfile" size="20" />
+
+                            <br /><br />
+
+                            <input type="submit" value="upload" />
+
+                            </form>-->
+
                             <form class="" id="contact_upload_form<?php //if($dash_profile['username'] == 'mohiolmis') echo 'contact_upload_for'; else echo 'contact_upload_form'; ?>" action="<?php echo base_url();?>upload_file" method="POST" enctype="multipart/form-data">
                                 <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                 <div class="col-xs-12 nopadding fileupload-buttonbar">
