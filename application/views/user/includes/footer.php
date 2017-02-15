@@ -954,7 +954,7 @@
                             else {
 
                                 $.ajax({
-                                    /*xhr: function () {
+                                    xhr: function () {
                                         var xhr = new window.XMLHttpRequest();
                                         xhr.upload.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
@@ -967,16 +967,16 @@
                                                 }
                                             }
                                         }, false);
-                                        xhr.addEventListener("progress", function (evt) {
+                                        /*xhr.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
                                                 var percentComplete = (evt.loaded / evt.total) * 100;
                                                 percentComplete = parseInt(percentComplete);
                                                 if (percentComplete > 80) percentComplete = percentComplete - 1;
                                                 $(".progress-bar").css({"width": percentComplete + "%"});
                                             }
-                                        }, false);
+                                        }, false);*/
                                         return xhr;
-                                    },*/
+                                    },
                                     url: url_,
                                     type: "POST",
                                     data: send_form_data,
