@@ -10,7 +10,7 @@ class Upload extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('user/upload_form', array('error' => ' ' ));
+        $this->load->view('upload_form', array('error' => ' ' ));
     }
 
     public function do_upload()
@@ -27,7 +27,7 @@ class Upload extends CI_Controller {
         {
             $error = array('error' => $this->upload->display_errors());
 
-            $this->load->view('user/upload_form', $error);
+            $this->load->view('upload_form', $error);
         }
         else
         {
