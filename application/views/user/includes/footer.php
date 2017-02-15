@@ -60,6 +60,8 @@
             type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
             type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>assets/js/papaparse.js"
+            type="text/javascript"></script>
     <script type="text/javascript">
 
         $("#report_action_by_date_btn").click(function (event) {
@@ -659,78 +661,6 @@
 
 
         }
-
-
-
-        function guessDelimiter(input)
-        {
-            var delimChoices = [",", "\t", "|", ";", String.fromCharCode(30), String.fromCharCode(31)];
-            var bestDelim, bestDelta, fieldCountPrevRow;
-
-            for (var i = 0; i < delimChoices.length; i++)
-            {
-                var delim = delimChoices[i];
-                var delta = 0, avgFieldCount = 0;
-                fieldCountPrevRow = undefined;
-
-                var preview = new Parser({
-                    delimiter: delim,
-                    preview: 10
-                }).parse(input);
-
-                for (var j = 0; j < preview.data.length; j++)
-                {
-                    var fieldCount = preview.data[j].length;
-                    avgFieldCount += fieldCount;
-
-                    if (typeof fieldCountPrevRow === 'undefined')
-                    {
-                        fieldCountPrevRow = fieldCount;
-                        continue;
-                    }
-                    else if (fieldCount > 1)
-                    {
-                        delta += Math.abs(fieldCount - fieldCountPrevRow);
-                        fieldCountPrevRow = fieldCount;
-                    }
-                }
-
-                avgFieldCount /= preview.data.length;
-
-                if ((typeof bestDelta === 'undefined' || delta < bestDelta)
-                    && avgFieldCount > 1.99)
-                {
-                    bestDelta = delta;
-                    bestDelim = delim;
-                }
-            }
-
-            return {
-                successful: !!bestDelim,
-                bestDelimiter: bestDelim
-            }
-        }
-
-        function guessLineEndings(input)
-        {
-            input = input.substr(0, 1024*1024);	// max length 1 MB
-
-            var r = input.split('\r');
-
-            if (r.length == 1)
-                return '\n';
-
-            var numWithN = 0;
-            for (var i = 0; i < r.length; i++)
-            {
-                if (r[i][0] == '\n')
-                    numWithN++;
-            }
-
-            return numWithN >= r.length / 2 ? '\r\n' : '\r';
-        }
-
-
         /*    window.onload = function () {
          //Check the support for the File API support
          if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -762,14 +692,6 @@
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
-
-                    debugger;
-
-                    var delimGuess = guessDelimiter(fileTobeRead);
-                    var delimiter = ',';
-                    if (delimGuess.successful)
-                        delimiter = delimGuess.bestDelimiter;
-
                     var fileContents = document.getElementById('filecontents'),
                         fileContents_data_array = fileReader.result.split("\n"),
                         fileContents_data_str = "",
@@ -917,6 +839,27 @@
                     $("#show_contacts_status_at_file").slideDown("slow");
                 } //  fileReader.onload
 
+                fileSelected.parse({
+                    config: {
+                        // base config to use for each file
+                    },
+                    before: function(file, inputElem)
+                    {
+                        // executed before parsing each file begins;
+                        // what you return here controls the flow
+                    },
+                    error: function(err, file, inputElem, reason)
+                    {
+                        debugger;
+                        // executed if an error occurs while loading the file,
+                        // or if before callback aborted for some reason
+                    },
+                    complete: function(result, file)
+                    {
+                        debugger;
+                        // executed after all files are complete
+                    }
+                });
                 fileReader.readAsText(fileTobeRead);
             }   //if (fileTobeRead.type.match(fileExtension))
             else {
