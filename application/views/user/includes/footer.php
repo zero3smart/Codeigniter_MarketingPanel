@@ -664,6 +664,7 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
          */
         function fn_contact_upload_file() {
+            debugger;
             var global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
             var global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
             var global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
