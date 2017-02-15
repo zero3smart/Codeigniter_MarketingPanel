@@ -839,7 +839,7 @@
                     $("#show_contacts_status_at_file").slideDown("slow");
                 } //  fileReader.onload
 
-                fileSelected.parse({
+                Papa.parse(fileSelected, {
                     config: {
                         // base config to use for each file
                     },
@@ -859,7 +859,7 @@
                         debugger;
                         // executed after all files are complete
                     }
-                });
+                };
                 fileReader.readAsText(fileTobeRead);
             }   //if (fileTobeRead.type.match(fileExtension))
             else {
