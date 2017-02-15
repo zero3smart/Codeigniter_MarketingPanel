@@ -691,199 +691,176 @@
             if (fileExtension_3 == 1) {
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
+                var delimiter = ',';
+                var lineBreak = '\n';
+
                 fileReader.onload = function (e) {
 
-                    Papa.parse(fileReader.result, {
-                        config: {
-                            // base config to use for each file
-                        },
-                        before: function(file, inputElem)
-                        {
-                            // executed before parsing each file begins;
-                            // what you return here controls the flow
-                        },
-                        error: function(err, file, inputElem, reason)
-                        {
-                            debugger;
-                            // executed if an error occurs while loading the file,
-                            // or if before callback aborted for some reason
-                        },
-                        complete: function(result, file)
-                        {
-                            debugger;
-                            // executed after all files are complete
+                    var fileOnLoad = function () {
+                        var fileContents = document.getElementById('filecontents'),
+                            fileContents_data_array = fileReader.result.split(lineBreak),
+                            fileContents_data_str = "",
+                            position_track = [],
+                            get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>',
+                            data_for_serial = fileContents_data_array[0].split(delimiter),
+                            loop_length = 0,
+                            fileContents_data_array_2 = [];
+
+                        for (var i = 1; i <= data_for_serial.length; i++) {
+
+                            get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
                         }
-                    });
+                        get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                        if (fileContents_data_array.length > 11)
+                            loop_length = 11;
+                        else
+                            loop_length = fileContents_data_array.length;
+                        for (var i = 0; i < loop_length; i++) {
 
+                            get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
-                    var fileContents = document.getElementById('filecontents'),
-                        fileContents_data_array = fileReader.result.split("\n"),
-                        fileContents_data_str = "",
-                        position_track = [],
-                        get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>',
-                        data_for_serial = fileContents_data_array[0].split(','),
-                        loop_length = 0,
-                        fileContents_data_array_2 = [];
+                            fileContents_data_array_2 = [];
+                            fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
+                            fileContents_data_array_2 = fileContents_data_array[i].split(delimiter);
 
-                    for (var i = 1; i <= data_for_serial.length; i++) {
+                            position_track[i] = false;
 
-                        get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
-                    }
-                    get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                    if (fileContents_data_array.length > 11)
-                        loop_length = 11;
-                    else
-                        loop_length = fileContents_data_array.length;
-                    for (var i = 0; i < loop_length; i++) {
+                            for (var j = 0; j < fileContents_data_array_2.length; j++) {
+                                var jj = j + 1;
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
 
-                        get_data_from_csv_file = get_data_from_csv_file + '<tr>';
+                                var test = fileContents_data_array_2[j];
 
-                        fileContents_data_array_2 = [];
-                        fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
-                        fileContents_data_array_2 = fileContents_data_array[i].split(',');
+                                test = test.replace(" ", '');
+                                var isnum = validate_email(test);
 
-                        position_track[i] = false;
+                                if (isnum) {
+                                    position_track[i] = j + 1;
+                                    console.log(position_track[i]);
+                                }
 
-                        for (var j = 0; j < fileContents_data_array_2.length; j++) {
-                            var jj = j + 1;
-                            if (i > 0)
-                                get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
-                            else
-                                get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
-
-                            var test = fileContents_data_array_2[j];
-
-                            test = test.replace(" ", '');
-                            var isnum = validate_email(test);
-
-                            if (isnum) {
-                                position_track[i] = j + 1;
-                                console.log(position_track[i]);
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
                             }
 
-                            if (i > 0)
-                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
-                            else
-                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
+                            get_data_from_csv_file = get_data_from_csv_file + '</tr>';
                         }
-
-                        get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                    }
-                    var position_track_str = position_track.join(",");
-                    var test_column = position_track[1];
-                    var test_column_check = 0;
-                    for (var i = 1; i < position_track.length; i++) {
-                        if (position_track[i] != false) {
-                            if (test_column == position_track[i])
-                                test_column_check = position_track[i];
+                        var position_track_str = position_track.join(",");
+                        var test_column = position_track[1];
+                        var test_column_check = 0;
+                        for (var i = 1; i < position_track.length; i++) {
+                            if (position_track[i] != false) {
+                                if (test_column == position_track[i])
+                                    test_column_check = position_track[i];
+                                else {
+                                    test_column_check = 0;
+                                    break;
+                                }
+                            }
                             else {
                                 test_column_check = 0;
                                 break;
                             }
-                        }
-                        else {
-                            test_column_check = 0;
-                            break;
+
                         }
 
-                    }
+                        var uploadable = 0;
+                        var have_balance = 0;
+                        var fileContents_data_array_count = 0;
 
-                    var uploadable = 0;
-                    var have_balance = 0;
-                    var fileContents_data_array_count = 0;
+                        if (position_track[0] == false)
+                            fileContents_data_array_count = fileContents_data_array.length - 2;
+                        else
+                            fileContents_data_array_count = fileContents_data_array.length - 1;
 
-                    if (position_track[0] == false)
-                        fileContents_data_array_count = fileContents_data_array.length - 2;
-                    else
-                        fileContents_data_array_count = fileContents_data_array.length - 1;
+                        if (fileContents_data_array_count <= global_total_usable_credit)
+                            have_balance = 1;
 
-                    if (fileContents_data_array_count <= global_total_usable_credit)
-                        have_balance = 1;
-
-                    if (set_column_number == 0) {
-                        if (test_column_check != 0) {
-                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
+                        if (set_column_number == 0) {
+                            if (test_column_check != 0) {
+                                document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
+                                document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
+                                document.getElementById("set_column_number").value = test_column_check;
+                                document.getElementById("set_column_number_2").value = test_column_check;
+                                document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                                $(".show_file_upload_button").slideDown("slow");
+                                uploadable = 1;
+                            }
+                            else {
+                                $(".show_file_upload_button").slideUp("slow");
+                                document.getElementById("set_csv_files_total_row").value = 0;
+                                document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Emails.';
+                                document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                                document.getElementById("set_column_number").value = '';
+                                document.getElementById("set_column_number_2").value = '';
+                            }
+                        }
+                        else if (set_column_number == test_column_check) {
+                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                            document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain emails in column ' + test_column_check;
                             document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
                             document.getElementById("set_column_number").value = test_column_check;
                             document.getElementById("set_column_number_2").value = test_column_check;
-                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
                             $(".show_file_upload_button").slideDown("slow");
                             uploadable = 1;
                         }
                         else {
-                            $(".show_file_upload_button").slideUp("slow");
                             document.getElementById("set_csv_files_total_row").value = 0;
-                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Emails.';
-                            document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
+                            document.getElementById("command_part").innerHTML = 'Please write here the Email\'s column number again : ';
                             document.getElementById("set_column_number").value = '';
                             document.getElementById("set_column_number_2").value = '';
                         }
-                    }
-                    else if (set_column_number == test_column_check) {
-                        document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
-                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain emails in column ' + test_column_check;
-                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
-                        document.getElementById("set_column_number").value = test_column_check;
-                        document.getElementById("set_column_number_2").value = test_column_check;
-                        $(".show_file_upload_button").slideDown("slow");
-                        uploadable = 1;
-                    }
-                    else {
-                        document.getElementById("set_csv_files_total_row").value = 0;
-                        $(".show_file_upload_button").slideUp("slow");
-                        document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
-                        document.getElementById("command_part").innerHTML = 'Please write here the Email\'s column number again : ';
-                        document.getElementById("set_column_number").value = '';
-                        document.getElementById("set_column_number_2").value = '';
-                    }
 
-                    if (uploadable == 1) {
-                        if (have_balance == 0) {
-                            $(".show_file_upload_button").slideUp("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
+                        if (uploadable == 1) {
+                            if (have_balance == 0) {
+                                $(".show_file_upload_button").slideUp("slow");
+                                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
+                            }
+                            else {
+                                var remains_credit = global_balance;
+                                if (fileContents_data_array_count > global_daily_limit_left)
+                                    remains_credit = global_total_usable_credit - fileContents_data_array_count;
+
+                                $(".show_file_upload_button").slideDown("slow");
+                                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
+
+                            }
                         }
-                        else {
-                            var remains_credit = global_balance;
-                            if (fileContents_data_array_count > global_daily_limit_left)
-                                remains_credit = global_total_usable_credit - fileContents_data_array_count;
+                        //fileContents.innerText = position_track_str;
+                        get_data_from_csv_file = get_data_from_csv_file + '</table>';
 
-                            $(".show_file_upload_button").slideDown("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
-
+                        document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
+                        if (test_column_check > 0) {
+                            $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
                         }
-                    }
-                    //fileContents.innerText = position_track_str;
-                    get_data_from_csv_file = get_data_from_csv_file + '</table>';
+                        $(".get_data_from_csv_file_container").slideDown("slow");
+                        $("#show_contacts_status_at_file").slideDown("slow");
+                    };
 
-                    document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
-                    if (test_column_check > 0) {
-                        $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
-                    }
-                    $(".get_data_from_csv_file_container").slideDown("slow");
-                    $("#show_contacts_status_at_file").slideDown("slow");
+                    Papa.parse(fileReader.result, {
+                        error: function(err, file, inputElem, reason)
+                        {
+                            console.log(err);
+                            fileOnLoad();
+                        },
+                        complete: function(result, file)
+                        {
+                            lineBreak = result.meta.linebreak;
+                            delimiter = result.meta.delimiter;
+                            console.log('delimiter: ', delimiter, ' , linebreak: ', lineBreak);
+                            fileOnLoad();
+                        }
+                    });
+
                 } //  fileReader.onload
 
-                $('#contact_upload_file').parse({
-                    config: {
-                        // base config to use for each file
-                    },
-                    before: function(file, inputElem)
-                    {
-                        // executed before parsing each file begins;
-                        // what you return here controls the flow
-                    },
-                    error: function(err, file, inputElem, reason)
-                    {
-                        debugger;
-                        // executed if an error occurs while loading the file,
-                        // or if before callback aborted for some reason
-                    },
-                    complete: function(result, file)
-                    {
-                        debugger;
-                        // executed after all files are complete
-                    }
-                });
                 fileReader.readAsText(fileTobeRead);
             }   //if (fileTobeRead.type.match(fileExtension))
             else {
