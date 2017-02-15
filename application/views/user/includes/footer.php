@@ -859,7 +859,7 @@
                         debugger;
                         // executed after all files are complete
                     }
-                };
+                });
                 fileReader.readAsText(fileTobeRead);
             }   //if (fileTobeRead.type.match(fileExtension))
             else {
