@@ -904,9 +904,10 @@
 
         function file_size_show(size) {
             size = parseInt(size);
+            var size_to_show = 0;
             if (isNaN(size)) size = 0;
 
-            temp = 1024 * 1024;
+            var temp = 1024 * 1024;
             if (size >= temp) {
                 size_to_show = size / 1024 / 1024;
                 size_to_show = Math.round(size_to_show * 100) / 100;
@@ -986,7 +987,7 @@
 
                                     success: function (result) {
                                         console.log(result);
-                                        result_array = [];
+                                        var result_array = [];
                                         result_array = result.split('/');
                                         if ($(".progress-bar").hasClass("progress-bar-success"));
                                         {
