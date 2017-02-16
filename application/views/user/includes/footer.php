@@ -754,7 +754,38 @@
                         var position_track_str = position_track.join(",");
                         var test_column = position_track[1];
                         var test_column_check = 0;
-                        for (var i = 1; i < position_track.length; i++) {
+
+
+                        var uniqueFn = function(value, index, self) {
+                            return self.indexOf(value) === index;
+                        };
+
+                        var positioin_ob = {};
+
+                        for(var i = 0; i< position_track.length; i++) {
+                            if(typeof(position_track[i]) == 'number') {
+                                if(!positioin_ob[position_track[i]]) {
+                                    positioin_ob[position_track[i]] = 1;
+                                }
+                                else {
+                                    positioin_ob[position_track[i]] = positioin_ob[position_track[i]] + 1;
+                                }
+
+                            }
+                        }
+
+                        var maxOccurence = -1;
+
+
+                        for(var key in positioin_ob) {
+                            if(maxOccurence < positioin_ob[key]) {
+                                maxOccurence = positioin_ob[key];
+                                test_column_check = key;
+                            }
+                        }
+
+
+                        /*for (var i = 1; i < position_track.length; i++) {
                             if (position_track[i] != false) {
                                 if (test_column == position_track[i])
                                     test_column_check = position_track[i];
@@ -768,7 +799,7 @@
                                 break;
                             }
 
-                        }
+                        }*/
 
                         var uploadable = 0;
                         var have_balance = 0;
