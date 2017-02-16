@@ -750,6 +750,7 @@
 
                             get_data_from_csv_file = get_data_from_csv_file + '</tr>';
                         }
+                        debugger;
                         var position_track_str = position_track.join(",");
                         var test_column = position_track[1];
                         var test_column_check = 0;
