@@ -64,7 +64,7 @@
                 </a>
             </li>                                                            
             <li class="nav-item submenu_phone_upload_section">
-                <a class="nav-link " href="<?php echo site_url('phone_upload_section'); ?>">
+                <a class="nav-link " href="<?php echo site_url('phone_upload'); ?>">
                     <i class="fa fa-search"></i>
                     <span class="title">Carrier Lookup</span>
                 </a>
