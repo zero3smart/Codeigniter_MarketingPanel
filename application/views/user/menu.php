@@ -58,7 +58,7 @@
                 </a>
             </li>
             <li class="nav-item submenu_email_verification_section">
-                <a class="nav-link " href="<?php echo site_url('email_verification_section'); ?>">
+                <a class="nav-link " href="<?php echo site_url('email_verification'); ?>">
                     <i class="fa fa-envelope"></i>
                     <span class="title">Email Verification</span>
                 </a>
