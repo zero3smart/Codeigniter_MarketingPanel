@@ -139,7 +139,7 @@ $route['email_verification_section'] = 'User_controller/email_verification_secti
 $route['phone_upload'] = 'User_controller/phone_upload_section';
 $route['data_append'] = 'User_controller/data_append_section';
 
-$route['contact_upload'] = 'User_controller/contact_upload';
+/*$route['contact_upload'] = 'User_controller/contact_upload';*/
 $route['upload_file'] = 'User_controller/upload_file';
 $route['instant_lookup'] = 'User_controller/instant_lookup';
 $route['profile'] = 'User_controller/profile';
