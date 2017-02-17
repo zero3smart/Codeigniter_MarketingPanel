@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://app.verifyrocket.com/';
+$config['base_url'] = 'https://app.verifyrocket.com/';
 //$config['base_url'] = 'http://54.187.12.50/test.verifyrocket.com/';
 
 /*
