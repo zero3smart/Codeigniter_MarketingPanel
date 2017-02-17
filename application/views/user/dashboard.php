@@ -257,10 +257,13 @@
                         
                         if($view['section'] == 'phone_upload_section')
                         {
-                            include_once'phone_upload_section.php';
-                    
-                        }                           
-
+                            include_once'phone_upload_section.php';                    
+                        }
+                        
+                        if($view['section'] == 'data_append_section')
+                        {
+                            include_once'data_append_section.php';                    
+                        }
 
                         if($view['section'] == 'file_upload_status')
                         {

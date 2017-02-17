@@ -1033,7 +1033,6 @@
 <?php } ?>
     <!-- Contact Upload Section Footer JS End-->
 
-
 <?php
 if (
     $view['section'] == 'report_credit_expense' ||
@@ -1794,6 +1793,55 @@ if ($view['section'] == 'contact_upload_section') {
     </script>
 
     <?php
+}
+?>
+
+<?php
+if ($view['section'] == 'data_append_section') {
+?>
+    <script type="text/javascript">
+        $("#instant_check_form").submit(function (e) {
+            e.preventDefault();
+            form = $(this);
+            $("#instant_check_field_respose_con").slideUp("slow");
+            submit_btn = form.find('.submit_btn');
+            submit_btn_text = submit_btn.html();
+            submit_btn.html('<i class="fa fa-spin fa-circle-o-notch"></i> ' + submit_btn_text);
+            submit_btn.attr('type', 'button').addClass('disabled');
+            instant_check_field = document.getElementById("instant_check_field").value;
+            data_email = instant_check_field;
+            console.log(data_email);
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                data: {
+                    email: data_email
+                },
+                //url: 'http://205.134.243.198:3001/search',
+                url: '<?php echo site_url('sendInstantCheckupRequest');?>',
+                success: function (result) {
+                    //alert(data);
+                    submit_btn.html(submit_btn_text);
+                    submit_btn.attr('type', 'submit').removeClass('disabled');
+                    console.log(result);
+                    //alert(result);
+
+                    result_json = JSON.stringify(result, undefined, 4);
+
+
+                    //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
+                    document.getElementById("instant_check_field_response").innerHTML = result_json;
+                    custom_spinner_hide();
+                    $("#instant_check_field_respose_con").slideDown("slow");
+
+                }
+            });
+
+
+            return false;
+        });
+    </script>
+<?php
 }
 ?>
 

@@ -461,6 +461,19 @@ class User_controller extends CI_Controller
 
         $this->load->view("user/dashboard", $data);
     }
+    
+    public function data_append_section()
+    {
+        $data['view']['page_title'] = 'Data Append';
+        $data['view']['page_sub_title'] = '';
+        $data['view']['menu'] = 'contact';
+        $data['view']['submenu'] = 'data_append_section';
+        $data['view']['section'] = 'data_append_section';
+        $data['view']['msg'] = $this->session->flashdata('msg');
+        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
+
+        $this->load->view("user/dashboard", $data);
+    }
 
     public function check_file_status()                                    //while file upload	// 1, oct, 2016
     {
