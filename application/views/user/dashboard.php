@@ -255,6 +255,12 @@
                     
                         }
                         
+                        if($view['section'] == 'email_verification_section')
+                        {
+                            include_once'email_verification_section.php';
+                    
+                        }                                                                                                
+                        
                         if($view['section'] == 'phone_upload_section')
                         {
                             include_once'phone_upload_section.php';                    

@@ -449,6 +449,19 @@ class User_controller extends CI_Controller
         $this->load->view("user/dashboard", $data);
     }
     
+    public function email_verification_section()
+    {
+        $data['view']['page_title'] = 'Email Verification';
+        $data['view']['page_sub_title'] = '';
+        $data['view']['menu'] = 'contact';
+        $data['view']['submenu'] = 'email_verification_section';
+        $data['view']['section'] = 'email_verification_section';
+        $data['view']['msg'] = $this->session->flashdata('msg');
+        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
+
+        $this->load->view("user/dashboard", $data);
+    }        
+    
     public function phone_upload_section()
     {
         $data['view']['page_title'] = 'Carrier Lookup';
