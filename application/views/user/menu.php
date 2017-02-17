@@ -52,7 +52,7 @@
         </a>
         <ul class="sub-menu">
             <li class="nav-item submenu_contact_upload_section">
-                <a class="nav-link " href="<?php echo site_url('contact_upload_section'); ?>">
+                <a class="nav-link " href="<?php echo site_url('contact_upload'); ?>">
                     <i class="fa fa-upload"></i>
                     <span class="title">Email Validation</span>
                 </a>
