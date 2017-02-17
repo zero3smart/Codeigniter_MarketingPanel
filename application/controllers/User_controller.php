@@ -34,6 +34,7 @@ class User_controller extends CI_Controller
     public function get_balance_and_limit()
     {
 
+        session_write_close();
         $dash_profile = $this->Mdl_user->fetch_user_profile();
         $current_package = $this->Mdl_user->fetch_current_package();
         $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
@@ -69,6 +70,7 @@ class User_controller extends CI_Controller
 
     public function get_all_file_process_progress()
     {
+        session_write_close();
         $icon_array = array();
         $icon_array[0] = "fa fa-spin fa-spinner";
         $result = $this->Mdl_user->fetch_user_file_by_status('processing');
@@ -513,6 +515,7 @@ class User_controller extends CI_Controller
 
     public function upload_file()
     {
+        session_write_close();
         $file_name = $_FILES["contactfile"]["name"];
         $file_tmp = $_FILES["contactfile"]["tmp_name"];
 
