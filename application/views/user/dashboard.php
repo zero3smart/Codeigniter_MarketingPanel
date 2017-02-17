@@ -146,6 +146,10 @@
                              END QUICK SIDEBAR TOGGLER -->
                         </ul>
                         <div class="pull-right" style="padding-top:10px;">
+                            <a  href="https://support.verifyrocket.com/" class="btn red btn-lg">
+                                <i class="icon-users"></i> Support
+                            </a>
+                            
                         	<a href="javascript:;" class="btn teal-blue btn-lg">
                                 Credit : <span id="top_menu_global_balance"><?php echo $dash_profile['balance'] ; ?></span>
                             </a>
@@ -165,7 +169,7 @@
                                 </a>';
                              }
                              ?>
-                            <a  href="<?php echo base_url();?>logout" class="btn red btn-lg">
+                            <a  href="<?php echo base_url();?>logout" class="btn teal-blue btn-lg">
                                 <i class="icon-key"></i> Log Out 
                             </a>
                         </div>
