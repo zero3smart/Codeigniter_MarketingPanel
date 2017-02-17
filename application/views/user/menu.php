@@ -71,7 +71,7 @@
             </li>
             
             <li class="nav-item submenu_data_append_section">
-                <a class="nav-link " href="<?php echo site_url('data_append_section'); ?>">
+                <a class="nav-link " href="<?php echo site_url('data_append'); ?>">
                     <i class="fa fa-search"></i>
                     <span class="title">Data Append</span>
                 </a>
