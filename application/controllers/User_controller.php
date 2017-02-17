@@ -611,6 +611,9 @@ class User_controller extends CI_Controller
                         //$this->get_all_file_process_progress();
                         //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
                     }
+                    else {
+                        echo 'Sorry, Try again';
+                    }
                 }
             } else {
                 echo 'Sorry, Try again';
