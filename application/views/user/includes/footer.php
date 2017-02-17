@@ -60,19 +60,21 @@
             type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
             type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>assets/js/papaparse.js"
+            type="text/javascript"></script>
     <script type="text/javascript">
 
         $("#report_action_by_date_btn").click(function (event) {
             event.preventDefault();
-            report_action_from_date = document.getElementById('report_action_from_date').value;
-            report_action_to_date = document.getElementById('report_action_to_date').value;
-            report_action_url = document.getElementById('report_action_url').value;
+            var report_action_from_date = document.getElementById('report_action_from_date').value;
+            var report_action_to_date = document.getElementById('report_action_to_date').value;
+            var report_action_url = document.getElementById('report_action_url').value;
             if (report_action_from_date == '' || report_action_to_date == '') {
                 alert('Please select 2 dates.');
                 return false;
             }
-            report_action_from_date_arr = report_action_from_date.split('/');
-            report_action_to_date_arr = report_action_to_date.split('/');
+            var report_action_from_date_arr = report_action_from_date.split('/');
+            var report_action_to_date_arr = report_action_to_date.split('/');
             report_action_from_date = report_action_from_date_arr[2] + '-' + report_action_from_date_arr[0] + '-' + report_action_from_date_arr[1];
             report_action_to_date = report_action_to_date_arr[2] + '-' + report_action_to_date_arr[0] + '-' + report_action_to_date_arr[1];
 
@@ -81,14 +83,14 @@
 
         $(".confirm_delete").click(function (event) {
             event.preventDefault();
-            href_ = $(this).attr("href");
+            var href_ = $(this).attr("href");
             var r = confirm("Are you sure, you want to delete this?");
             if (r == true) {
                 document.location.href = href_;
             }
         });
         function global_balance_set() {
-            top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
+            var top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
             $.ajax({
                 type: 'GET',
                 url: base_url + 'global_balance',
@@ -103,9 +105,9 @@
             });
         }
         function get_balance_and_limit(parm1) {
-            top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
-            top_menu_global_usable_credit = document.getElementById("top_menu_global_usable_credit").innerHTML;
-            top_menu_global_daily_limit = document.getElementById("top_menu_global_daily_limit").innerHTML;
+            var top_menu_global_balance = document.getElementById("top_menu_global_balance").innerHTML;
+            var top_menu_global_usable_credit = document.getElementById("top_menu_global_usable_credit").innerHTML;
+            var top_menu_global_daily_limit = document.getElementById("top_menu_global_daily_limit").innerHTML;
 
             $.ajax({
                 type: 'GET',
@@ -132,7 +134,7 @@
         }
 
         setInterval(get_balance_and_limit, 30000);
-        //setInterval( function() { get_balance_and_limit(); }, 500 );
+
         function toggleCollapse(id, buttonId) {
             $('#' + id).slideToggle('slow');
             if (buttonId) {
@@ -156,8 +158,8 @@
             body.stop().animate({scrollTop: 0}, '500', 'swing');
         }
         $(".toggle").click(function () {
-            data_toggle = $(this).attr("data-toggle");
-            data_duration = $(this).attr("data-duration");
+            var data_toggle = $(this).attr("data-toggle");
+            var data_duration = $(this).attr("data-duration");
             $(data_toggle).slideToggle(data_duration);
         });
         <?php
@@ -311,8 +313,8 @@
         //alert("ok");});
         // $(".form_element_show").click(function(){alert("ok");});
         $('.custom_edit_single_field_form .cancel').click(function () {
-            form_element = $(this).parents().eq(1).children(".form_element");
-            field_element = $(this).parents().eq(1).children(".field_element");
+            var form_element = $(this).parents().eq(1).children(".form_element");
+            var field_element = $(this).parents().eq(1).children(".field_element");
 
             form_element.slideUp("slow");
             field_element.slideDown("slow");
@@ -322,8 +324,8 @@
 
 
         function fn_check_password_match_1(str) {
-            for_return = false;
-            new_1 = document.getElementById("check_password_match_1").value;
+            var for_return = false;
+            var new_1 = document.getElementById("check_password_match_1").value;
             document.getElementById("check_password_match_2").value = "";
             if (new_1.length < 6) {
                 $(".check_new_password_length").slideDown("slow");
@@ -341,8 +343,8 @@
             return for_return;
         }
         function fn_check_password_match_2(new_2) {
-            for_return = false;
-            new_1 = document.getElementById("check_password_match_1").value;
+            var for_return = false;
+            var new_1 = document.getElementById("check_password_match_1").value;
             if (new_1 == new_2) {
 
                 $(".check_match_password").slideUp("slow");
@@ -361,22 +363,18 @@
         }
 
         function fn_check_old_password(str) {
-            for_return = false;
-            // alert(str);
-            url_ = document.getElementById("base_url").innerHTML;
+            var for_return = false;
+            var url_ = document.getElementById("base_url").innerHTML;
             $.ajax({
                 type: 'GET',
                 url: url_ + 'old_pass_check/' + str,
                 success: function (data) {
                     data = parseInt(data);
-                    //alert(data);
                     document.getElementById("password_update_btn").setAttribute("type", "button");
                     if (data == 0) {
-
                         $(".check_old_password_result").slideDown("slow");
                         document.getElementById("check_password_match_1").setAttribute("readonly", "");
                         document.getElementById("check_password_match_2").setAttribute("readonly", "");
-
                         for_return = false;
                         return for_return;
                     }
@@ -384,11 +382,11 @@
                         $(".check_old_password_result").slideUp("slow");
                         $("#check_password_match_1,#check_password_match_2").slideDown("slow");
                         $("#check_password_match_1").removeAttr("readonly");
-                        new_1 = document.getElementById("check_password_match_1").value;
-                        new_2 = document.getElementById("check_password_match_2").value;
+                        var new_1 = document.getElementById("check_password_match_1").value;
+                        var new_2 = document.getElementById("check_password_match_2").value;
                         if (new_1.length > 5)
                             $("#check_password_match_2").removeAttr("readonly");
-                        new_2_check = fn_check_password_match_2(new_2);
+                        var new_2_check = fn_check_password_match_2(new_2);
                         if (new_2_check == true && new_2.length > 5) {
 
                             document.getElementById("password_update_btn").setAttribute("type", "submit");
@@ -406,36 +404,29 @@
         }
 
         $(document).on('submit', ".custom_edit_single_field_form", function () {
-            form_element = $(this).children(".form_element");
-            field_element = $(this).children(".field_element");
+            var form_element = $(this).children(".form_element");
+            var field_element = $(this).children(".field_element");
             if ($(this).hasClass("password_update")) {
 
-                old = document.getElementById("check_old_password").value;
-                /*
-
-                 old_check = fn_check_old_password(old);
-                 */
-                url_ = document.getElementById("base_url").innerHTML;
+                var old = document.getElementById("check_old_password").value,
+                    url_ = document.getElementById("base_url").innerHTML;
                 $.ajax({
                     type: 'GET',
                     url: url_ + 'old_pass_check/' + old,
                     success: function (data) {
                         data = parseInt(data);
-                        //alert(data);
                         if (data == 0) {
                             alert("Current Password is incorrect.")
                         }
                         else {
-                            new_1 = document.getElementById("check_password_match_1").value;
-                            new_2 = document.getElementById("check_password_match_2").value;
+                            var new_1 = document.getElementById("check_password_match_1").value;
+                            var new_2 = document.getElementById("check_password_match_2").value;
 
                             if (new_1 == new_2 && new_1.length > 5) {
                                 $.ajax({
                                     type: 'GET',
                                     url: url_ + 'password_update/' + old + '/' + new_1 + '/' + new_2,
                                     success: function (data) {
-                                        //alert(data);
-
                                         data = parseInt(data);
                                         if (data == 1) {
                                             form_element.slideUp("slow");
@@ -467,7 +458,7 @@
             }
             else {
 
-                url_ = document.getElementById("base_url").innerHTML;
+                var url_ = document.getElementById("base_url").innerHTML;
                 $.ajax({
                     type: 'POST',
                     url: url_ + 'profile_update',
@@ -506,7 +497,7 @@
         ;
 
         $("#profile_picture_update").on('submit', (function (e) {
-                url_ = document.getElementById("base_url").innerHTML;
+                var url_ = document.getElementById("base_url").innerHTML;
                 e.preventDefault();
                 $.ajax({
                     url: url_ + "profile_picture_update", // Url to which the request is send
@@ -632,7 +623,7 @@
                 $("#" + dropZoneId).removeClass(mouseOverClass);
             }, true);
 
-        })
+        });
 
         function validate_email(email) {
             var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
@@ -655,7 +646,7 @@
                 files = control.files,
                 len = files.length;
 
-            file_size = file_size_show(files[0].size);
+            var file_size = file_size_show(files[0].size);
 
             $(".file_details").slideDown("slow");
             $("#contact_upload_file_name_set").html("File Name: " + files[0].name);
@@ -675,16 +666,16 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
          */
         function fn_contact_upload_file() {
-            //event.preventDefault();
-            global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
-            global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
-            global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
+            debugger;
+            var global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
+            var global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
+            var global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
 
 
             //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
 
-            set_column_number = document.getElementById("set_column_number").value;
-            set_column_number = parseInt(set_column_number);
+            var set_column_number = document.getElementById("set_column_number").value;
+            var set_column_number = parseInt(set_column_number);
             if (isNaN(set_column_number))
                 set_column_number = 0;
             var fileSelected = document.getElementById('contact_upload_file');
@@ -693,163 +684,213 @@
             var fileExtension_2 = 'text/csv';
             var fileExtension_3 = 1;
 
-
             //Get the file object
             var fileTobeRead = fileSelected.files[0];
-
-
             //Check of the extension match
 
             if (fileExtension_3 == 1) {
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
+                var delimiter = ',';
+                var lineBreak = '\n';
+
                 fileReader.onload = function (e) {
-                    var fileContents = document.getElementById('filecontents');
-                    fileContents_data_array = [];
-                    fileContents_data_array = fileReader.result.split("\n");
-                    fileContents_data_str = "";
-                    position_track = [];
-                    get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
-                    data_for_serial = [];
-                    data_for_serial = fileContents_data_array[0].split(',');
-                    for (i = 1; i <= data_for_serial.length; i++) {
 
-                        get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
-                    }
-                    get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                    if (fileContents_data_array.length > 11)
-                        loop_length = 11;
-                    else
-                        loop_length = fileContents_data_array.length;
-                    for (i = 0; i < loop_length; i++) {
+                    var fileOnLoad = function () {
+                        var fileContents = document.getElementById('filecontents'),
+                            fileContents_data_array = fileReader.result.split(lineBreak),
+                            fileContents_data_str = "",
+                            position_track = [],
+                            get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>',
+                            data_for_serial = fileContents_data_array[0].split(delimiter),
+                            loop_length = 0,
+                            fileContents_data_array_2 = [];
 
-                        get_data_from_csv_file = get_data_from_csv_file + '<tr>';
+                        for (var i = 1; i <= data_for_serial.length; i++) {
 
-                        fileContents_data_array_2 = [];
-                        fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
-                        fileContents_data_array_2 = fileContents_data_array[i].split(',');
+                            get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
+                        }
+                        get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                        if (fileContents_data_array.length > 11)
+                            loop_length = 11;
+                        else
+                            loop_length = fileContents_data_array.length;
+                        for (var i = 0; i < loop_length; i++) {
 
-                        position_track[i] = false;
+                            get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
-                        for (j = 0; j < fileContents_data_array_2.length; j++) {
-                            jj = j + 1;
-                            if (i > 0)
-                                get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
-                            else
-                                get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
+                            fileContents_data_array_2 = [];
+                            fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
+                            fileContents_data_array_2 = fileContents_data_array[i].split(delimiter);
 
-                            test = fileContents_data_array_2[j];
+                            position_track[i] = false;
 
-                            test = test.replace(" ", '');
-                            var isnum = validate_email(test);
+                            for (var j = 0; j < fileContents_data_array_2.length; j++) {
+                                var jj = j + 1;
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
 
-                            if (isnum) {
-                                position_track[i] = j + 1;
-                                console.log(position_track[i]);
+                                var test = fileContents_data_array_2[j];
+
+                                test = test.replace(" ", '');
+                                var isnum = validate_email(test);
+
+                                if (isnum) {
+                                    position_track[i] = j + 1;
+                                    console.log(position_track[i]);
+                                }
+
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
                             }
 
-                            if (i > 0)
-                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
-                            else
-                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
-                            //if(fileContents_data_array_2[j].length )
+                            get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                        }
+                        debugger;
+                        var position_track_str = position_track.join(",");
+                        var test_column = position_track[1];
+                        var test_column_check = 0;
+
+
+                        var uniqueFn = function(value, index, self) {
+                            return self.indexOf(value) === index;
+                        };
+
+                        var positioin_ob = {};
+
+                        for(var i = 0; i< position_track.length; i++) {
+                            if(typeof(position_track[i]) == 'number') {
+                                if(!positioin_ob[position_track[i]]) {
+                                    positioin_ob[position_track[i]] = 1;
+                                }
+                                else {
+                                    positioin_ob[position_track[i]] = positioin_ob[position_track[i]] + 1;
+                                }
+
+                            }
+                        }
+
+                        var maxOccurence = -1;
+
+
+                        for(var key in positioin_ob) {
+                            if(maxOccurence < positioin_ob[key]) {
+                                maxOccurence = positioin_ob[key];
+                                test_column_check = key;
+                            }
                         }
 
 
-                        get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                    }
-                    position_track_str = position_track.join(",");
-                    //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
-                    test_column = position_track[1];
-                    test_column_check = 0;
-                    for (i = 1; i < position_track.length; i++) {
-                        if (position_track[i] != false) {
-                            if (test_column == position_track[i])
-                                test_column_check = position_track[i];
+                        /*for (var i = 1; i < position_track.length; i++) {
+                            if (position_track[i] != false) {
+                                if (test_column == position_track[i])
+                                    test_column_check = position_track[i];
+                                else {
+                                    test_column_check = 0;
+                                    break;
+                                }
+                            }
                             else {
                                 test_column_check = 0;
                                 break;
                             }
+
+                        }*/
+
+                        var uploadable = 0;
+                        var have_balance = 0;
+                        var fileContents_data_array_count = 0;
+
+                        if (position_track[0] == false)
+                            fileContents_data_array_count = fileContents_data_array.length - 2;
+                        else
+                            fileContents_data_array_count = fileContents_data_array.length - 1;
+
+                        if (fileContents_data_array_count <= global_total_usable_credit)
+                            have_balance = 1;
+
+                        if (set_column_number == 0) {
+                            if (test_column_check != 0) {
+                                document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
+                                document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
+                                document.getElementById("set_column_number").value = test_column_check;
+                                document.getElementById("set_column_number_2").value = test_column_check;
+                                document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                                $(".show_file_upload_button").slideDown("slow");
+                                uploadable = 1;
+                            }
+                            else {
+                                $(".show_file_upload_button").slideUp("slow");
+                                document.getElementById("set_csv_files_total_row").value = 0;
+                                document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Emails.';
+                                document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                                document.getElementById("set_column_number").value = '';
+                                document.getElementById("set_column_number_2").value = '';
+                            }
                         }
-                        else {
-                            test_column_check = 0;
-                            break;
-                        }
-
-                    }
-                    console.log('here');
-                    uploadable = 0;
-                    have_balance = 0;
-
-                    if (position_track[0] == false)
-                        fileContents_data_array_count = fileContents_data_array.length - 2;
-                    else
-                        fileContents_data_array_count = fileContents_data_array.length - 1;
-
-                    if (fileContents_data_array_count <= global_total_usable_credit)
-                        have_balance = 1;
-
-                    if (set_column_number == 0) {
-                        if (test_column_check != 0) {
-                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
+                        else if (set_column_number == test_column_check) {
+                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                            document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain emails in column ' + test_column_check;
                             document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
                             document.getElementById("set_column_number").value = test_column_check;
                             document.getElementById("set_column_number_2").value = test_column_check;
-                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
                             $(".show_file_upload_button").slideDown("slow");
                             uploadable = 1;
                         }
                         else {
-                            $(".show_file_upload_button").slideUp("slow");
                             document.getElementById("set_csv_files_total_row").value = 0;
-                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Emails.';
-                            document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
+                            document.getElementById("command_part").innerHTML = 'Please write here the Email\'s column number again : ';
                             document.getElementById("set_column_number").value = '';
                             document.getElementById("set_column_number_2").value = '';
                         }
-                    }
-                    else if (set_column_number == test_column_check) {
-                        document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
-                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain emails in column ' + test_column_check;
-                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
-                        document.getElementById("set_column_number").value = test_column_check;
-                        document.getElementById("set_column_number_2").value = test_column_check;
-                        $(".show_file_upload_button").slideDown("slow");
-                        uploadable = 1;
-                    }
-                    else {
-                        document.getElementById("set_csv_files_total_row").value = 0;
-                        $(".show_file_upload_button").slideUp("slow");
-                        document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
-                        document.getElementById("command_part").innerHTML = 'Please write here the Email\'s column number again : ';
-                        document.getElementById("set_column_number").value = '';
-                        document.getElementById("set_column_number_2").value = '';
-                    }
 
-                    if (uploadable == 1) {
-                        if (have_balance == 0) {
-                            $(".show_file_upload_button").slideUp("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
+                        if (uploadable == 1) {
+                            if (have_balance == 0) {
+                                $(".show_file_upload_button").slideUp("slow");
+                                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
+                            }
+                            else {
+                                var remains_credit = global_balance;
+                                if (fileContents_data_array_count > global_daily_limit_left)
+                                    remains_credit = global_total_usable_credit - fileContents_data_array_count;
+
+                                $(".show_file_upload_button").slideDown("slow");
+                                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
+
+                            }
                         }
-                        else {
-                            remains_credit = global_balance;
-                            if (fileContents_data_array_count > global_daily_limit_left)
-                                remains_credit = global_total_usable_credit - fileContents_data_array_count;
+                        //fileContents.innerText = position_track_str;
+                        get_data_from_csv_file = get_data_from_csv_file + '</table>';
 
-                            $(".show_file_upload_button").slideDown("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
-
+                        document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
+                        if (test_column_check > 0) {
+                            $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
                         }
-                    }
-                    //fileContents.innerText = position_track_str;
-                    get_data_from_csv_file = get_data_from_csv_file + '</table>';
+                        $(".get_data_from_csv_file_container").slideDown("slow");
+                        $("#show_contacts_status_at_file").slideDown("slow");
+                    };
 
-                    document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
-                    if (test_column_check > 0) {
-                        $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
-                    }
-                    $(".get_data_from_csv_file_container").slideDown("slow");
-                    $("#show_contacts_status_at_file").slideDown("slow");
+                    Papa.parse(fileReader.result, {
+                        error: function(err, file, inputElem, reason)
+                        {
+                            console.log(err);
+                            fileOnLoad();
+                        },
+                        complete: function(result, file)
+                        {
+                            lineBreak = result.meta.linebreak;
+                            delimiter = result.meta.delimiter;
+                            console.log('delimiter: ', delimiter, ' , linebreak: ', lineBreak);
+                            fileOnLoad();
+                        }
+                    });
+
                 } //  fileReader.onload
 
                 fileReader.readAsText(fileTobeRead);
@@ -903,9 +944,10 @@
 
         function file_size_show(size) {
             size = parseInt(size);
+            var size_to_show = 0;
             if (isNaN(size)) size = 0;
 
-            temp = 1024 * 1024;
+            var temp = 1024 * 1024;
             if (size >= temp) {
                 size_to_show = size / 1024 / 1024;
                 size_to_show = Math.round(size_to_show * 100) / 100;
@@ -924,17 +966,18 @@
         $("#contact_upload_form").on('submit', (function (event) {
                 event.preventDefault();
 
-                url_ = $(this).attr("action");
-                send_form_data = new FormData(this);
+                var url_ = $(this).attr("action");
+                var send_form_data = new FormData(this);
 
                 var files = document.getElementById("contact_upload_file").files;
-                file_size = parseInt(files[0].size);
-                if (isNaN(file_size))
+                var file_size = parseInt(files[0].size);
+
+                if (isNaN(file_size)) {
                     file_size = 0;
+                }
 
-                file_size_to_show = file_size_show(file_size);
+                var file_size_to_show = file_size_show(file_size);
 
-                //alert(file_size_to_show);
                 if (file_size > 52428800) {
                     alert('Sorry, Max File Upload is 50 MB. Contact support if you require help with a larger file');
                 }
@@ -953,13 +996,10 @@
                                 $.ajax({
                                     xhr: function () {
                                         var xhr = new window.XMLHttpRequest();
-                                        //Upload progress
                                         xhr.upload.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
                                                 var percentComplete = (evt.loaded / evt.total) * 100;
                                                 percentComplete = parseInt(percentComplete);
-                                                //if(percentComplete > 80) percentComplete = percentComplete-1;
-                                                //Do something with upload progress
                                                 $(".progress-bar").css({"width": percentComplete + "%"});
                                                 $(".progress-bar").html(percentComplete + "% Complete");
                                                 if (percentComplete === 100) {
@@ -967,31 +1007,27 @@
                                                 }
                                             }
                                         }, false);
-                                        //Download progress
-                                        xhr.addEventListener("progress", function (evt) {
+                                        /*xhr.addEventListener("progress", function (evt) {
                                             if (evt.lengthComputable) {
                                                 var percentComplete = (evt.loaded / evt.total) * 100;
                                                 percentComplete = parseInt(percentComplete);
                                                 if (percentComplete > 80) percentComplete = percentComplete - 1;
-                                                //Do something with download progress
                                                 $(".progress-bar").css({"width": percentComplete + "%"});
                                             }
-                                        }, false);
+                                        }, false);*/
                                         return xhr;
                                     },
-                                    url: url_, // Url to which the request is send
-                                    type: "POST",             // Type of request to be send, called as method
-                                    data: send_form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                                    url: url_,
+                                    type: "POST",
+                                    data: send_form_data,
 
-                                    contentType: false,       // The content type used when sending data to the server.
-                                    cache: false,             // To unable request pages to be cached
-                                    processData: false,        // To send DOMDocument or non processed data file it is set to false
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
 
-                                    success: function (result)   // A function to be called if request succeeds
-                                    {
+                                    success: function (result) {
                                         console.log(result);
-                                        //document.getElementById("response_test").innerHTML = result;
-                                        result_array = [];
+                                        var result_array = [];
                                         result_array = result.split('/');
                                         if ($(".progress-bar").hasClass("progress-bar-success"));
                                         {
@@ -1001,12 +1037,7 @@
                                             $("#show_contacts_status_at_file").slideUp("slow");
                                             $(".show_file_upload_button").slideUp("slow");
                                             $(".file_details").slideUp("slow");
-                                            //$(".progress-bar").removeClass("progress-bar-success");
-                                            //$(".progress-bar").addClass("progress-bar-warning");
                                         }
-                                        //fn_file_process_progress(result_array[1],1);
-                                        //console.log(result);
-                                        //console.log("called fn_file_process_progress");
                                         alert(result_array[0]);
                                     },
                                     complete: function (result) {
@@ -1020,15 +1051,9 @@
                         }
                     });
                 }
-
-
-                    /*
-
-                     */
-
-
             })
         );
+
     </script>
 <?php } ?>
     <!-- Contact Upload Section Footer JS End-->
@@ -2164,15 +2189,6 @@ if ($view['section'] == 'dashboard') {
                     data: [<?php echo $total_successful_chart; ?>]
 
                 }
-                    /*, {
-                     name: 'SMTP Exists',
-                     data: [<?php echo $total_smtp_clean_chart; ?>]
-
-                     }, {
-                     name: 'SMTP Not Exists',
-                     data: [<?php echo $total_failed_chart; ?>]
-
-                     }*/
                 ]
             });
         });
@@ -2649,11 +2665,12 @@ if ($view['section'] == 'contact_upload_section') {
         function instant_check_numbers_validation(numbers) {
 
             numbers = numbers.replace(/[^\d,]/g, '');
-            numbers_array = numbers.split(",");
+            var numbers_array = numbers.split(",");
+            var check = null;
+            var keep_invalid_data = "";
 
-            keep_invalid_data = "";
             if (numbers.length > 0) {
-                for (i = 0; i < numbers_array.length; i++) {
+                for (var i = 0; i < numbers_array.length; i++) {
                     if (numbers_array[i].length == 11 || numbers_array[i].length == 10) {
                         if (numbers_array[i].length == 11) {
                             check = numbers_array[i].substring(0, 1);
@@ -2678,43 +2695,23 @@ if ($view['section'] == 'contact_upload_section') {
             data = data.replace(/[^\d,]/g, '');
             t.value = data;
             setInputSelection(t, sel.end, sel.end);
-            /*data = document.getElementById("instant_check_field").value;
-             data = data.replace(/[^\d,]/g,'');
-             document.getElementById("instant_check_field").value = data;
-             /*console.log(data);
-             data_array = [];
-             data_array = data.split(",");
-             //console.log(data_array.length);
-             data_str = data_array.join('</span>,<span class="invalid_in_instant_check">');
-             data_str = '<span class="invalid_in_instant_check">'+data_str+'</span>';
-             document.getElementById("instant_check_field_validation_show").innerHTML = data_str;
-             //console.log(data_str);*/
+
         }
         function instant_check_request(data) {
-
-            //document.location.href = base_url+'sendInstantCheckupRequest/'+data;
-//console.log(data);
-            dataSend = [];
+            var dataSend = [];
             dataSend[0] = data;
-            jsonDataSend = JSON.stringify(dataSend);
+            var jsonDataSend = JSON.stringify(dataSend);
             console.log(jsonDataSend);
             $.ajax({
-                /*type: 'post',
-                 dataType: 'JSON',
-                 data : {data : jsonDataSend},
-                 url: base_url+'sendInstantCheckupRequest',*/
                 type: 'GET',
                 dataType: 'JSON',
                 data: data,
                 url: 'http://205.134.243.198:3001/search',
                 success: function (result) {
-                    //alert(data);
                     console.log(result);
 
                     result_json = JSON.stringify(result, undefined, 4);
 
-
-                    //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest';
                     document.getElementById("instant_check_field_response").innerHTML = result_json;
                     custom_spinner_hide();
                     $("#instant_check_field_respose_con").slideDown("slow");
@@ -2726,14 +2723,14 @@ if ($view['section'] == 'contact_upload_section') {
         }
         $("#instant_check_form").submit(function (e) {
             e.preventDefault();
-            form = $(this);
+            var form = $(this);
             $("#instant_check_field_respose_con").slideUp("slow");
-            submit_btn = form.find('.submit_btn');
-            submit_btn_text = submit_btn.html();
+            var submit_btn = form.find('.submit_btn');
+            var submit_btn_text = submit_btn.html();
             submit_btn.html('<i class="fa fa-spin fa-circle-o-notch"></i> ' + submit_btn_text);
             submit_btn.attr('type', 'button').addClass('disabled');
-            instant_check_field = document.getElementById("instant_check_field").value;
-            data_email = instant_check_field;
+            var instant_check_field = document.getElementById("instant_check_field").value;
+            var data_email = instant_check_field;
             console.log(data_email);
             $.ajax({
                 type: 'GET',
@@ -2742,7 +2739,7 @@ if ($view['section'] == 'contact_upload_section') {
                     email: data_email
                 },
                 //url: 'http://205.134.243.198:3001/search',
-                url: window.location.protocol + "//" + window.location.host + "/"+'sendInstantCheckupRequest',
+                url: window.location.protocol + "//" + window.location.host + "/" + 'sendInstantCheckupRequest',
                 success: function (result) {
                     //alert(data);
                     submit_btn.html(submit_btn_text);
@@ -2750,7 +2747,7 @@ if ($view['section'] == 'contact_upload_section') {
                     console.log(result);
                     //alert(result);
 
-                    result_json = JSON.stringify(result, undefined, 4);
+                    var result_json = JSON.stringify(result, undefined, 4);
 
 
                     //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
@@ -2825,10 +2822,10 @@ if ($view['section'] == 'report_instant_lookup') {
     ?>
     <script type="text/javascript">
         $(".response_show_in_pre").each(function () {
-            data = $(this).html();
+            var data = $(this).html();
             var obj_array = $.parseJSON(data);
 
-            obj = JSON.stringify(obj_array, undefined, 4);
+            var obj = JSON.stringify(obj_array, undefined, 4);
             $(this).html(obj);
             if ($(this).height() > 150) {
                 $(this).parent().children(".see_more_container").append('<a class="response_pre_full_height" href="#">[..See more..]</a>');
@@ -2869,8 +2866,8 @@ if ($view['section'] == 'buy_credit') {
                     changePrice();
                 }
                 // Disable the submit button to prevent repeated clicks:
-                price_during_buy = document.getElementById("price_during_buy").innerHTML;
-                credit_count = document.getElementById("credit_count").value;
+                var price_during_buy = document.getElementById("price_during_buy").innerHTML;
+                var credit_count = document.getElementById("credit_count").value;
                 credit_count = parseInt(credit_count);
                 if (isNaN(credit_count)) credit_count = 0;
                 price_during_buy = parseInt(price_during_buy);
@@ -2923,7 +2920,7 @@ if ($view['section'] == 'buy_credit') {
             credit = parseInt(credit);
             if (isNaN(credit))
                 credit = 0;
-            price = unit * credit;
+            var price = unit * credit;
             price = price.toFixed(2);
             document.getElementById("price_during_buy").innerHTML = price;
             document.getElementById("price_during_buy").innerHTML = price;

@@ -28,12 +28,12 @@
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
-                <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
+                <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress_container', 'button_collapse')">&nbsp;</div>
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files Currently Processing
                 </div>
             </div>
-            <div class="portlet-body" id="group_list" style="height: 150px;overflow: auto;">
+            <div class="portlet-body" id="file_process_progress_container" style="height: 150px;overflow: auto;">
                 <div class="row">
                     <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress" style="display: block"></div>
                 </div>
@@ -97,6 +97,19 @@
                                 <small></small>
                                 <a class="btn red pull-right" href="<?php echo base_url();?>failed_file_delete">Clear Failed Upload</a>
                             </h3>
+
+                            <!-- <?php /*echo $error;*/?>
+
+                            <?php /*echo form_open_multipart('upload/do_upload');*/?>
+
+                            <input type="file" name="userfile" size="20" />
+
+                            <br /><br />
+
+                            <input type="submit" value="upload" />
+
+                            </form>-->
+
                             <form class="" id="contact_upload_form<?php //if($dash_profile['username'] == 'mohiolmis') echo 'contact_upload_for'; else echo 'contact_upload_form'; ?>" action="<?php echo base_url();?>upload_file" method="POST" enctype="multipart/form-data">
                                 <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                 <div class="col-xs-12 nopadding fileupload-buttonbar">

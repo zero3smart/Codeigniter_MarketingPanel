@@ -89,13 +89,13 @@ class User_controller extends CI_Controller
                     //lets update the record with the result and progress=processed
                     $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
                 } else {
-                    if ($value['progress'] > 0)
+                    /*if ($value['progress'] > 0)
                         $progress = intval(($value['progress'] * 180) / 100);
                     else
                         $progress = 0;
 
                     $progress_percent = intval($value['progress']);
-                    shuffle($icon_array);
+                    shuffle($icon_array);*/
                     $htmlToReturn = $htmlToReturn . '
                         <tr>
                             <td>'. $value['file_name'] .'</td>
@@ -634,8 +634,11 @@ class User_controller extends CI_Controller
                         $user_file_data_id = $user_file_data['_id'];
                         $status['stage'] = "ok";
                         echo 'Successfully Uploaded./' . $name;
-                        $this->get_all_file_process_progress();
+                        //$this->get_all_file_process_progress();
                         //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+                    }
+                    else {
+                        echo 'Sorry, Try again';
                     }
                 }
             } else {
