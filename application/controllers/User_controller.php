@@ -596,6 +596,7 @@ class User_controller extends CI_Controller
 			';
         }
         else {
+            echo $contactfile_line;
             echo 'Total credits required: ' . $totalRecords;
         }
     }
