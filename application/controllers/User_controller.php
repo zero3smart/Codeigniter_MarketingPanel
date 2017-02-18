@@ -521,14 +521,14 @@ class User_controller extends CI_Controller
         echo 'console.log(' . json_encode($data) . ')';
         echo '</script>';
     }
-    
+
     private function guess_delimiter($r_array=array())
     {
         $bestDelimiter = ',';
         $delimChoices = [",", "\t", "|", ";"];
-        $bestDelta = null; 
+        $bestDelta = null;
         $fieldCountPrevRow = null;
-        
+
         foreach($delimChoices as $delim)
         {
             $i = 0;
@@ -539,12 +539,12 @@ class User_controller extends CI_Controller
             foreach($r_array as $si_arr)
             {
                 $i++; $total_rows++;
-                
+
                 $line = explode($delim, $si_arr);
-                
+
                 $fieldCount = count($line);
 				$avgFieldCount += $fieldCount;
-                
+
                 if(is_null($fieldCountPrevRow))
                 {
                     $fieldCountPrevRow = $fieldCount;
@@ -554,10 +554,10 @@ class User_controller extends CI_Controller
                     $delta += Math.abs($fieldCount - $fieldCountPrevRow);
 				    $fieldCountPrevRow = $fieldCount;
                 }
-                
+
                 if($i > 1){ break; }
             }
-            
+
             //echo $avgFieldCount.' : '.$total_rows.' <br>';
             if ($total_rows > 0){$avgFieldCount /= $total_rows;}
             //echo $bestDelta.' : '.$delta.' : '.$avgFieldCount.' : '.$total_rows.'<br>';
@@ -571,7 +571,36 @@ class User_controller extends CI_Controller
         return $bestDelimiter;
     }
 
-    public function upload_file()
+    public function  upload_file () {
+        session_write_close();
+        $contactfile = $_FILES['contactfile']['tmp_name'];
+        $contactfile_line = file($contactfile);
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        $column_number_2 = $this->input->post("column_number_2");
+        $containsHeader = $this->input->post("header");
+        $line_break = $this->input->post("line_break");
+        $totalRecords = count(explode($line_break, $contactfile_line));
+
+
+        if(!$containsHeader) {
+            $containsHeader = false;
+        }
+        else {
+            --$totalRecords;
+        }
+
+        if ($column_number_2 == "") {
+            echo '
+			Sorry, Email not found in this file. 
+			';
+        }
+        else {
+            echo 'Total credits required: ' . $totalRecords;
+        }
+    }
+
+    public function upload_file1()
     {
         session_write_close();
         $file_name = $_FILES["contactfile"]["name"];
@@ -580,9 +609,10 @@ class User_controller extends CI_Controller
         $file_id_str = "";
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
-        //$file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
         $column_number_2 = $this->input->post("column_number_2");
         $containsHeader = $this->input->post("header");
+        $lineBreak = $this->input->post("line_break");
+
 
         if(!$containsHeader) {
             $containsHeader = false;
@@ -592,12 +622,7 @@ class User_controller extends CI_Controller
             echo '
 			Sorry, Email not found in this file. 
 			';
-        } /*else if(count($file_check)>0)
-        {
-            echo '
-			Sorry, You already uploded this file. 
-			';
-        }*/
+        }
         else {
             $column_number_2 = $column_number_2 - 1;
             $dash_profile = $this->Mdl_user->fetch_user_profile();
@@ -635,18 +660,9 @@ class User_controller extends CI_Controller
                 redirect("User_controller/have_not_balance");
             }
 
-            //$grid = $this->db->getGridFS();
-
-            /* $file_id = $grid->storeBytes($result_string_full);
-
-             foreach ($file_id as  $file_id_value)
-             {
-                 $file_id_str = $file_id_value;
-             }*/
             $i = 0;
             $status = array();
             $status['stage'] = "not done";
-            //$file_id = null;// TODO:: this will be the cleanId which is received from the API
 
             if ($_FILES["contactfile"]["error"] == 0) {
                 $name = trim($_FILES["contactfile"]["name"]);
