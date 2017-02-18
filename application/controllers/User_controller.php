@@ -582,6 +582,7 @@ class User_controller extends CI_Controller
         $line_break = $this->input->post("line_break");
         $totalRecords = 0;
 
+        echo count($contactfile_line);
         foreach ($contactfile_line as $value) {
             echo $value;
             echo '<br>';
