@@ -583,7 +583,11 @@ class User_controller extends CI_Controller
         $totalRecords = 0;
 
         foreach ($contactfile_line as $value) {
+            echo $value;
+            echo '<br>';
             $line = explode($line_break, $value);
+            echo $line;
+            echo '<br>';
             $totalRecords += count($line);
         }
 
@@ -605,7 +609,7 @@ class User_controller extends CI_Controller
         }
         else {
             echo $contactfile_line;
-            echo 'Total credits required: ' . $totalRecords;
+            echo '<br>Total credits required: ' . $totalRecords;
         }
     }
 
