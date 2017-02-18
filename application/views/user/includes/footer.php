@@ -887,6 +887,7 @@
                             lineBreak = result.meta.linebreak;
                             delimiter = result.meta.delimiter;
                             console.log('delimiter: ', delimiter, ' , linebreak: ', lineBreak);
+                            document.getElementById("line_break").value = lineBreak;
                             fileOnLoad();
                         }
                     });
