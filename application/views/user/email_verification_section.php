@@ -19,16 +19,22 @@
                     
                     ?>
 <div class="row">
+    
+    <div class="col-xs-12">
+        <div class="alert alert-danger">
+          <strong>Coming Soon!</strong> Contact Us For Info On Yahoo Verification Now.
+        </div>
+    </div>
 
     <div class="col-xs-12">
         <div class="portlet box green">
             <div class="portlet-title">
-                <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress', 'button_collapse')">&nbsp;</div>
+                <div id="button_collapse" class="scrub-status-container expanded-button" onclick="toggleCollapse('file_process_progress_container', 'button_collapse')">&nbsp;</div>
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files Currently Processing
                 </div>
             </div>
-            <div class="portlet-body" id="group_list" style="height: 150px;overflow: auto;">
+            <div class="portlet-body" id="file_process_progress_container" style="height: 150px;overflow: auto;">
                 <div class="row">
                     <div class="col-xs-12 nopadding file_progress_row_all" id="file_process_progress" style="display: block"></div>
                 </div>
