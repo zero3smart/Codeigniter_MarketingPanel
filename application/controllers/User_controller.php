@@ -571,65 +571,24 @@ class User_controller extends CI_Controller
         return $bestDelimiter;
     }
 
-    public function  upload_file () {
+    public function upload_file () {
         session_write_close();
-        $contactfile = $_FILES['contactfile']['tmp_name'];
-        $contactfile_line = file($contactfile);
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
         $column_number_2 = $this->input->post("column_number_2");
         $containsHeader = $this->input->post("header");
         $line_break = $this->input->post("line_break");
-        $totalRecords = 0;
-
-        echo count($contactfile_line);
-        foreach ($contactfile_line as $value) {
-            echo $value;
-            echo '<br>';
-            $line = explode($line_break, $value);
-            echo $line;
-            echo '<br>';
-            $totalRecords += count($line);
-        }
-
-
-        //$totalRecords = count(explode($line_break, $contactfile_line));
+        $line_break = $this->input->post("line_break");
+        $contactfile = $_FILES['contactfile']['tmp_name'];
+        $contactfile_line = file($contactfile);
+        $contactfile_length = count($contactfile_line);
 
 
         if(!$containsHeader) {
             $containsHeader = false;
         }
         else {
-            --$totalRecords;
-        }
-
-        if ($column_number_2 == "") {
-            echo '
-			Sorry, Email not found in this file. 
-			';
-        }
-        else {
-            echo $contactfile_line;
-            echo '<br>Total credits required: ' . $totalRecords;
-        }
-    }
-
-    public function upload_file1()
-    {
-        session_write_close();
-        $file_name = $_FILES["contactfile"]["name"];
-        $file_tmp = $_FILES["contactfile"]["tmp_name"];
-
-        $file_id_str = "";
-        $user_id = $this->session->email_lookup_user_id;
-        $user = $this->Mdl_user->fetch_user_profile();
-        $column_number_2 = $this->input->post("column_number_2");
-        $containsHeader = $this->input->post("header");
-        $lineBreak = $this->input->post("line_break");
-
-
-        if(!$containsHeader) {
-            $containsHeader = false;
+            --$contactfile_length;
         }
 
         if ($column_number_2 == "") {
@@ -650,25 +609,6 @@ class User_controller extends CI_Controller
             }
 
             $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
-
-            $contactfile = $_FILES['contactfile']['tmp_name'];
-            $contactfile_line = file($contactfile);
-
-
-            $contactfile_line = array_reverse($contactfile_line);
-            $result = array();
-            $delimiter = $this->guess_delimiter($contactfile_line);
-            foreach ($contactfile_line as $value) {
-                $line = explode($delimiter, $value);
-                $line[$column_number_2] = trim($line[$column_number_2]);
-                $line[$column_number_2] = strtolower($line[$column_number_2]);
-                $result[$line[$column_number_2]] = $value;
-            }
-            $result = array_reverse($result);
-
-            $result_string_full = implode("", $result);
-
-            $contactfile_length = count($result);
 
             if ($contactfile_length > $total_usable_credit) {
                 redirect("User_controller/have_not_balance");
@@ -725,9 +665,7 @@ class User_controller extends CI_Controller
 
                         $user_file_data_id = $user_file_data['_id'];
                         $status['stage'] = "ok";
-                        echo 'Successfully Uploaded./' . $name;
-                        //$this->get_all_file_process_progress();
-                        //redirect(site_url("User_controller/sendUploadRequest/". $user_file_data['_id']));
+                        echo 'Successfully Uploaded "' . $name . '"';
                     }
                     else {
                         echo 'Sorry, Try again';
