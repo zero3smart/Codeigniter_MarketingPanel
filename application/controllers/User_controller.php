@@ -580,7 +580,15 @@ class User_controller extends CI_Controller
         $column_number_2 = $this->input->post("column_number_2");
         $containsHeader = $this->input->post("header");
         $line_break = $this->input->post("line_break");
-        $totalRecords = count(explode($line_break, $contactfile_line));
+        $totalRecords = 0;
+
+        foreach ($contactfile_line as $value) {
+            $line = explode($line_break, $value);
+            $totalRecords += count($line);
+        }
+
+
+        //$totalRecords = count(explode($line_break, $contactfile_line));
 
 
         if(!$containsHeader) {
