@@ -137,6 +137,15 @@ class User_controller extends CI_Controller
                 '<thead></thead><tr><th>File Name</th><th>Uploaded At</th></tr>'
                 . $htmlToReturn
                 .'</table></div></div>';
+        }else
+        {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th colspan="2">No file is processing.</th></tr>'
+                .'</table></div></div>';
         }
         echo  $htmlToReturn;
     }
