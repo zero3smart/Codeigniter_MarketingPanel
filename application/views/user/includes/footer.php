@@ -1026,7 +1026,7 @@
                                     processData: false,
 
                                     success: function (result) {
-                                        console.log(result);
+                                        //console.log(result);
                                         var result_array = [];
                                         result_array = result.split('/');
                                         if ($(".progress-bar").hasClass("progress-bar-success"));
@@ -1041,7 +1041,7 @@
                                         alert(result_array[0]);
                                     },
                                     complete: function (result) {
-
+                                        fn_file_process_progress();
                                     }
 
                                 });

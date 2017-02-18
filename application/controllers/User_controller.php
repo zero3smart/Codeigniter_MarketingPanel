@@ -512,6 +512,55 @@ class User_controller extends CI_Controller
         echo 'console.log(' . json_encode($data) . ')';
         echo '</script>';
     }
+    
+    private function guess_delimiter($r_array=array())
+    {
+        $bestDelimiter = ',';
+        $delimChoices = [",", "\t", "|", ";"];
+        $bestDelta = null; 
+        $fieldCountPrevRow = null;
+        
+        foreach($delimChoices as $delim)
+        {
+            $i = 0;
+            $delta = 0;
+            $avgFieldCount = 0;
+            $fieldCountPrevRow = null;
+            $total_rows = 0;
+            foreach($r_array as $si_arr)
+            {
+                $i++; $total_rows++;
+                
+                $line = explode($delim, $si_arr);
+                
+                $fieldCount = count($line);
+				$avgFieldCount += $fieldCount;
+                
+                if(is_null($fieldCountPrevRow))
+                {
+                    $fieldCountPrevRow = $fieldCount;
+                    continue;
+                }else
+                {
+                    $delta += Math.abs($fieldCount - $fieldCountPrevRow);
+				    $fieldCountPrevRow = $fieldCount;
+                }
+                
+                if($i > 1){ break; }
+            }
+            
+            //echo $avgFieldCount.' : '.$total_rows.' <br>';
+            if ($total_rows > 0){$avgFieldCount /= $total_rows;}
+            //echo $bestDelta.' : '.$delta.' : '.$avgFieldCount.' : '.$total_rows.'<br>';
+            if ((is_null($bestDelta) || $delta < $bestDelta) && $avgFieldCount > 1.99)
+            {
+                $bestDelta = $delta;
+                $bestDelimiter = $delim;
+            }
+        }
+        //echo $bestDelimiter;die;
+        return $bestDelimiter;
+    }
 
     public function upload_file()
     {
@@ -560,8 +609,9 @@ class User_controller extends CI_Controller
 
             $contactfile_line = array_reverse($contactfile_line);
             $result = array();
+            $delimiter = $this->guess_delimiter($contactfile_line);
             foreach ($contactfile_line as $value) {
-                $line = explode(",", $value);
+                $line = explode($delimiter, $value);
                 $line[$column_number_2] = trim($line[$column_number_2]);
                 $line[$column_number_2] = strtolower($line[$column_number_2]);
                 $result[$line[$column_number_2]] = $value;
