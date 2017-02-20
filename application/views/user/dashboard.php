@@ -146,7 +146,7 @@
                              END QUICK SIDEBAR TOGGLER -->
                         </ul>
                         <div class="pull-right" style="padding-top:10px;">
-                            <a  href="https://support.verifyrocket.com/" class="btn red btn-lg">
+                            <a  href="https://support.verifyrocket.com/" target="_blank" class="btn red btn-lg">
                                 <i class="icon-users"></i> Support
                             </a>
                             
