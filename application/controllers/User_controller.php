@@ -522,55 +522,6 @@ class User_controller extends CI_Controller
         echo '</script>';
     }
 
-    private function guess_delimiter($r_array=array())
-    {
-        $bestDelimiter = ',';
-        $delimChoices = [",", "\t", "|", ";"];
-        $bestDelta = null;
-        $fieldCountPrevRow = null;
-
-        foreach($delimChoices as $delim)
-        {
-            $i = 0;
-            $delta = 0;
-            $avgFieldCount = 0;
-            $fieldCountPrevRow = null;
-            $total_rows = 0;
-            foreach($r_array as $si_arr)
-            {
-                $i++; $total_rows++;
-
-                $line = explode($delim, $si_arr);
-
-                $fieldCount = count($line);
-				$avgFieldCount += $fieldCount;
-
-                if(is_null($fieldCountPrevRow))
-                {
-                    $fieldCountPrevRow = $fieldCount;
-                    continue;
-                }else
-                {
-                    $delta += Math.abs($fieldCount - $fieldCountPrevRow);
-				    $fieldCountPrevRow = $fieldCount;
-                }
-
-                if($i > 1){ break; }
-            }
-
-            //echo $avgFieldCount.' : '.$total_rows.' <br>';
-            if ($total_rows > 0){$avgFieldCount /= $total_rows;}
-            //echo $bestDelta.' : '.$delta.' : '.$avgFieldCount.' : '.$total_rows.'<br>';
-            if ((is_null($bestDelta) || $delta < $bestDelta) && $avgFieldCount > 1.99)
-            {
-                $bestDelta = $delta;
-                $bestDelimiter = $delim;
-            }
-        }
-        //echo $bestDelimiter;die;
-        return $bestDelimiter;
-    }
-
     public function upload_file () {
         session_write_close();
         $user_id = $this->session->email_lookup_user_id;
