@@ -105,7 +105,7 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="" style="width:100%;">
+                    <a href="https://app.verifyrocket.com/dashboard" style="width:100%;">
                         <img style="height:45px;max-width:100%;margin:15px 0 0 0;" src="<?php echo base_url();?>assets/user/images/verify_rocket_logo_small.png" alt="logo" class="logo-default" /> 
 
                     </a>

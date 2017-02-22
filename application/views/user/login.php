@@ -84,7 +84,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="container-fluid nopadding">
         <div class="logo">
             <div class="col-xs-10 col-sm-6 col-lg-4 col-xs-offset-1 col-sm-offset-3 col-lg-offset-4">
-                    <a href="" class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2" style="height:100%">
+                    <a href="https://app.verifyrocket.com/dashboard" class="col-xs-10 col-sm-8 col-xs-offset-1 col-sm-offset-2" style="height:100%">
                         <img src="<?php echo base_url();?>assets/user/images/verify_rocket_logo_small.png"  alt="logo" class="logo-default col-xs-12" style="padding:0;" /> </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
             </div>
