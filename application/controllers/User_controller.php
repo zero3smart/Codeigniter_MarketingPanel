@@ -994,7 +994,7 @@ class User_controller extends CI_Controller
     public function upload_to_ftp($host, $usr, $pwd, $local_file, $fileName)
     {
         $fp = fopen($local_file, 'r');
-        $ftp_path = '/home/ftp1user/dirty/'.$fileName;
+        $ftp_path = '/dirty/'.$fileName;
         $conn_id = ftp_connect($host, 21);
         ftp_login($conn_id, $usr, $pwd);
         ftp_pasv($conn_id, true);
