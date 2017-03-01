@@ -2512,7 +2512,7 @@ class User_controller extends CI_Controller
             $this->session->set_flashdata(array('msg' => 'Successfully Deleted failed processed files.', 'msg_type' => 'success'));
         else
             $this->session->set_flashdata(array('msg' => 'Sorry, Please try again.', 'msg_type' => 'danger'));
-        redirect("contact_upload_section");
+        redirect("contact_upload");
     }
 
     public function report_failed_upload_ajax()
