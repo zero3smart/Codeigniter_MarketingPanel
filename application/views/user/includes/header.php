@@ -26,7 +26,7 @@
         
          <link href="<?php echo base_url(); ?>assets/pages/css/lock.min.css" rel="stylesheet" type="text/css" />
          <link href="<?php echo base_url(); ?>assets/pages/css/login.min.css" rel="stylesheet" type="text/css" />
-        <link rel="shortcut icon" href="favicon.ico" /> 
+        <link rel="shortcut icon" href="assets/user/images/favicon.png" />
         <link href="<?php echo base_url();?>assets/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url();?>assets/global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url();?>assets/global/css/custom.css?<?php echo microtime();?>" rel="stylesheet" type="text/css" />
