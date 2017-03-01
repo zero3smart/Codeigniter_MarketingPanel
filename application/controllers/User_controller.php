@@ -1,13 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+ini_set('display_startup_errors',1);
+ini_set('display_errors',1);
+error_reporting(-1);
+
 /*app.snapiq.com/application/controllers/user_controller*/
 
 //date_default_timezone_set('America/New_York');
 require 'vendor/autoload.php';
 use GuzzleHttp\Client;
-
 require 'class.pdf2text.php';
+include('httpful.phar');
 
 class User_controller extends CI_Controller
 {
@@ -247,7 +251,95 @@ class User_controller extends CI_Controller
             return false;
         }
     }
+    public function credit_reduce_number($credit, $note, $number)//
+    {
+        $dash_profile = $this->Mdl_user->fetch_user_profile();
+        $current_package = $this->Mdl_user->fetch_current_package();
+        $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
 
+        if ($user_file_id != "")
+            $user_file_id = new MongoId($user_file_id);
+
+        $type = "reduced";
+        $is_debit = false;
+
+        if ($daily_limit > -1) {
+            $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
+        } else {
+            $daily_limit_left = 0;
+        }
+
+        $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+        if ($total_usable_credit >= $credit) {
+            $current_package = $this->Mdl_user->fetch_current_package();
+            if ($current_package) {
+
+                $used_daily_limit = $this->Mdl_user->fetch_user_daily_limit();
+
+                if ($daily_limit > -1) {
+                    $daily_limit_left = $current_package['daily_limit'] - $used_daily_limit;
+                } else {
+                    $daily_limit_left = 0;
+                }
+
+                if ($credit > $daily_limit_left) {
+                    $data_transaction = array();
+                    $data_transaction['price'] = 0;
+                    $data_transaction['number'] = $number;
+                    $data_transaction['credit'] = $daily_limit_left;
+                    $data_transaction['is_debit'] = false;
+                    $data_transaction['user'] = $this->session->email_lookup_user_id;
+                    $data_transaction['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));
+                    $data_transaction['notes'] = 'Daily limit ' . $type . ' for File Cleane Up';
+
+                    $this->Mdl_user->set_user_daily_limit($daily_limit_left);
+                    $this->Mdl_user->transaction_insert($data_transaction);
+                    $row_left = (-1) * ($credit - $daily_limit_left);
+
+                    $data_transaction = array();
+                    $data_transaction['price'] = 0;
+                    $data_transaction['number'] = $number;
+                    $data_transaction['is_debit'] = $is_debit;
+                    $data_transaction['user'] = $this->session->email_lookup_user_id;
+                    $data_transaction['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));
+                    $data_transaction['credit'] = $row_left * (-1);
+                    $data_transaction['notes'] = 'Credit ' . $type . ' for ' . $note;;
+                    $this->Mdl_user->set_new_balance($row_left);
+                    $this->Mdl_user->transaction_insert($data_transaction);
+                } else {
+                    $data_transaction = array();
+                    $data_transaction['price'] = 0;
+                    $data_transaction['number'] = $number;
+                    $data_transaction['credit'] = $credit;
+                    $data_transaction['is_debit'] = $is_debit;
+                    $data_transaction['user'] = $this->session->email_lookup_user_id;
+                    $data_transaction['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));
+                    $data_transaction['notes'] = 'Daily limit ' . $type . ' for ' . $note;;
+
+                    $this->Mdl_user->set_user_daily_limit($credit);
+                    $this->Mdl_user->transaction_insert($data_transaction);
+                }
+
+            } else {
+                $data_transaction = array();
+                $data_transaction['price'] = 0;
+                $data_transaction['number'] = $number;
+                $data_transaction['credit'] = intval($credit);
+                $data_transaction['is_debit'] = $is_debit;
+                $data_transaction['user'] = $this->session->email_lookup_user_id;
+                $data_transaction['time'] = new MongoDate(strtotime(date('Y-m-d H:i:s')));
+                $data_transaction['notes'] = 'Credit reduced for ' . $note;
+                $row_left = (-1) * $credit;
+                $this->Mdl_user->set_new_balance($row_left);
+                $this->Mdl_user->transaction_insert($data_transaction);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function test()
     {
         $this->load->view("user/test_stripe");
@@ -544,8 +636,8 @@ class User_controller extends CI_Controller
 
         if ($column_number_2 == "") {
             echo '
-			Sorry, Email not found in this file. 
-			';
+            Sorry, Email not found in this file. 
+            ';
         }
         else {
             $column_number_2 = $column_number_2 - 1;
@@ -629,6 +721,211 @@ class User_controller extends CI_Controller
         }
     }
 
+    public function upload_phone_file () {
+        session_write_close();
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        $column_number_2 = $this->input->post("column_number_2");
+        $containsHeader = $this->input->post("header");
+        $line_break = $this->input->post("line_break");
+        $line_break = $this->input->post("line_break");
+        $contactfile = $_FILES['contactfile']['tmp_name'];
+        $contactfile_line = file($contactfile);
+        $contactfile_length = count($contactfile_line);
+        $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
+        if (count($file_check) > 0) {
+            echo 'Sorry, You already uploded this file.';
+        }
+        else{
+        if(!$containsHeader) {
+            $containsHeader = false;
+        }
+        else {
+            --$contactfile_length;
+        }
+
+        if ($column_number_2 == "") {
+            echo 'Sorry, Email not found in this file.';
+        }
+        else {
+            $column_number_2 = $column_number_2 - 1;
+            $dash_profile = $this->Mdl_user->fetch_user_profile();
+            $current_package = $this->Mdl_user->fetch_current_package();
+            $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
+
+            if ($daily_limit > -1) {
+                $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
+            } else {
+                $daily_limit_left = 0;
+            }
+
+            $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+            if ($contactfile_length > $total_usable_credit) {
+                redirect("User_controller/have_not_balance");
+            }
+
+            $i = 0;
+            $status = array();
+            $status['stage'] = "not done";
+
+            if ($_FILES["contactfile"]["error"] == 0) {
+                $name = trim($_FILES["contactfile"]["name"]);
+                $csv_files_total_row = $contactfile_length;
+                $csv_files_total_row = intval($csv_files_total_row);
+
+                try {
+                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                }
+                catch (Exception $e) {
+                    echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
+                    return;
+                }
+                if (!$uploadToFtp) {
+                    echo '
+                        Failed to upload file to FTP. 
+                        ';
+                } else {
+
+                  //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
+
+                   // $apiResponse = json_decode($apiResponse, true);
+                    // print_r($apiResponse);die();
+                    /*$this->console_log("success: " . $apiResponse["success"]);
+                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
+                    //$this->console_log($apiResponse["success"]);
+                    //if ($apiResponse["success"]) {
+                       // $clean_id = $apiResponse["data"]["cleanId"];
+                        $clean_id = new MongoId($clean_id);
+                        $data = array(
+                            "clean_id" => $clean_id,
+                            "user" => $user_id,
+                            "file_name" => $name,
+                            "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
+                            "process_end_time" => "",
+                            "status" => "processing",
+                            "progress" => (double)0,
+                            "columnOfNumbers" => $column_number_2
+                        );
+
+                        $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
+
+                        $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
+
+                        $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
+
+                        $user_file_data_id = $user_file_data['_id'];
+                        $status['stage'] = "ok";
+                        echo 'Successfully Uploaded "' . $name . '"';
+                       //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
+                    //}
+                   // else {
+                       // echo 'Sorry, Try again';
+                   // }
+                }
+            } else {
+                echo 'Sorry, Try again';
+            }
+
+        }
+        }
+    }
+    // public function processFile($host, $usr, $pw, $fid, $name)
+    public function processFile()
+    {
+        $name = $this->input->get('name');
+        $totalClean = 0;
+        $totalInvalid = 0;
+        //echo "Hi i'm here".$name;
+        /*$file = $this->Mdl_user->get_api_log_single('58b69a71b50b1eff0ec72678');
+        // echo $file[4]['response'];
+        $array = json_decode(json_encode(json_decode($file['response'])), True);
+        //$result= json_decode($file['response']);
+        print_r($array[0]['transaction']['validNumber']);*/
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        $greaterThanHundred = true;
+        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/home/ftp1user/dirty/".$name;
+        $handle = fopen($filename, "r");
+        $file = $this->Mdl_user->fetch_user_file_by_name($name);
+        $numbers = '';
+        $j=98;
+         for ($i=0;($line = fgets($handle)) !== false;$i++) {
+            if($i==0 || ($i-1)==($j-100))
+            {
+                $test = explode(",", $line);
+                $numbers = $test[$file[8]['columnOfNumbers']];
+            }
+            else{
+               $test = explode(",", $line);
+                $numbers = $numbers.','.$test[$file[8]['columnOfNumbers']];
+            }
+            if($i>=$j)
+            {
+                $greaterThanHundred = false;
+                $j=$j+100;
+                 $numbers = trim(preg_replace('/\s+/', '', $numbers));
+                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+        $response = \Httpful\Request::get($url)
+       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
+       ->send();
+       $numbers = '';
+       $response = json_decode($response);
+       if($i<=99)
+       {
+       $r = $response->aerialink->transactions;
+       }
+       else
+       {
+        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+            array_push($r, $response->aerialink->transactions[$k]);
+        }
+       }
+
+            }
+         }
+       if($greaterThanHundred)
+       {
+         $numbers = trim(preg_replace('/\s+/', '', $numbers));
+                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+        $response = \Httpful\Request::get($url)
+       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
+       ->send();
+       $response = json_decode($response);
+        $r = $response->aerialink->transactions;
+       }
+        else{
+            $numbers = trim(preg_replace('/\s+/', '', $numbers));
+                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+       
+        $response = \Httpful\Request::get($url)
+       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
+       ->send();
+        $response = json_decode($response);
+        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+            array_push($r, $response->aerialink->transactions[$k]);
+        }
+        }
+        $request = 'URL : "http://localhost:8080/NumberCleanupAPI/cleanup",<br>Data : { "form_params" : { "file_id" : "' . $file[1]['_id'] . '" } }';
+
+       
+        for ($k=0; $k < sizeof($r); $k++) { 
+            if($r[$k]->transaction->validNumber == 1)
+            {
+                $totalClean = $totalClean +1;
+            }
+            else
+            {
+                $totalInvalid = $totalInvalid + 1;
+            }
+        }
+         $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
+        $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
+    
+        echo "Successfully Processed";
+       // print_r(sizeof($r));
+       // echo json_encode($response);
+    }
     public function callStatusAPI($clean_id)
     {
         $statusURL = 'http://64.187.105.90:3000/status?cleanId=' . $clean_id;
@@ -646,6 +943,7 @@ class User_controller extends CI_Controller
 
     public function callScrubberAPI($fileName, $userName, $index, $header, $ftpHost, $ftpPassword)
     {
+        // $scrubberURL = 'http://64.187.105.90:3000/clean';
         $scrubberURL = 'http://64.187.105.90:3000/clean';
         $options = json_encode(
             array(
@@ -695,15 +993,19 @@ class User_controller extends CI_Controller
 
     public function upload_to_ftp($host, $usr, $pwd, $local_file, $fileName)
     {
-
         $fp = fopen($local_file, 'r');
-        $ftp_path = '/dirty/' . $fileName;
+        $ftp_path = '/home/ftp1user/dirty/'.$fileName;
         $conn_id = ftp_connect($host, 21);
         ftp_login($conn_id, $usr, $pwd);
         ftp_pasv($conn_id, true);
         $upload = ftp_fput($conn_id, $ftp_path, $fp, FTP_ASCII);
-        ftp_close($conn_id);
+        ftp_close($conn_id); 
+        if($upload != "")
+        {   
         return $upload;
+        }
+        else
+            return false;
     }
 
     public function download_from_ftp_problem($cleanId, $onlyReport = false)
@@ -916,13 +1218,28 @@ class User_controller extends CI_Controller
         //echo $response_str;
         $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $response_str, $fileID);
 
-        echo 'Successfully Uploaded./' . $fileID;
+         echo 'Successfully Uploaded./' . $fileID;
         //['form_params' => [  'file_id' => $fileID ] ]
         //{'form_params' => {  'file_id' => $fileID } }
 
     }
+    public function sendInstantRequest()
+    {
+        $number = $this->input->get('number');
+        $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$number;
+        $response = \Httpful\Request::get($url)
+       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
+       ->send();
+        $res = json_decode($response); 
+        $numbers = 1;
+        $credit_reduce = $this->credit_reduce_number($numbers, "File Cleanup", $number);
+        echo json_encode($res->aerialink->transactions[0]);
+        
+        // echo 'Successfully Uploaded./';
+        //['form_params' => [  'file_id' => $fileID ] ]
+        //{'form_params' => {  'file_id' => $fileID } }
 
-
+    }
     public function sendInstantCheckupRequest()
     {
 
@@ -1681,7 +1998,8 @@ class User_controller extends CI_Controller
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
         $data["file_status"] = $this->Mdl_user->fetch_user_file($config["per_page"], $page);
-        //print_r($data["file_status"]);die();
+        // print_r($data["file_status"]);die();
+       // print_r($config["per_page"]);die();
         $data["pagination_links"] = $this->pagination->create_links();
         //print_r($data["pagination_links"]);
         //die();
@@ -1694,6 +2012,54 @@ class User_controller extends CI_Controller
 
     }
 
+    public function phone_file_upload_status($parm1 = '')
+    {
+
+        if ($parm1 == '')
+            $data['serial'] = 0;
+        else
+            $data['serial'] = $parm1;
+        $this->load->library("pagination");
+
+        $data['view']['page_title'] = 'Reports';
+        $data['view']['page_sub_title'] = 'Cleaned Files';
+        $data['view']['menu'] = 'report';
+        $data['view']['submenu'] = 'phone_file_upload_status';
+        $data['view']['section'] = 'phone_file_upload_status';
+        $data['view']['msg'] = $this->session->flashdata('msg');
+        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
+        $config = array();
+
+        $config["base_url"] = base_url() . 'report/phone_file_upload_status';
+        $config["total_rows"] = $this->Mdl_user->count_all_rows_user_file();
+        //print $config["total_rows"];die();
+        $config["per_page"] = 5;
+        $config["uri_segment"] = 3;
+        $config['num_links'] = 3;
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['cur_tag_open'] = '<a  class="btn btn-square btn-primary">';
+        $config['cur_tag_close'] = '</a>';
+        $config['attributes'] = array('class' => 'group_pagination_link btn btn-square btn-warning');
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data["file_status"] = $this->Mdl_user->fetch_user_file($config["per_page"], $page);
+        // print_r($data["file_status"]);die();
+       // print_r($config["per_page"]);die();
+        $data["pagination_links"] = $this->pagination->create_links();
+        //print_r($data["pagination_links"]);
+        //die();
+
+        $this->load->view("user/dashboard", $data);
+
+
+        //$data['groups_document'] = $this->Mdl_user->fetch_groups();
+        //print_r($data['groups_document']);die();
+
+    }
     public function file_upload_status_ajax($parm1 = '')
     {
         if ($parm1 == '')

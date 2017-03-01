@@ -1676,7 +1676,7 @@
          if (window.File && window.FileReader && window.FileList && window.Blob) {
          */
         function fn_contact_upload_file() {
-            //event.preventDefault();
+            // event.preventDefault();
             global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
             global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
             global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
@@ -1723,7 +1723,7 @@
                     else
                         loop_length = fileContents_data_array.length;
                     for (i = 0; i < loop_length; i++) {
-
+                    try{
                         get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
                         fileContents_data_array_2 = [];
@@ -1741,12 +1741,18 @@
 
                             test = fileContents_data_array_2[j];
 
-                            test = test.replace(" ", '');
-                            var isnum = validate_email(test);
+                            test = test.replace("(", '');
+                                test = test.replace(")", '');
+                                test = test.replace("#", '');
+                                test = test.replace("-", '');
+                                test = test.replace("+", '');
+                                test = test.replace(" ", '');
+                                var isnum = /^\d+$/.test(test);
+                            var isnum = /^\d+$/.test(test);
 
                             if (isnum) {
                                 position_track[i] = j + 1;
-                                console.log(position_track[i]);
+                                // console.log(position_track[i]);
                             }
 
                             if (i > 0)
@@ -1758,6 +1764,11 @@
 
 
                         get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                        }
+                        catch(Exception)
+                        {
+
+                        }
                     }
                     position_track_str = position_track.join(",");
                     //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
@@ -1766,7 +1777,11 @@
                     for (i = 1; i < position_track.length; i++) {
                         if (position_track[i] != false) {
                             if (test_column == position_track[i])
+                            {
+                                console.log(test_column);
                                 test_column_check = position_track[i];
+                                break;
+                                }
                             else {
                                 test_column_check = 0;
                                 break;
@@ -1778,7 +1793,8 @@
                         }
 
                     }
-                    console.log('here');
+                    // console.log(test_column);
+                    // console.log('here');
                     uploadable = 0;
                     have_balance = 0;
 
@@ -1792,8 +1808,8 @@
 
                     if (set_column_number == 0) {
                         if (test_column_check != 0) {
-                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
-                            document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
+                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain numbers in column ' + test_column_check;
+                            document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
                             document.getElementById("set_column_number").value = test_column_check;
                             document.getElementById("set_column_number_2").value = test_column_check;
                             document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
@@ -1803,7 +1819,7 @@
                         else {
                             $(".show_file_upload_button").slideUp("slow");
                             document.getElementById("set_csv_files_total_row").value = 0;
-                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Emails.';
+                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Numbers.';
                             document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
                             document.getElementById("set_column_number").value = '';
                             document.getElementById("set_column_number_2").value = '';
@@ -1811,8 +1827,8 @@
                     }
                     else if (set_column_number == test_column_check) {
                         document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
-                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain emails in column ' + test_column_check;
-                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
+                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain Numbers in column ' + test_column_check;
+                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
                         document.getElementById("set_column_number").value = test_column_check;
                         document.getElementById("set_column_number_2").value = test_column_check;
                         $(".show_file_upload_button").slideDown("slow");
@@ -1822,7 +1838,7 @@
                         document.getElementById("set_csv_files_total_row").value = 0;
                         $(".show_file_upload_button").slideUp("slow");
                         document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
-                        document.getElementById("command_part").innerHTML = 'Please write here the Email\'s column number again : ';
+                        document.getElementById("command_part").innerHTML = 'Please write here the Number\'s column number again : ';
                         document.getElementById("set_column_number").value = '';
                         document.getElementById("set_column_number_2").value = '';
                     }
@@ -1830,7 +1846,7 @@
                     if (uploadable == 1) {
                         if (have_balance == 0) {
                             $(".show_file_upload_button").slideUp("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, Sorry You do not have sufficient credit to process this file.";
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, Sorry You do not have sufficient credit to process this file.";
                         }
                         else {
                             remains_credit = global_balance;
@@ -1838,7 +1854,7 @@
                                 remains_credit = global_total_usable_credit - fileContents_data_array_count;
 
                             $(".show_file_upload_button").slideDown("slow");
-                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
 
                         }
                     }
@@ -1925,9 +1941,10 @@
         $("#contact_upload_form").on('submit', (function (event) {
                 event.preventDefault();
 
-                url_ = $(this).attr("action");
+              //  url_ = $(this).attr("action");
                 send_form_data = new FormData(this);
-
+                //console.log(url_);
+                url_ = 'http://localhost/verifyrocket/User_controller/upload_phone_file'
                 var files = document.getElementById("contact_upload_file").files;
                 file_size = parseInt(files[0].size);
                 if (isNaN(file_size))
@@ -2011,7 +2028,28 @@
                                         alert(result_array[0]);
                                     },
                                     complete: function (result) {
-
+                                            if (result.responseText.substring(0, 5) == 'Sorry')
+                                            {
+                                                console.log('Sorry');
+                                                
+                                            }
+                                            if (result.responseText.substring(0, 12) == 'Successfully')
+                                            {
+                                                fn_file_process_progress();
+                                                console.log('Successfully');
+                                                  $.ajax({
+                                                 type: 'GET',
+                                                 dataType: 'JSON',
+                                                    data: {
+                                                    name: files[0].name
+                                                    },
+                                                url: 'http://localhost/verifyrocket/User_controller/processFile',
+                                                success: function (result) {
+                                                    console.log(result);
+                                                    fn_file_process_progress();
+                                                    }
+                                                });
+                                            }
                                     }
 
                                 });
@@ -2031,6 +2069,155 @@
             })
         );
     </script>
+      <script type="text/javascript">
+     function getInputSelection(el) {
+            var start = 0, end = 0, normalizedValue, range,
+                textInputRange, len, endRange;
+
+            if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+                start = el.selectionStart;
+                end = el.selectionEnd;
+            } else {
+                range = document.selection.createRange();
+
+                if (range && range.parentElement() == el) {
+                    len = el.value.length;
+                    normalizedValue = el.value.replace(/\r\n/g, "\n");
+
+                    // Create a working TextRange that lives only in the input
+                    textInputRange = el.createTextRange();
+                    textInputRange.moveToBookmark(range.getBookmark());
+
+                    // Check if the start and end of the selection are at the very end
+                    // of the input, since moveStart/moveEnd doesn't return what we want
+                    // in those cases
+                    endRange = el.createTextRange();
+                    endRange.collapse(false);
+
+                    if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+                        start = end = len;
+                    } else {
+                        start = -textInputRange.moveStart("character", -len);
+                        start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+                        if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+                            end = len;
+                        } else {
+                            end = -textInputRange.moveEnd("character", -len);
+                            end += normalizedValue.slice(0, end).split("\n").length - 1;
+                        }
+                    }
+                }
+            }
+
+            return {
+                start: start,
+                end: end
+            };
+        }
+
+        function offsetToRangeCharacterMove(el, offset) {
+            return offset - (el.value.slice(0, offset).split("\r\n").length - 1);
+        }
+
+        function setInputSelection(el, startOffset, endOffset) {
+            if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+                el.selectionStart = startOffset;
+                el.selectionEnd = endOffset;
+            } else {
+                var range = el.createTextRange();
+                var startCharMove = offsetToRangeCharacterMove(el, startOffset);
+                range.collapse(true);
+                if (startOffset == endOffset) {
+                    range.move("character", startCharMove);
+                } else {
+                    range.moveEnd("character", offsetToRangeCharacterMove(el, endOffset));
+                    range.moveStart("character", startCharMove);
+                }
+                range.select();
+            }
+        }
+
+
+        function instant_check_numbers_validation(numbers) {
+
+            numbers = numbers.replace(/[^\d,]/g, '');
+            var numbers_array = numbers.split(",");
+            var check = null;
+            var keep_invalid_data = "";
+
+            if (numbers.length > 0) {
+                for (var i = 0; i < numbers_array.length; i++) {
+                    if (numbers_array[i].length == 11 || numbers_array[i].length == 10) {
+                        if (numbers_array[i].length == 11) {
+                            check = numbers_array[i].substring(0, 1);
+                            if (check != "1")
+                                keep_invalid_data = keep_invalid_data + '<span>' + numbers_array[i] + '</span>';
+                        }
+                    }
+                    else {
+                        keep_invalid_data = keep_invalid_data + '<span>' + numbers_array[i] + '</span>';
+                    }
+                }
+            }
+            console.log(keep_invalid_data);
+            return keep_invalid_data;
+        }
+
+    function instant_check_field_validation() {
+
+            var t = document.getElementById("instant_check_field");
+            var sel = getInputSelection(t);
+            var data = t.value;
+            data = data.replace(/[^\d,]/g, '');
+            t.value = data;
+            setInputSelection(t, sel.end, sel.end);
+
+        }
+        $("#instant_check_number_form").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $("#instant_check_field_respose_con").slideUp("slow");
+            var submit_btn = form.find('.submit_btn');
+            var submit_btn_text = submit_btn.html();
+            submit_btn.html('<i class="fa fa-spin fa-circle-o-notch"></i> ' + submit_btn_text);
+            submit_btn.attr('type', 'button').addClass('disabled');
+            var instant_check_field = document.getElementById("instant_check_field").value;
+            var data_number = instant_check_field;
+            // console.log(data_email);
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                data: {
+                    number: data_number
+                },
+                //url: 'http://205.134.243.198:3001/search',
+                //url: window.location.protocol + "//" + window.location.host + "/" + 'sendInstantRequest',
+                url: 'http://localhost/verifyrocket/User_controller/sendInstantRequest',
+                success: function (result) {
+                    //alert(data);
+                    submit_btn.html(submit_btn_text);
+                    submit_btn.attr('type', 'submit').removeClass('disabled');
+                    console.log(result.transaction.validNumber);
+                    //alert(result);
+
+                    // var result_json = JSON.stringify(result, undefined, 4);
+                    var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+
+                    //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
+                    document.getElementById("instant_check_field_request").innerHTML = 'Number: '+ data_number;
+                    document.getElementById("instant_check_field_response").innerHTML = 'Valid Number: ' + result_json;
+                    custom_spinner_hide();
+                    $("#instant_check_field_respose_con").slideDown("slow");
+
+                }
+            });
+
+
+            console.log("here");
+        });
+    </script>
+
 <?php } ?>
     <!-- Carrier Lookup Section Footer JS End-->
 
@@ -2588,7 +2775,390 @@ if ($view['section'] == 'file_upload_status') {
 }
 ?>
 
+<?php
+if ($view['section'] == 'phone_file_upload_status') {
+    ?>
+    <script src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
+            type="text/javascript"></script>
 
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/highchart.js"></script>
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/highcharts-3d.js"></script>
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/exporting.js"></script>
+
+    <script type="text/javascript"
+            src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
+
+
+    <!--<script type="text/javascript" src="http://www.nihilogic.dk/labs/canvas2image/base64.js"></script>
+
+
+
+    <script type="text/javascript" src="http://www.nihilogic.dk/labs/canvas2image/canvas2image.js"></script>-->
+
+
+    <script type="text/javascript">
+        /*
+         $(".downalod_as_image").click(function(){
+         container = $(this).attr("data-container");
+         $(function() {
+         html2canvas($(container), {
+         onrendered: function(canvas) {
+         theCanvas = canvas;
+         //document.body.appendChild(canvas);
+         img_link = canvas.toDataURL("image/png");
+         //$("#img-out").append(img);
+         // Clean up
+         //document.body.removeChild(canvas);
+         $("#download_preview_image").attr("src",img_link);
+         }
+         });
+         });
+
+         });
+         */
+
+
+        $(function () {
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+        });
+
+        function show_validation_pie_chart(validation_chart_data, validation_chart_data_title, container) {
+            /*
+             var validation_chart_data_array_genarate = [];
+             for(i=0;i<validation_chart_data.length;i++)
+             {
+             validation_chart_data_array_genarate[i] = [];
+             validation_chart_data_array_genarate[i]
+             }
+             */
+
+            $(container).highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: validation_chart_data_title
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'File Demograph',
+                    data: validation_chart_data
+
+                    /*[
+                     {
+                     name: 'Failed',
+                     y: failed,
+                     sliced: true,
+                     selected: true
+                     },
+                     [validation_chart_data[0][0], validation_chart_data[0][1]],
+                     [validation_chart_data[1][0], validation_chart_data[1][1]],
+                     [validation_chart_data[2][0], validation_chart_data[2][1]],
+                     //['SMTP Not Exists', validation_chart_data[2][1]-validation_chart_data[13][1]],
+                     [validation_chart_data[3][0], validation_chart_data[3][1]],
+                     [validation_chart_data[4][0], validation_chart_data[4][1]],
+                     [validation_chart_data[5][0], validation_chart_data[5][1]],
+                     [validation_chart_data[6][0], validation_chart_data[6][1]],
+                     [validation_chart_data[7][0], validation_chart_data[7][1]],
+                     [validation_chart_data[8][0], validation_chart_data[8][1]],
+                     [validation_chart_data[9][0], validation_chart_data[9][1]],
+                     [validation_chart_data[11][0], validation_chart_data[11][1]],
+                     [validation_chart_data[12][0], validation_chart_data[12][1]]
+                     ]
+                     */
+                }]
+            });
+
+        }
+
+        $(window).load(function () {
+            for (i = 0; i < validation_chart_data_conatiner.length; i++) {
+                console.log("created " + validation_chart_data_conatiner[i]);
+                show_validation_pie_chart(validation_chart_data[i], validation_chart_data_title[i], validation_chart_data_conatiner[i]);
+            }
+        });
+        $(window).resize(function () {
+            setTimeout(function () {
+                for (i = 0; i < validation_chart_data_conatiner.length; i++) {
+                    console.log("Resized " + validation_chart_data_conatiner[i]);
+                    show_validation_pie_chart(validation_chart_data[i], validation_chart_data_title[i], validation_chart_data_conatiner[i]);
+                    //show_validation_pie_chart(validation_chart_data_total[i],validation_chart_data_successful[i],validation_chart_data_failed[i],validation_chart_data_invalid[i],validation_chart_data_conatiner[i]);
+                }
+            }, 100);
+
+        });
+
+        function show_pie_chart(file_name, id, total, successful, failed, invalid, invalid_from_api, carrier_json, carrier_type_json, state_json, city_json, country_json, event) {
+
+
+            event.preventDefault();
+
+            console.log(carrier_json);
+            //carrier_json_data = document.getElementById(carrier_json).innerHTML;
+
+            //carrier_jsonObj = $.parseJSON(carrier_json_data);
+            //carrier_jsonObj = JSON.parse(carrier_json_data);
+            //console.log(carrier_json_data);
+            $("#chart_modal").modal("show");
+            document.getElementById("carrier_chart_container").innerHTML = "";
+            document.getElementById("carrier_type_chart_container").innerHTML = "";
+            document.getElementById("state_chart_container").innerHTML = "";
+            document.getElementById("city_chart_container").innerHTML = "";
+
+            $('#chart_modal').on('shown.bs.modal', function () {
+//$(this).parent().animate({scrollTop:$(this).offset().top+"px"},500);
+//$(this).modal("show");
+                // Radialize the colors
+
+
+                // Build the chart
+                document.getElementById('chart_file_name').innerHTML = file_name;
+                document.getElementById('chart_total').innerHTML = total;
+                document.getElementById('chart_successful').innerHTML = successful;
+                document.getElementById('chart_failed').innerHTML = failed;
+
+                $('#contact_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Contacts Validation Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: [
+                            {
+                                name: 'Successful',
+                                y: successful
+                            },
+                            {
+                                name: 'Invalid',
+                                y: invalid
+                            },
+                            {
+                                name: 'Invalid from API',
+                                y: invalid_from_api
+                            }
+                        ]
+
+
+                    }]
+                });
+
+
+                $('#carrier_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Carrier Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: carrier_json
+
+
+                    }]
+                });
+
+
+                $('#carrier_type_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Carrier Type Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: carrier_type_json
+
+
+                    }]
+                });
+
+
+                $('#state_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'State Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: state_json
+
+
+                    }]
+                });
+
+
+                $('#city_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'City Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: city_json
+
+
+                    }]
+                });
+
+
+            });
+        }
+        /*
+         { name: 'Successful', y: 75 },
+         {
+         name: 'Invalid',
+         y: 20
+         },
+         {
+         name: 'Invalid from API',
+         y: 15
+         }
+         */
+
+    </script>
+    <?php
+}
+?>
 <?php
 if ($view['section'] == 'contact_upload_section') {
     ?>
@@ -2762,7 +3332,6 @@ if ($view['section'] == 'contact_upload_section') {
 
             console.log("here");
         });
-
     </script>
 
     <?php

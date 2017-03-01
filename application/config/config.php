@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['base_url'] = 'https://app.verifyrocket.com/';
 //$config['base_url'] = 'http://54.187.12.50/test.verifyrocket.com/';
-
+// $config['base_url'] = 'http://localhost/verifyrocket';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -512,3 +512,5 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+$config['Aerialink_Api_key'] = 'b88262d6436e4379901e1c454b6a6472';
+$config['API_Sec'] = '497fbceadd1452c42e005505e9e7ae44';

@@ -379,6 +379,11 @@
                         {
                             include_once'failed_upload.php';
                         }
+                        if($view['section'] == 'phone_file_upload_status')
+                        {
+                            include_once'phone_file_upload_status.php';
+                        }
+                    
 
 
 

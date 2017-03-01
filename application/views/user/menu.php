@@ -121,6 +121,12 @@
                     <span class="title">Cleaned Files</span>
                 </a>
             </li>
+            <li class="nav-item submenu_phone_file_upload_status">
+                <a class="nav-link" href="<?php echo base_url(); ?>User_controller/phone_file_upload_status">
+                    <i class="icon-bar-chart"></i>
+                    <span class="title">Cleaned Phone Files</span>
+                </a>
+            </li>
             <li class="nav-item submenu_file_upload_status">
                 <a class="nav-link" href="<?php echo base_url(); ?>report/failed_upload">
                     <i class="icon-bar-chart"></i>
