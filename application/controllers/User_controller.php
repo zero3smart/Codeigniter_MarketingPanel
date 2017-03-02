@@ -745,7 +745,7 @@ class User_controller extends CI_Controller
         }
 
         if ($column_number_2 == "") {
-            echo 'Sorry, Email not found in this file.';
+            echo 'Sorry, Phone not found in this file.';
         }
         else {
             $column_number_2 = $column_number_2 - 1;
@@ -845,10 +845,11 @@ class User_controller extends CI_Controller
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
         $greaterThanHundred = true;
-        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/home/ftp1user/dirty/".$name;
+        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
         $handle = fopen($filename, "r");
         $file = $this->Mdl_user->fetch_user_file_by_name($name);
         $numbers = '';
+
         $j=98;
          for ($i=0;($line = fgets($handle)) !== false;$i++) {
             if($i==0 || ($i-1)==($j-100))
@@ -871,6 +872,7 @@ class User_controller extends CI_Controller
        ->send();
        $numbers = '';
        $response = json_decode($response);
+
        if($i<=99)
        {
        $r = $response->aerialink->transactions;
@@ -884,6 +886,9 @@ class User_controller extends CI_Controller
 
             }
          }
+
+
+
        if($greaterThanHundred)
        {
          $numbers = trim(preg_replace('/\s+/', '', $numbers));

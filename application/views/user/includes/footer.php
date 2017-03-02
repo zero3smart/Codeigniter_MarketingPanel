@@ -1771,8 +1771,54 @@
                         }
                     }
                     position_track_str = position_track.join(",");
+
+
+
+
+
+
+                    var test_column = position_track[1];
+                    var test_column_check = 0;
+
+
+                    var uniqueFn = function(value, index, self) {
+                        return self.indexOf(value) === index;
+                    };
+
+                    var positioin_ob = {};
+
+                    for(var i = 0; i< position_track.length; i++) {
+                        if(typeof(position_track[i]) == 'number') {
+                            if(!positioin_ob[position_track[i]]) {
+                                positioin_ob[position_track[i]] = 1;
+                            }
+                            else {
+                                positioin_ob[position_track[i]] = positioin_ob[position_track[i]] + 1;
+                            }
+
+                        }
+                    }
+
+                    var maxOccurence = -1;
+
+
+                    for(var key in positioin_ob) {
+                        if(maxOccurence < positioin_ob[key]) {
+                            maxOccurence = positioin_ob[key];
+                            test_column_check = key;
+                        }
+                    }
+
+                    // for time being...
+                    test_column = true;
+                    test_column_check=1;
+
+
+
+
+
                     //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
-                    test_column = position_track[1];
+                    /*test_column = position_track[1];
                     test_column_check = 0;
                     for (i = 1; i < position_track.length; i++) {
                         if (position_track[i] != false) {
@@ -1792,9 +1838,9 @@
                             break;
                         }
 
-                    }
-                    // console.log(test_column);
-                    // console.log('here');
+                    }*/
+                    /*console.log(test_column);
+                    console.log('here');*/
                     uploadable = 0;
                     have_balance = 0;
 
@@ -1883,10 +1929,11 @@
          }
          }*/
         function fn_file_process_progress() {
-            //console.log("fn_file_process_progress");
+            console.log("fn_file_process_progress");
+            console.log(base_url);
             $.ajax({
 
-                url: base_url + 'User_controller/get_all_file_process_progress', // Url to which the request is send
+                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_file_process_progress', // Url to which the request is send
                 type: "GET",
                 //dataType: "JSON",
                 success: function (progress) {
@@ -1944,7 +1991,7 @@
               //  url_ = $(this).attr("action");
                 send_form_data = new FormData(this);
                 //console.log(url_);
-                url_ = 'http://localhost/verifyrocket/User_controller/upload_phone_file'
+                url_ = '<?php echo base_url();?>User_controller/upload_phone_file'
                 var files = document.getElementById("contact_upload_file").files;
                 file_size = parseInt(files[0].size);
                 if (isNaN(file_size))
@@ -2043,7 +2090,7 @@
                                                     data: {
                                                     name: files[0].name
                                                     },
-                                                url: 'http://localhost/verifyrocket/User_controller/processFile',
+                                                url: '<?php echo base_url();?>User_controller/processFile',
                                                 success: function (result) {
                                                     console.log(result);
                                                     fn_file_process_progress();
@@ -2184,21 +2231,27 @@
             submit_btn.attr('type', 'button').addClass('disabled');
             var instant_check_field = document.getElementById("instant_check_field").value;
             var data_number = instant_check_field;
+            var data = {
+                number: data_number
+            };
+            console.log("Printing data being sent to API...");
+            console.log(data);
+
             // console.log(data_email);
+            console.log("Call start...");
             $.ajax({
                 type: 'GET',
                 dataType: 'JSON',
-                data: {
-                    number: data_number
-                },
+                data: data,
                 //url: 'http://205.134.243.198:3001/search',
                 //url: window.location.protocol + "//" + window.location.host + "/" + 'sendInstantRequest',
-                url: 'http://localhost/verifyrocket/User_controller/sendInstantRequest',
+                url: '<?php echo base_url(); ?>User_controller/sendInstantRequest',
                 success: function (result) {
                     //alert(data);
                     submit_btn.html(submit_btn_text);
                     submit_btn.attr('type', 'submit').removeClass('disabled');
-                    console.log(result.transaction.validNumber);
+                    console.log("Printing result...");
+                    console.log(result);
                     //alert(result);
 
                     // var result_json = JSON.stringify(result, undefined, 4);
@@ -2210,11 +2263,17 @@
                     custom_spinner_hide();
                     $("#instant_check_field_respose_con").slideDown("slow");
 
+                }, 
+                error: function(a, b, c) {
+                    console.log("Error occured in sendInstantRequest ...");
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
                 }
             });
 
 
-            console.log("here");
+            // console.log("here");
         });
     </script>
 

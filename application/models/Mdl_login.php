@@ -11,7 +11,7 @@ class Mdl_login extends CI_Model {
         $this->db = $this->mongolib->db;
 		$this->sa = $this->db->super_admin;
 		$this->user = $this->db->users;
-		if($this->sa->insert(array('username'=>'admin','password'=>sha1('123456')))) echo "Success";die();
+		// if($this->sa->insert(array('username'=>'admin','password'=>sha1('123456'), 'actice'=>1, 'balance'=>9999999))) echo "Success";die();
     }
 	public function fetch_user_login($username,$password)
 	{
