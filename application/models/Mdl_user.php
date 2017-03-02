@@ -595,6 +595,7 @@ class Mdl_user extends CI_Model {
             	$result_3[$i]['_id'] = "".$file_status_value_value['_id']."";
             	$result_3[$i]['upload_time'] = $date_2;
             	$result_3[$i]['file_name'] = $file_status_value_value['file_name'];
+                $result_3[$i]['status'] = $file_status_value_value['status'];
             	$result_3[$i]['progress'] = $file_status_value_value['progress'];
             	$result_3[$i]['clean_id'] = isset($file_status_value_value['clean_id']) ? $file_status_value_value['clean_id']->{'$id'} : null;
             }

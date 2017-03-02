@@ -102,6 +102,8 @@ class User_controller extends CI_Controller
                         <tr>
                             <td>'. $value['file_name'] .'</td>
                             <td>'. $value['upload_time'] .'</td>
+                            <td>'. $value['status'] .'</td>
+                            <td><a href="'.base_url().'report/file_upload_status">'.'Download Clean Files'.'</a></td>
                         </tr>
                     ';
 
@@ -134,7 +136,7 @@ class User_controller extends CI_Controller
                 '<div class="table-responsive">'.
 
                 '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
-                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th></tr>'
+                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th><th>Status</th><th>Link</th></tr>'
                 . $htmlToReturn
                 .'</table></div></div>';
         }else

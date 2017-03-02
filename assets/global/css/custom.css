@@ -248,3 +248,14 @@
 {
 	display:none !important;
 }
+
+@media screen and (min-width: 687px) {
+    .downCleanLink {
+        position: absolute;
+        float: none !important;
+        width: 100%;
+        display: block !important;
+        padding: 10px 250px !important;
+        text-align: center;
+    }
+}

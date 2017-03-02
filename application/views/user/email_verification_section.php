@@ -33,6 +33,9 @@
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files Currently Processing
                 </div>
+                <div class="caption downCleanLink">
+                    <a href="<?php echo base_url(); ?>">Download Clean Files</a>
+                </div>
             </div>
             <div class="portlet-body" id="file_process_progress_container" style="height: 150px;overflow: auto;">
                 <div class="row">
