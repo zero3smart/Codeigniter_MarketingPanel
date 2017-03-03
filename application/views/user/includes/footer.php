@@ -1668,65 +1668,60 @@
             $(".progress-bar").removeClass("progress-bar-warning");
             $(".progress-bar").addClass("progress-bar-success");
         }
-        $(".progress-bar").css({"width": "0%"});
-        $(".progress-bar").html("");
+        /*    window.onload = function () {
+         //Check the support for the File API support
+         if (window.File && window.FileReader && window.FileList && window.Blob) {
+         */
+        function fn_contact_upload_file() {
+            // event.preventDefault();
+            global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
+            global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
+            global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
 
 
-    }
-    /*    window.onload = function () {
-     //Check the support for the File API support
-     if (window.File && window.FileReader && window.FileList && window.Blob) {
-     */
-    function fn_contact_upload_file() {
-        //event.preventDefault();
-        global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
-        global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
-        global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
+            //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
+
+            set_column_number = document.getElementById("set_column_number").value;
+            set_column_number = parseInt(set_column_number);
+            if (isNaN(set_column_number))
+                set_column_number = 0;
+            var fileSelected = document.getElementById('contact_upload_file');
+            //Set the extension for the file
+            var fileExtension = 'application/vnd.ms-excel';
+            var fileExtension_2 = 'text/csv';
+            var fileExtension_3 = 1;
 
 
-        //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
-
-        set_column_number = document.getElementById("set_column_number").value;
-        set_column_number = parseInt(set_column_number);
-        if (isNaN(set_column_number))
-            set_column_number = 0;
-        var fileSelected = document.getElementById('contact_upload_file');
-        //Set the extension for the file
-        var fileExtension = 'application/vnd.ms-excel';
-        var fileExtension_2 = 'text/csv';
-        var fileExtension_3 = 1;
+            //Get the file object
+            var fileTobeRead = fileSelected.files[0];
 
 
-        //Get the file object
-        var fileTobeRead = fileSelected.files[0];
+            //Check of the extension match
 
+            if (fileExtension_3 == 1) {
+                //Initialize the FileReader object to read the 2file
+                var fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    var fileContents = document.getElementById('filecontents');
+                    fileContents_data_array = [];
+                    fileContents_data_array = fileReader.result.split("\n");
+                    fileContents_data_str = "";
+                    position_track = [];
+                    get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
+                    data_for_serial = [];
+                    data_for_serial = fileContents_data_array[0].split(',');
+                    for (i = 1; i <= data_for_serial.length; i++) {
 
-        //Check of the extension match
-
-        if (fileExtension_3 == 1) {
-            //Initialize the FileReader object to read the 2file
-            var fileReader = new FileReader();
-            fileReader.onload = function (e) {
-                var fileContents = document.getElementById('filecontents');
-                fileContents_data_array = [];
-                fileContents_data_array = fileReader.result.split("\n");
-                fileContents_data_str = "";
-                position_track = [];
-                get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
-                data_for_serial = [];
-                data_for_serial = fileContents_data_array[0].split(',');
-                for (i = 1; i <= data_for_serial.length; i++) {
-
-                    get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
-                }
-                get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                if (fileContents_data_array.length > 11)
-                    loop_length = 11;
-                else
-                    loop_length = fileContents_data_array.length;
-                for (i = 0; i < loop_length; i++) {
-
-                    get_data_from_csv_file = get_data_from_csv_file + '<tr>';
+                        get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
+                    }
+                    get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                    if (fileContents_data_array.length > 11)
+                        loop_length = 11;
+                    else
+                        loop_length = fileContents_data_array.length;
+                    for (i = 0; i < loop_length; i++) {
+                    try{
+                        get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
                     fileContents_data_array_2 = [];
                     fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
@@ -1743,41 +1738,108 @@
 
                         test = fileContents_data_array_2[j];
 
-                        test = test.replace(" ", '');
-                        var isnum = validate_email(test);
+                            test = test.replace("(", '');
+                                test = test.replace(")", '');
+                                test = test.replace("#", '');
+                                test = test.replace("-", '');
+                                test = test.replace("+", '');
+                                test = test.replace(" ", '');
+                                var isnum = /^\d+$/.test(test);
+                            var isnum = /^\d+$/.test(test);
 
-                        if (isnum) {
-                            position_track[i] = j + 1;
-                            console.log(position_track[i]);
+                            if (isnum) {
+                                position_track[i] = j + 1;
+                                // console.log(position_track[i]);
+                            }
+
+                            if (i > 0)
+                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
+                            else
+                                get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
+                            //if(fileContents_data_array_2[j].length )
                         }
 
-                        if (i > 0)
-                            get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
-                        else
-                            get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
-                        //if(fileContents_data_array_2[j].length )
+
+                        get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                        }
+                        catch(Exception)
+                        {
+
+                        }
+                    }
+                    position_track_str = position_track.join(",");
+
+
+
+
+
+
+                    var test_column = position_track[1];
+                    var test_column_check = 0;
+
+
+                    var uniqueFn = function(value, index, self) {
+                        return self.indexOf(value) === index;
+                    };
+
+                    var positioin_ob = {};
+
+                    for(var i = 0; i< position_track.length; i++) {
+                        if(typeof(position_track[i]) == 'number') {
+                            if(!positioin_ob[position_track[i]]) {
+                                positioin_ob[position_track[i]] = 1;
+                            }
+                            else {
+                                positioin_ob[position_track[i]] = positioin_ob[position_track[i]] + 1;
+                            }
+
+                        }
                     }
 
+                    var maxOccurence = -1;
 
-                    get_data_from_csv_file = get_data_from_csv_file + '</tr>';
-                }
-                position_track_str = position_track.join(",");
-                //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
-                test_column = position_track[1];
-                test_column_check = 0;
-                for (i = 1; i < position_track.length; i++) {
-                    if (position_track[i] != false) {
-                        if (test_column == position_track[i])
-                            test_column_check = position_track[i];
+
+                    for(var key in positioin_ob) {
+                        if(maxOccurence < positioin_ob[key]) {
+                            maxOccurence = positioin_ob[key];
+                            test_column_check = key;
+                        }
+                    }
+
+                    // for time being...
+                    test_column = true;
+                    test_column_check=1;
+
+
+
+
+
+                    //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
+                    /*test_column = position_track[1];
+                    test_column_check = 0;
+                    for (i = 1; i < position_track.length; i++) {
+                        if (position_track[i] != false) {
+                            if (test_column == position_track[i])
+                            {
+                                console.log(test_column);
+                                test_column_check = position_track[i];
+                                break;
+                                }
+                            else {
+                                test_column_check = 0;
+                                break;
+                            }
+                        }
                         else {
                             test_column_check = 0;
                             break;
                         }
-                    }
-                    else {
-                        test_column_check = 0;
-                        break;
-                    }
+
+                    }*/
+                    /*console.log(test_column);
+                    console.log('here');*/
+                    uploadable = 0;
+                    have_balance = 0;
 
                 }
                 console.log('here');
@@ -1789,18 +1851,57 @@
                 else
                     fileContents_data_array_count = fileContents_data_array.length - 1;
 
-                if (fileContents_data_array_count <= global_total_usable_credit)
-                    have_balance = 1;
-
-                if (set_column_number == 0) {
-                    if (test_column_check != 0) {
-                        document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain emails in column ' + test_column_check;
-                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct email column here : ';
+                    if (set_column_number == 0) {
+                        if (test_column_check != 0) {
+                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain numbers in column ' + test_column_check;
+                            document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
+                            document.getElementById("set_column_number").value = test_column_check;
+                            document.getElementById("set_column_number_2").value = test_column_check;
+                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                            $(".show_file_upload_button").slideDown("slow");
+                            uploadable = 1;
+                        }
+                        else {
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("set_csv_files_total_row").value = 0;
+                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Numbers.';
+                            document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                            document.getElementById("set_column_number").value = '';
+                            document.getElementById("set_column_number_2").value = '';
+                        }
+                    }
+                    else if (set_column_number == test_column_check) {
+                        document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain Numbers in column ' + test_column_check;
+                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
                         document.getElementById("set_column_number").value = test_column_check;
                         document.getElementById("set_column_number_2").value = test_column_check;
-                        document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
                         $(".show_file_upload_button").slideDown("slow");
                         uploadable = 1;
+                    }
+                    else {
+                        document.getElementById("set_csv_files_total_row").value = 0;
+                        $(".show_file_upload_button").slideUp("slow");
+                        document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
+                        document.getElementById("command_part").innerHTML = 'Please write here the Number\'s column number again : ';
+                        document.getElementById("set_column_number").value = '';
+                        document.getElementById("set_column_number_2").value = '';
+                    }
+
+                    if (uploadable == 1) {
+                        if (have_balance == 0) {
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, Sorry You do not have sufficient credit to process this file.";
+                        }
+                        else {
+                            remains_credit = global_balance;
+                            if (fileContents_data_array_count > global_daily_limit_left)
+                                remains_credit = global_total_usable_credit - fileContents_data_array_count;
+
+                            $(".show_file_upload_button").slideDown("slow");
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
+
+                        }
                     }
                     else {
                         $(".show_file_upload_button").slideUp("slow");
@@ -1842,14 +1943,40 @@
                         $(".show_file_upload_button").slideDown("slow");
                         document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Emails</b>, You will have " + remains_credit + " credits after this process.";
 
-                    }
-                }
-                //fileContents.innerText = position_track_str;
-                get_data_from_csv_file = get_data_from_csv_file + '</table>';
+            //fileSelected.addEventListener('change', function (e) {
+        }
+        /*
+         else {
+         alert("Files are not supported");
+         }
+         }*/
+        function fn_file_process_progress() {
+            console.log("fn_file_process_progress");
+            console.log(base_url);
+            $.ajax({
 
-                document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
-                if (test_column_check > 0) {
-                    $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
+                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_file_process_progress', // Url to which the request is send
+                type: "GET",
+                //dataType: "JSON",
+                success: function (progress) {
+                    /*progress = parseFloat(progress);
+                     if(isNaN(progress))
+                     progress = 0;
+                     if(progress > 0)
+                     progress_degree = (progress * 180)/100;
+                     console.log(progress +' | '+progress_degree);
+
+                     $("#file_progress_circle").html(parseInt(progress)+"%");
+                     $(".file_progress_down").css({"transform":"rotate("+progress_degree+"deg)"});
+
+                     //setTimeout(function() {fn_file_process_progress(file_id,validity);}, 1000);
+
+                     for(var i=0;i<progress.length;i++)
+                     {
+                     console.log(progress[i]['_id']);
+                     }*/
+                    $(".file_progress_row_all").html(progress);
+                    //console.log(progress);
                 }
                 $(".get_data_from_csv_file_container").slideDown("slow");
                 $("#show_contacts_status_at_file").slideDown("slow");
@@ -1924,11 +2051,14 @@
 
     }
 
-    $("#contact_upload_form").on('submit', (function (event) {
-            event.preventDefault();
-
-            url_ = $(this).attr("action");
-            send_form_data = new FormData(this);
+              //  url_ = $(this).attr("action");
+                send_form_data = new FormData(this);
+                //console.log(url_);
+                url_ = '<?php echo base_url();?>User_controller/upload_phone_file'
+                var files = document.getElementById("contact_upload_file").files;
+                file_size = parseInt(files[0].size);
+                if (isNaN(file_size))
+                    file_size = 0;
 
             var files = document.getElementById("contact_upload_file").files;
             file_size = parseInt(files[0].size);
@@ -1969,43 +2099,34 @@
                                                 $(".progress-bar").html("File upload completed. Preparing file for processing.");
                                             }
                                         }
-                                    }, false);
-                                    //Download progress
-                                    xhr.addEventListener("progress", function (evt) {
-                                        if (evt.lengthComputable) {
-                                            var percentComplete = (evt.loaded / evt.total) * 100;
-                                            percentComplete = parseInt(percentComplete);
-                                            if (percentComplete > 80) percentComplete = percentComplete - 1;
-                                            //Do something with download progress
-                                            $(".progress-bar").css({"width": percentComplete + "%"});
-                                        }
-                                    }, false);
-                                    return xhr;
-                                },
-                                url: url_, // Url to which the request is send
-                                type: "POST",             // Type of request to be send, called as method
-                                data: send_form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-
-                                contentType: false,       // The content type used when sending data to the server.
-                                cache: false,             // To unable request pages to be cached
-                                processData: false,        // To send DOMDocument or non processed data file it is set to false
-
-                                success: function (result)   // A function to be called if request succeeds
-                                {
-                                    console.log(result);
-                                    //document.getElementById("response_test").innerHTML = result;
-                                    result_array = [];
-                                    result_array = result.split('/');
-                                    if ($(".progress-bar").hasClass("progress-bar-success"));
-                                    {
-                                        $(".progress-bar").html("");
-                                        $(".progress-bar").css({"width": "0%"});
-                                        $(".get_data_from_csv_file_container").slideUp("slow");
-                                        $("#show_contacts_status_at_file").slideUp("slow");
-                                        $(".show_file_upload_button").slideUp("slow");
-                                        $(".file_details").slideUp("slow");
-                                        //$(".progress-bar").removeClass("progress-bar-success");
-                                        //$(".progress-bar").addClass("progress-bar-warning");
+                                        //fn_file_process_progress(result_array[1],1);
+                                        //console.log(result);
+                                        //console.log("called fn_file_process_progress");
+                                        alert(result_array[0]);
+                                    },
+                                    complete: function (result) {
+                                            if (result.responseText.substring(0, 5) == 'Sorry')
+                                            {
+                                                console.log('Sorry');
+                                                
+                                            }
+                                            if (result.responseText.substring(0, 12) == 'Successfully')
+                                            {
+                                                fn_file_process_progress();
+                                                console.log('Successfully');
+                                                  $.ajax({
+                                                 type: 'GET',
+                                                 dataType: 'JSON',
+                                                    data: {
+                                                    name: files[0].name
+                                                    },
+                                                url: '<?php echo base_url();?>User_controller/processFile',
+                                                success: function (result) {
+                                                    console.log(result);
+                                                    fn_file_process_progress();
+                                                    }
+                                                });
+                                            }
                                     }
                                     //fn_file_process_progress(result_array[1],1);
                                     //console.log(result);
@@ -2033,6 +2154,167 @@
         })
     );
     </script>
+      <script type="text/javascript">
+     function getInputSelection(el) {
+            var start = 0, end = 0, normalizedValue, range,
+                textInputRange, len, endRange;
+
+            if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+                start = el.selectionStart;
+                end = el.selectionEnd;
+            } else {
+                range = document.selection.createRange();
+
+                if (range && range.parentElement() == el) {
+                    len = el.value.length;
+                    normalizedValue = el.value.replace(/\r\n/g, "\n");
+
+                    // Create a working TextRange that lives only in the input
+                    textInputRange = el.createTextRange();
+                    textInputRange.moveToBookmark(range.getBookmark());
+
+                    // Check if the start and end of the selection are at the very end
+                    // of the input, since moveStart/moveEnd doesn't return what we want
+                    // in those cases
+                    endRange = el.createTextRange();
+                    endRange.collapse(false);
+
+                    if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+                        start = end = len;
+                    } else {
+                        start = -textInputRange.moveStart("character", -len);
+                        start += normalizedValue.slice(0, start).split("\n").length - 1;
+
+                        if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+                            end = len;
+                        } else {
+                            end = -textInputRange.moveEnd("character", -len);
+                            end += normalizedValue.slice(0, end).split("\n").length - 1;
+                        }
+                    }
+                }
+            }
+
+            return {
+                start: start,
+                end: end
+            };
+        }
+
+        function offsetToRangeCharacterMove(el, offset) {
+            return offset - (el.value.slice(0, offset).split("\r\n").length - 1);
+        }
+
+        function setInputSelection(el, startOffset, endOffset) {
+            if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+                el.selectionStart = startOffset;
+                el.selectionEnd = endOffset;
+            } else {
+                var range = el.createTextRange();
+                var startCharMove = offsetToRangeCharacterMove(el, startOffset);
+                range.collapse(true);
+                if (startOffset == endOffset) {
+                    range.move("character", startCharMove);
+                } else {
+                    range.moveEnd("character", offsetToRangeCharacterMove(el, endOffset));
+                    range.moveStart("character", startCharMove);
+                }
+                range.select();
+            }
+        }
+
+
+        function instant_check_numbers_validation(numbers) {
+
+            numbers = numbers.replace(/[^\d,]/g, '');
+            var numbers_array = numbers.split(",");
+            var check = null;
+            var keep_invalid_data = "";
+
+            if (numbers.length > 0) {
+                for (var i = 0; i < numbers_array.length; i++) {
+                    if (numbers_array[i].length == 11 || numbers_array[i].length == 10) {
+                        if (numbers_array[i].length == 11) {
+                            check = numbers_array[i].substring(0, 1);
+                            if (check != "1")
+                                keep_invalid_data = keep_invalid_data + '<span>' + numbers_array[i] + '</span>';
+                        }
+                    }
+                    else {
+                        keep_invalid_data = keep_invalid_data + '<span>' + numbers_array[i] + '</span>';
+                    }
+                }
+            }
+            console.log(keep_invalid_data);
+            return keep_invalid_data;
+        }
+
+    function instant_check_field_validation() {
+
+            var t = document.getElementById("instant_check_field");
+            var sel = getInputSelection(t);
+            var data = t.value;
+            data = data.replace(/[^\d,]/g, '');
+            t.value = data;
+            setInputSelection(t, sel.end, sel.end);
+
+        }
+        $("#instant_check_number_form").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $("#instant_check_field_respose_con").slideUp("slow");
+            var submit_btn = form.find('.submit_btn');
+            var submit_btn_text = submit_btn.html();
+            submit_btn.html('<i class="fa fa-spin fa-circle-o-notch"></i> ' + submit_btn_text);
+            submit_btn.attr('type', 'button').addClass('disabled');
+            var instant_check_field = document.getElementById("instant_check_field").value;
+            var data_number = instant_check_field;
+            var data = {
+                number: data_number
+            };
+            console.log("Printing data being sent to API...");
+            console.log(data);
+
+            // console.log(data_email);
+            console.log("Call start...");
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                data: data,
+                //url: 'http://205.134.243.198:3001/search',
+                //url: window.location.protocol + "//" + window.location.host + "/" + 'sendInstantRequest',
+                url: '<?php echo base_url(); ?>User_controller/sendInstantRequest',
+                success: function (result) {
+                    //alert(data);
+                    submit_btn.html(submit_btn_text);
+                    submit_btn.attr('type', 'submit').removeClass('disabled');
+                    console.log("Printing result...");
+                    console.log(result);
+                    //alert(result);
+
+                    // var result_json = JSON.stringify(result, undefined, 4);
+                    var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+
+                    //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
+                    document.getElementById("instant_check_field_request").innerHTML = 'Number: '+ data_number;
+                    document.getElementById("instant_check_field_response").innerHTML = 'Valid Number: ' + result_json;
+                    custom_spinner_hide();
+                    $("#instant_check_field_respose_con").slideDown("slow");
+
+                }, 
+                error: function(a, b, c) {
+                    console.log("Error occured in sendInstantRequest ...");
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                }
+            });
+
+
+            // console.log("here");
+        });
+    </script>
+
 <?php } ?>
     <!-- Carrier Lookup Section Footer JS End-->
 
@@ -2590,7 +2872,390 @@ if ($view['section'] == 'file_upload_status') {
 }
 ?>
 
+<?php
+if ($view['section'] == 'phone_file_upload_status') {
+    ?>
+    <script src="<?php echo base_url(); ?>assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"
+            type="text/javascript"></script>
 
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/highchart.js"></script>
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/highcharts-3d.js"></script>
+    <script src="<?php echo base_url(); ?>assets/pages/scripts/highchart/exporting.js"></script>
+
+    <script type="text/javascript"
+            src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
+
+
+    <!--<script type="text/javascript" src="http://www.nihilogic.dk/labs/canvas2image/base64.js"></script>
+
+
+
+    <script type="text/javascript" src="http://www.nihilogic.dk/labs/canvas2image/canvas2image.js"></script>-->
+
+
+    <script type="text/javascript">
+        /*
+         $(".downalod_as_image").click(function(){
+         container = $(this).attr("data-container");
+         $(function() {
+         html2canvas($(container), {
+         onrendered: function(canvas) {
+         theCanvas = canvas;
+         //document.body.appendChild(canvas);
+         img_link = canvas.toDataURL("image/png");
+         //$("#img-out").append(img);
+         // Clean up
+         //document.body.removeChild(canvas);
+         $("#download_preview_image").attr("src",img_link);
+         }
+         });
+         });
+
+         });
+         */
+
+
+        $(function () {
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                return {
+                    radialGradient: {
+                        cx: 0.5,
+                        cy: 0.3,
+                        r: 0.7
+                    },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+        });
+
+        function show_validation_pie_chart(validation_chart_data, validation_chart_data_title, container) {
+            /*
+             var validation_chart_data_array_genarate = [];
+             for(i=0;i<validation_chart_data.length;i++)
+             {
+             validation_chart_data_array_genarate[i] = [];
+             validation_chart_data_array_genarate[i]
+             }
+             */
+
+            $(container).highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: validation_chart_data_title
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'File Demograph',
+                    data: validation_chart_data
+
+                    /*[
+                     {
+                     name: 'Failed',
+                     y: failed,
+                     sliced: true,
+                     selected: true
+                     },
+                     [validation_chart_data[0][0], validation_chart_data[0][1]],
+                     [validation_chart_data[1][0], validation_chart_data[1][1]],
+                     [validation_chart_data[2][0], validation_chart_data[2][1]],
+                     //['SMTP Not Exists', validation_chart_data[2][1]-validation_chart_data[13][1]],
+                     [validation_chart_data[3][0], validation_chart_data[3][1]],
+                     [validation_chart_data[4][0], validation_chart_data[4][1]],
+                     [validation_chart_data[5][0], validation_chart_data[5][1]],
+                     [validation_chart_data[6][0], validation_chart_data[6][1]],
+                     [validation_chart_data[7][0], validation_chart_data[7][1]],
+                     [validation_chart_data[8][0], validation_chart_data[8][1]],
+                     [validation_chart_data[9][0], validation_chart_data[9][1]],
+                     [validation_chart_data[11][0], validation_chart_data[11][1]],
+                     [validation_chart_data[12][0], validation_chart_data[12][1]]
+                     ]
+                     */
+                }]
+            });
+
+        }
+
+        $(window).load(function () {
+            for (i = 0; i < validation_chart_data_conatiner.length; i++) {
+                console.log("created " + validation_chart_data_conatiner[i]);
+                show_validation_pie_chart(validation_chart_data[i], validation_chart_data_title[i], validation_chart_data_conatiner[i]);
+            }
+        });
+        $(window).resize(function () {
+            setTimeout(function () {
+                for (i = 0; i < validation_chart_data_conatiner.length; i++) {
+                    console.log("Resized " + validation_chart_data_conatiner[i]);
+                    show_validation_pie_chart(validation_chart_data[i], validation_chart_data_title[i], validation_chart_data_conatiner[i]);
+                    //show_validation_pie_chart(validation_chart_data_total[i],validation_chart_data_successful[i],validation_chart_data_failed[i],validation_chart_data_invalid[i],validation_chart_data_conatiner[i]);
+                }
+            }, 100);
+
+        });
+
+        function show_pie_chart(file_name, id, total, successful, failed, invalid, invalid_from_api, carrier_json, carrier_type_json, state_json, city_json, country_json, event) {
+
+
+            event.preventDefault();
+
+            console.log(carrier_json);
+            //carrier_json_data = document.getElementById(carrier_json).innerHTML;
+
+            //carrier_jsonObj = $.parseJSON(carrier_json_data);
+            //carrier_jsonObj = JSON.parse(carrier_json_data);
+            //console.log(carrier_json_data);
+            $("#chart_modal").modal("show");
+            document.getElementById("carrier_chart_container").innerHTML = "";
+            document.getElementById("carrier_type_chart_container").innerHTML = "";
+            document.getElementById("state_chart_container").innerHTML = "";
+            document.getElementById("city_chart_container").innerHTML = "";
+
+            $('#chart_modal').on('shown.bs.modal', function () {
+//$(this).parent().animate({scrollTop:$(this).offset().top+"px"},500);
+//$(this).modal("show");
+                // Radialize the colors
+
+
+                // Build the chart
+                document.getElementById('chart_file_name').innerHTML = file_name;
+                document.getElementById('chart_total').innerHTML = total;
+                document.getElementById('chart_successful').innerHTML = successful;
+                document.getElementById('chart_failed').innerHTML = failed;
+
+                $('#contact_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Contacts Validation Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: [
+                            {
+                                name: 'Successful',
+                                y: successful
+                            },
+                            {
+                                name: 'Invalid',
+                                y: invalid
+                            },
+                            {
+                                name: 'Invalid from API',
+                                y: invalid_from_api
+                            }
+                        ]
+
+
+                    }]
+                });
+
+
+                $('#carrier_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Carrier Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: carrier_json
+
+
+                    }]
+                });
+
+
+                $('#carrier_type_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Carrier Type Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: carrier_type_json
+
+
+                    }]
+                });
+
+
+                $('#state_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'State Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: state_json
+
+
+                    }]
+                });
+
+
+                $('#city_chart_container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'City Chart'
+                    },
+                    tooltip: {
+                        pointFormat: '<b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                },
+                                connectorColor: 'silver'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        data: city_json
+
+
+                    }]
+                });
+
+
+            });
+        }
+        /*
+         { name: 'Successful', y: 75 },
+         {
+         name: 'Invalid',
+         y: 20
+         },
+         {
+         name: 'Invalid from API',
+         y: 15
+         }
+         */
+
+    </script>
+    <?php
+}
+?>
 <?php
 if ($view['section'] == 'contact_upload_section') {
     ?>
@@ -2764,7 +3429,6 @@ if ($view['section'] == 'contact_upload_section') {
 
             console.log("here");
         });
-
     </script>
 
 <?php

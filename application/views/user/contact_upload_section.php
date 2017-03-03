@@ -520,7 +520,3 @@ if ($view['msg'] != "")
         </div>
     </div>
 </div>
-</div>
-</div>
-
-

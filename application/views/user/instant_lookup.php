@@ -10,7 +10,7 @@
             <div class="portlet-body" id="group_list">
 	            <div class="row">
 	            	<div class="col-xs-12">
-                        <form id="instant_check_form">
+                        <form id="instant_check_number_form" action="<?php echo base_url(); ?>sendInstantRequest" method="POST">
                             <textarea  class="col-xs-12 col-md-9" id="instant_check_field" onkeyup="instant_check_field_validation()" placeholder="Write Numbers here . . . Example (19419622134,12022002994)"></textarea>
                             <div class="col-xs-12 col-md-3 nopadding text-right"><button  type="submit" class="btn dark col-xs-12 instant_check_btn" id="">Check</button></div>
                         </form>

@@ -238,149 +238,184 @@ if ($current_package) {
         ?>
         <?php
 
-        if ($view['section'] == 'dashboard') {
-            include_once 'dashboard_content.php';
-        }
+                        if($view['section'] == 'dashboard')                         
+                        {
+                            include_once'dashboard_content.php';
+                        }
 
-        if ($view['section'] == 'activation_token') {
-            include_once 'activate_account.php';
-        }
+                        if($view['section'] == 'activation_token')
+                        {
+                            include_once'activate_account.php';
+                        }
 
-        if ($view['section'] == 'packages') {
-            include_once 'package.php';
-        }
+                        if($view['section'] == 'packages')                         
+                        {
+                            include_once'package.php';
+                        }
 
-        if ($view['section'] == 'profile') {
-            include_once 'profile.php';
-        }
+                        if($view['section'] == 'profile')                         
+                        {
+                            include_once'profile.php';
+                        }
 
-        if ($view['section'] == 'contact_upload_section') {
-            include_once 'contact_upload_section.php';
+                        if($view['section'] == 'contact_upload_section')
+                        {
+                            include_once'contact_upload_section.php';
+                    
+                        }
+                        
+                        if($view['section'] == 'email_verification_section')
+                        {
+                            include_once'email_verification_section.php';
+                    
+                        }                                                                                                
+                        
+                        if($view['section'] == 'phone_upload_section')
+                        {
+                            include_once'phone_upload_section.php';                    
+                        }
+                        
+                        if($view['section'] == 'data_append_section')
+                        {
+                            include_once'data_append_section.php';                    
+                        }
 
-        }
+                        if($view['section'] == 'file_upload_status')
+                        {
+                            include_once'file_upload_status.php';
+                        }     
 
-        if ($view['section'] == 'email_verification_section') {
-            include_once 'email_verification_section.php';
+                        
+                        if($view['section'] == 'file_status')
+                        {
+                            include_once'email_lookup_file_status.php';
+                        }     
 
-        }
+                        
+                        if($view['section'] == 'instant_lookup')
+                        {
+                            include_once'instant_lookup.php';
+                        }     
 
-        if ($view['section'] == 'phone_upload_section') {
-            include_once 'phone_upload_section.php';
-        }
+                        
+                        if($view['section'] == 'report_instant_lookup')
+                        {
+                            include_once'report_instant_lookup.php';
+                        }     
 
-        if ($view['section'] == 'data_append_section') {
-            include_once 'data_append_section.php';
-        }
+                        if($view['section'] == 'package_stripe_form')
+                        {
+                            include_once'package_stripe_form.php';
+                        }  
 
-        if ($view['section'] == 'file_upload_status') {
-            include_once 'file_upload_status.php';
-        }
+                        if($view['section'] == 'buy_credit')
+                        {
+                            include_once'buy_credit.php';
+                        }     
+
+                        if($view['section'] == 'report_credit_expense')
+                        {
+                            include_once'report_credit_expense.php';
+                        }
+
+                        if($view['section'] == 'report_credit_expense_by_date')
+                        {
+                            include_once'report_credit_expense_by_date.php';
+                        }
+
+                        if($view['section'] == 'report_credit_buy')
+                        {
+                            include_once'report_credit_buy.php';
+                        }
+
+                        if($view['section'] == 'report_credit_buy_by_date')
+                        {
+                            include_once'report_credit_buy_by_date.php';
+                        }
+
+                         if($view['section'] == 'report_daily_limit_expense')
+                        {
+                            include_once'report_daily_limit_expense.php';
+                        }
+
+                        if($view['section'] == 'report_daily_limit_expense_by_date')
+                        {
+                            include_once'report_daily_limit_expense_by_date.php';
+                        }
+
+                        if($view['section'] == 'report_package_buy')
+                        {
+                            include_once'report_package_buy.php';
+                        }
+
+                        if($view['section'] == 'report_package_buy_by_date')
+                        {
+                            include_once'report_package_buy_by_date.php';
+                        }
+
+                        if($view['section'] == 'report_invoice')
+                        {
+                            include_once'report_invoice.php';
+                        }
+                        if($view['section'] == 'report_invoice_by_date')
+                        {
+                            include_once'report_invoice_by_date.php';
+                        }
+                        
+
+                        if($view['section'] == 'api_lookup_file')
+                        {
+                            include_once'api_lookup_file.php';
+                        }
+                        if($view['section'] == 'api_download_lookup_file')
+                        {
+                            include_once'api_download_lookup_file.php';
+                        }
+                        if($view['section'] == 'api_numbers_lookup')
+                        {
+                            include_once'api_numbers_lookup.php';
+                        }
+                        if($view['section'] == 'api_lookup_file_status')
+                        {
+                            include_once'api_lookup_file_status.php';
+                        }
+                        
+                        if($view['section'] == 'pricing_contact_us')
+                        {
+                            include_once'pricing_contact_us.php';
+                        }
+                        if($view['section'] == 'failed_upload')
+                        {
+                            include_once'failed_upload.php';
+                        }
+                        if($view['section'] == 'phone_file_upload_status')
+                        {
+                            include_once'phone_file_upload_status.php';
+                        }
+                    
 
 
-        if ($view['section'] == 'file_status') {
-            include_once 'email_lookup_file_status.php';
-        }
 
-
-        if ($view['section'] == 'instant_lookup') {
-            include_once 'instant_lookup.php';
-        }
-
-
-        if ($view['section'] == 'report_instant_lookup') {
-            include_once 'report_instant_lookup.php';
-        }
-
-        if ($view['section'] == 'package_stripe_form') {
-            include_once 'package_stripe_form.php';
-        }
-
-        if ($view['section'] == 'buy_credit') {
-            include_once 'buy_credit.php';
-        }
-
-        if ($view['section'] == 'report_credit_expense') {
-            include_once 'report_credit_expense.php';
-        }
-
-        if ($view['section'] == 'report_credit_expense_by_date') {
-            include_once 'report_credit_expense_by_date.php';
-        }
-
-        if ($view['section'] == 'report_credit_buy') {
-            include_once 'report_credit_buy.php';
-        }
-
-        if ($view['section'] == 'report_credit_buy_by_date') {
-            include_once 'report_credit_buy_by_date.php';
-        }
-
-        if ($view['section'] == 'report_daily_limit_expense') {
-            include_once 'report_daily_limit_expense.php';
-        }
-
-        if ($view['section'] == 'report_daily_limit_expense_by_date') {
-            include_once 'report_daily_limit_expense_by_date.php';
-        }
-
-        if ($view['section'] == 'report_package_buy') {
-            include_once 'report_package_buy.php';
-        }
-
-        if ($view['section'] == 'report_package_buy_by_date') {
-            include_once 'report_package_buy_by_date.php';
-        }
-
-        if ($view['section'] == 'report_invoice') {
-            include_once 'report_invoice.php';
-        }
-        if ($view['section'] == 'report_invoice_by_date') {
-            include_once 'report_invoice_by_date.php';
-        }
-
-
-        if ($view['section'] == 'api_lookup_file') {
-            include_once 'api_lookup_file.php';
-        }
-        if ($view['section'] == 'api_download_lookup_file') {
-            include_once 'api_download_lookup_file.php';
-        }
-        if ($view['section'] == 'api_numbers_lookup') {
-            include_once 'api_numbers_lookup.php';
-        }
-        if ($view['section'] == 'api_lookup_file_status') {
-            include_once 'api_lookup_file_status.php';
-        }
-
-        if ($view['section'] == 'pricing_contact_us') {
-            include_once 'pricing_contact_us.php';
-        }
-        if ($view['section'] == 'failed_upload') {
-            include_once 'failed_upload.php';
-        }
-
-
-
-        ?>
-    </div>
-    <!-- END CONTENT BODY -->
-</div>
-<!-- END CONTENT -->
-<!-- BEGIN QUICK SIDEBAR -->
-
-<!-- END QUICK SIDEBAR -->
-</div>
-<!-- END CONTAINER -->
-<!-- BEGIN FOOTER -->
-<div class="page-footer">
-    <div class="page-footer-inner"> 2016 &copy; Verify Rocket.
-    </div>
-    <div class="scroll-to-top">
-        <i class="icon-arrow-up"></i>
-    </div>
-</div>
-<!-- END FOOTER -->
-<!--[if lt IE 9]>
+                        ?>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+            <!-- END CONTENT -->
+            <!-- BEGIN QUICK SIDEBAR -->
+            
+            <!-- END QUICK SIDEBAR -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div class="page-footer">
+            <div class="page-footer-inner"> 2016 &copy; Verify Rocket.
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+        <!-- END FOOTER -->
+        <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
 <script src="../assets/global/plugins/excanvas.min.js"></script>
 <![endif]-->
