@@ -163,6 +163,16 @@ $route['clean_file_download/(:any)'] = 'User_controller/clean_file_download/$1';
 $route['report_file_download/(:any)'] = 'User_controller/report_file_download/$1';    //edited
 $route['smtp_clean_file_download/(:any)'] = 'User_controller/smtp_clean_file_download/$1';    //edited
 
+
+/*************************************************/
+/* BEGIN : Route for Number file report download */
+/*************************************************/
+$route['clean_numberfile_report/(:any)'] = 'User_controller/smtp_clean_numberfile_report/$1';    //edited
+/**************************************************/
+/* // END : Route for Number file report download */
+/**************************************************/
+
+
 $route['report/file_upload_status'] = 'User_controller/file_upload_status';    //edited
 $route['report/file_upload_status_ajax'] = 'User_controller/file_upload_status_ajax';	//edited
 $route['report/file_upload_status/(:any)'] = 'User_controller/file_upload_status/$1';	//edited

@@ -530,6 +530,32 @@ class Mdl_user extends CI_Model {
 		return $result_2;
 	}
 
+
+
+
+	/**********************************************************/
+	/* BEGIN : This function return user's Phone Number files */
+	/**********************************************************/
+	public function fetch_user_phonenumber_file($limit,$start)
+	{
+		$user_id = $this->session->email_lookup_user_id;
+		$result_2 = array();
+		$result = $this->user_file->find(array('user'=>new MongoId($user_id), 'status' => 'processed', 'isphonenumberfile'=>'1'))->limit($limit)->skip($start)->sort(array('_id' => -1));
+		$i=0;
+		foreach ($result as $result_key => $result_value) {
+			$result_2[$i][$result_key] = $result_value;
+			$i++;
+		}
+
+		return $result_2;
+	}
+	/***********************************************************/
+	/* // END : This function return user's Phone Number files */
+	/***********************************************************/
+
+
+
+
 	public function set_status_on_completion($id, $status, $response)
     {
 
@@ -1090,7 +1116,55 @@ class Mdl_user extends CI_Model {
 		
 		return $result;
 	}
+
+
+
+
+
+	/*****************************************************************************/
+	/* BEGIN : This function get User's number file transactions and returns csv */
+	/*****************************************************************************/
+	public function numberfile_lookup_by_id($id)
+	{
+		$user_id = $this->session->email_lookup_user_id;
+		$result = array();
+		$result =  $this->api_log->findOne(array('file_id'=>new MongoId($id)));
+
+		$columns = "";
+		$all_values = "";
+		$i=0;
+		foreach($result["response"] as $single_trans) {
+			$single_values = "";
+			foreach($single_trans["transaction"] as $key => $val) {
+				// echo $key ." = "."\"" .addslashes($val) ."\" ";
+				if($key=="validNumber") {
+					$val = ($val==1) ? "true" : "false";
+				}
+				if($i==0) {
+					// set columns 
+					$columns = (strlen($columns)==0) ? "\"".addslashes($key) ."\"" : ($columns ."," ."\"" .addslashes($key) ."\"");
+				}
+				$single_values = (strlen($single_values)==0) ? "\"" .addslashes($val) ."\"" : ($single_values ."," ."\"" .addslashes($val) ."\"");
+			}
+			// echo "<br><br>";
+			// if($i==0) echo $columns ."<br><br>";
+			// echo $single_values ."<br><br>";
+			$i++;
+			$all_values = (strlen($all_values)==0) ? $single_values : ($all_values ."\n" .$single_values);
+		}
+		$final_result = $columns ."\n" .$all_values;
+		// echo $final_result;
+		// die();
+
+		return array("_id" => $result["_id"],  "final_result" => $final_result);
+	}
+	/******************************************************************************/
+	/* // END : This function get User's number file transactions and returns csv */
+	/******************************************************************************/
 	
+
+
+
 	public function get_all_transaction_by_date($from,$to,$limit,$start)
 	{
 		$user_id = $this->session->email_lookup_user_id;

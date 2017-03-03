@@ -807,7 +807,8 @@ class User_controller extends CI_Controller
                             "process_end_time" => "",
                             "status" => "processing",
                             "progress" => (double)0,
-                            "columnOfNumbers" => $column_number_2
+                            "columnOfNumbers" => $column_number_2,
+                            "isphonenumberfile" => '1'
                         );
 
                         $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
@@ -2053,7 +2054,7 @@ class User_controller extends CI_Controller
 
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-        $data["file_status"] = $this->Mdl_user->fetch_user_file($config["per_page"], $page);
+        $data["file_status"] = $this->Mdl_user->fetch_user_phonenumber_file($config["per_page"], $page);
         // print_r($data["file_status"]);die();
        // print_r($config["per_page"]);die();
         $data["pagination_links"] = $this->pagination->create_links();
@@ -2384,6 +2385,27 @@ class User_controller extends CI_Controller
         //echo str_replace("\n","\",\n",$data);
 
     }
+
+
+    /***********************************************************/
+    /* BEGIN : Function to download User's number file reports */
+    /***********************************************************/
+    public function smtp_clean_numberfile_report($id)
+    {
+
+        $result = $this->Mdl_user->numberfile_lookup_by_id($id);
+        header("Content-type: text/plain");
+        header("Content-Disposition: attachment; filename=" . $result['_id'] . ".csv");
+
+        // do your Db stuff here to get the content into $content
+
+        print_r($result["final_result"]);
+
+    }
+    /************************************************************/
+    /* // END : Function to download User's number file reports */
+    /************************************************************/
+
 
 
     public function instant_lookup_report_download_by_id($id)
