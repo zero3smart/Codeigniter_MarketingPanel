@@ -258,22 +258,36 @@ if ($current_package) {
                             include_once'profile.php';
                         }
 
+
                         if($view['section'] == 'contact_upload_section')
                         {
                             include_once'contact_upload_section.php';
                     
                         }
                         
+
                         if($view['section'] == 'email_verification_section')
                         {
                             include_once'email_verification_section.php';
                     
-                        }                                                                                                
+                        }                                                                                              
+
+
                         
+                        /* ******************************************************/
+                        /* BEGIN : Include main section for contact number page */
+                        /* ******************************************************/
+
                         if($view['section'] == 'phone_upload_section')
                         {
                             include_once'phone_upload_section.php';                    
                         }
+                        /* *******************************************************/
+                        /* // END : Include main section for contact number page */
+                        /* *******************************************************/
+
+
+
                         
                         if($view['section'] == 'data_append_section')
                         {
@@ -388,10 +402,19 @@ if ($current_package) {
                         {
                             include_once'failed_upload.php';
                         }
+
+                        
+                        
+                        /* ********************************************************/
+                        /* BEGIN : Include status section for contact number page */
+                        /* ********************************************************/
                         if($view['section'] == 'phone_file_upload_status')
                         {
                             include_once'phone_file_upload_status.php';
                         }
+                        /* *********************************************************/
+                        /* // END : Include status section for contact number page */
+                        /* *********************************************************/
                     
 
 
