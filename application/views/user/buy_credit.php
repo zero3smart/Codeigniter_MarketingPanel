@@ -3,7 +3,8 @@
         padding: 20px;
     }
 
-    .payment_form_box { /*box-shadow:0px 0px 5px rgba(0,0,0,.8),0px 0px 50px rgba(0,0,0,.2) inset;*/
+    .payment_form_box {
+        /*box-shadow:0px 0px 5px rgba(0,0,0,.8),0px 0px 50px rgba(0,0,0,.2) inset;*/
         background: #fff;
         padding: 35px 25px 0 25px;
     }
@@ -52,30 +53,28 @@
         total_price.value = selectedPrice;
         credit_count.value = selectedCredits;
     }
-    
-    $(document).ready(function(){
+
+    $(document).ready(function () {
         changePrice();
-        $('select[name=payment_type]').change(function(){
-                var tval = $(this).val();
-                var $form = $('#payment-form');
-                if(tval == 'stripe')
-                {
-                    $('.hide_stripe').css('display','');
-                    $('.hide_paypal').css('display','none');
-                    $form.attr('action','<?php echo base_url(); ?>Stripe_payment/checkout_buy_credit');
-                }else if(tval == 'paypal')
-                {
-                    $('.hide_paypal').css('display','');
-                    $('.hide_stripe').css('display','none');
-                    $form.attr('action','<?php echo base_url(); ?>paypal_payment/checkout_buy_credit');
-                }
-          });
-          
-          $('button.paypal_submit').click(function(){
-                var $form = $('#payment-form');
-                // Submit the form:
-	           $form.get(0).submit();
-          });
+        $('select[name=payment_type]').change(function () {
+            var tval = $(this).val();
+            var $form = $('#payment-form');
+            if (tval == 'stripe') {
+                $('.hide_stripe').css('display', '');
+                $('.hide_paypal').css('display', 'none');
+                $form.attr('action', '<?php echo base_url(); ?>Stripe_payment/checkout_buy_credit');
+            } else if (tval == 'paypal') {
+                $('.hide_paypal').css('display', '');
+                $('.hide_stripe').css('display', 'none');
+                $form.attr('action', '<?php echo base_url(); ?>paypal_payment/checkout_buy_credit');
+            }
+        });
+
+        $('button.paypal_submit').click(function () {
+            var $form = $('#payment-form');
+            // Submit the form:
+            $form.get(0).submit();
+        });
     });
 </script>
 
@@ -113,8 +112,9 @@ if ($view['buy'] == 2) {
         ?>
         <div class="col-xs-12 col-md-6 col-md-offset-3 payment_form_box">
             <form action="<?php echo base_url(); ?>Stripe_payment/checkout_buy_credit" method="POST" id="payment-form">
-                <input type="hidden" name="total_price" id="total_price" value="0" />
-                <input type="hidden" name="credit_count" id="credit_count" value="0" />
+                <input type="hidden" name="total_price" id="total_price" value="0"/>
+                <input type="hidden" name="credit_count" id="credit_count" value="0"/>
+
                 <div style="margin-bottom:15px;"><span style="color:red;" class="payment-errors"></span></div>
                 <table class="table">
                     <!--<tr>
@@ -147,16 +147,16 @@ if ($view['buy'] == 2) {
                         <td>Price</td>
                         <td colspan="2">$ <span id="price_during_buy">47</span></td>
                     </tr>
-                    
+
                     <tr>
-			   			<td><span>Payment type</span></td>
-			   			<td colspan="2">
-						   <select id="payment_type" name="payment_type">
+                        <td><span>Payment type</span></td>
+                        <td colspan="2">
+                            <select id="payment_type" name="payment_type">
                                 <option value="stripe" selected="">Credit Card</option>
                                 <option value="paypal">Paypal</option>
                             </select>
-			   			</td>
-			   		</tr>   
+                        </td>
+                    </tr>
 
                     <tr class="hide_stripe">
                         <td><span>Card Number</span></td>
@@ -198,15 +198,19 @@ if ($view['buy'] == 2) {
                     <tr class="hide_stripe">
                         <td colspan="3">
                             <button type="submit" class="col-xs-12 btn btn-lg green submit"><i
-                                        class="fa fa-shopping-cart"></i> Pay
+                                    class="fa fa-shopping-cart"></i> Pay
                             </button>
                         </td>
                     </tr>
-                    
+
                     <tr class="hide_paypal" style="display: none;">
-			   			<td colspan="3"><button type="button" class="col-xs-12 btn btn-lg green paypal_submit"><i class="fa fa-shopping-cart"></i> Pay</button></td>
-			   		</tr>
-                    
+                        <td colspan="3">
+                            <button type="button" class="col-xs-12 btn btn-lg green paypal_submit"><i
+                                    class="fa fa-shopping-cart"></i> Pay
+                            </button>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td colspan="3">
                             <img class="col-xs-12" style="padding:0;"

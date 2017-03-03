@@ -25,7 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="description" />
         <meta content="" name="author" />
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
-       
+
         <?php require_once('includes/header.php');?>
         <style type="text/css">
         .nopadding{padding: 0 !important;}
@@ -62,7 +62,7 @@ License: You must have a valid license purchased only from themeforest(the above
         .login_panel .form-title{font-weight:800;color:#E02F00 !important;width:100%;text-align:center;}
         .login_panel input{border-radius: 2px !important;color:#E02F00;background:#F3F3F4 !important;transition:.5s ease-in;border:1px solid #D1D1D3;padding:15px 15px;height: auto;margin-top:20px !important;}
         .login_panel input:hover,.login_panel input:focus{border:1px solid #E02F00;background:#f6f6f6 !important;box-shadow:0px 0px 2px rgba(0,0,0,.3) !important;}
-        
+
         .login_panel button{border-radius: 2px !important;background:#E02F00 !important;font-weight:bold;border:none;padding:15px 15px;height: auto;margin-top:20px !important;width:100%;}
         .login_panel button:hover{background:#C12901 !important;}
         .login_panel a{color:#999;}
@@ -79,7 +79,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <div class="login_layer_2"></div>
 <div class="login_layer_1"></div>
     <body class="login">
-        
+
         <!-- BEGIN LOGO -->
         <div class="container-fluid nopadding">
         <div class="logo">
@@ -111,24 +111,24 @@ License: You must have a valid license purchased only from themeforest(the above
                     <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" /> </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Password</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> 
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" />
                     <input class="form-control form-control-solid placeholder-no-fix" type="hidden"  value="<?php echo base_url().'dashboard';// echo $request; ?>" name="request" /> </div>
                 <!--<div class="form-group">
                     <a href="">Forgot Password?</a>
                 </div>-->
                 <div class="form-actions">
                     <button type="submit" class="btn green uppercase">Login</button>
-                       
+
                 </div>
-                
+
                 <div class="create-account">
                     <p>
-                      
+
                     </p>
                 </div>
             </form>
             <!-- END LOGIN FORM -->
-           
+
             </div>
         </div>
         </div>

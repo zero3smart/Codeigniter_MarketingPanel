@@ -21,103 +21,102 @@ if ($view['msg'] != "")
 ?>
 <div class="row">
 
-    <script type="text/javascript">
-        validation_chart_data = [];
-        validation_chart_data_total = [];
-        validation_chart_data_successful = [];
-        validation_chart_data_failed = [];
-        validation_chart_data_invalid = [];
-        validation_chart_data_conatiner = [];
-        validation_chart_data_title = [];
-    </script>
-    <?php
-    $i = $serial + 1;
-    $validation_chart_data_counter = 0;
-    foreach ($file_status as $file_status_key => $file_status_value) {
-        foreach ($file_status_value as $file_status_value_key => $file_status_value_value) {
+<script type="text/javascript">
+    validation_chart_data = [];
+    validation_chart_data_total = [];
+    validation_chart_data_successful = [];
+    validation_chart_data_failed = [];
+    validation_chart_data_invalid = [];
+    validation_chart_data_conatiner = [];
+    validation_chart_data_title = [];
+</script>
+<?php
+$i = $serial + 1;
+$validation_chart_data_counter = 0;
+foreach ($file_status as $file_status_key => $file_status_value) {
+    foreach ($file_status_value as $file_status_value_key => $file_status_value_value) {
 
-            /*if (!isset($file_status_value_value['clean_file'])) {
-                echo '<div class="col-xs-12" id="conatiner_full_row_chart_' . $file_status_value_value['_id'] . '">
-                                        <div class="portlet box green">
-                                            <div class="portlet-title">
-                                                <div class="caption">
-                                                    <i class="fa fa-file-text-o"></i>' . $file_status_value_value['file_name'] . ' 
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body" id="group_list">
-                                                <div class="row">
-                                                    <div class="col-md-6 col-md-offset-6 text-right text-danger"><h2>File processing not successful</h2></div>
-                                                </div>  
+        /*if (!isset($file_status_value_value['clean_file'])) {
+            echo '<div class="col-xs-12" id="conatiner_full_row_chart_' . $file_status_value_value['_id'] . '">
+                                    <div class="portlet box green">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-file-text-o"></i>' . $file_status_value_value['file_name'] . '
                                             </div>
                                         </div>
-                                    </div>';
-            } else {*/
+                                        <div class="portlet-body" id="group_list">
+                                            <div class="row">
+                                                <div class="col-md-6 col-md-offset-6 text-right text-danger"><h2>File processing not successful</h2></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+        } else {*/
 
-            echo '
+        echo '
                 <script>
                 validation_chart_data[' . $validation_chart_data_counter . '] = [];
                 </script>
                 ';
-            $date = "";
-            $date_array = array();
-            if(isset($file_status_value_value["result"])) {
-                $summary = $file_status_value_value["result"]["data"]['summary'];
-                if ($summary['endTime'] != "") {
-                    $end_date = explode(" ", $summary['endTime']);
-                    if(is_array($end_date) && count($end_date) > 1) {
-                        $date = date('F j, Y, g:i a', $end_date[1]);
-                    }
+        $date = "";
+        $date_array = array();
+        if (isset($file_status_value_value["result"])) {
+            $summary = $file_status_value_value["result"]["data"]['summary'];
+            if ($summary['endTime'] != "") {
+                $end_date = explode(" ", $summary['endTime']);
+                if (is_array($end_date) && count($end_date) > 1) {
+                    $date = date('F j, Y, g:i a', $end_date[1]);
                 }
             }
-            else {
-                $summary = new stdClass();
-            }
+        } else {
+            $summary = new stdClass();
+        }
 
-            $date_2 = "";
-            $date_2_array = array();
-            if ($file_status_value_value['upload_time'] != "") {
-                $date_2_array = explode(" ", $file_status_value_value['upload_time']);
-                if(is_array($date_2_array) && count($date_2_array) > 1) {
-                    $date_2 = date('F j, Y, g:i a', $date_2_array[1]);
-                }
+        $date_2 = "";
+        $date_2_array = array();
+        if ($file_status_value_value['upload_time'] != "") {
+            $date_2_array = explode(" ", $file_status_value_value['upload_time']);
+            if (is_array($date_2_array) && count($date_2_array) > 1) {
+                $date_2 = date('F j, Y, g:i a', $date_2_array[1]);
             }
+        }
 
-            echo '
+        echo '
                 <script>
                         ';
 
-            $inside_chart_index = 0;
-            $total_summary_value = 0;
+        $inside_chart_index = 0;
+        $total_summary_value = 0;
 
-            if(isset($summary["files"]) && is_array($summary["files"])) {
-                $reports = $summary["files"][0]["reports"];
-            }
+        if (isset($summary["files"]) && is_array($summary["files"])) {
+            $reports = $summary["files"][0]["reports"];
+        }
 
-            $reports[]= array('reportName' => 'Total Clean Emails', 'numOfRecords' => ($summary['totalRecordsAfterClean']));
-            //$data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
-            //$data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
+        $reports[] = array('reportName' => 'Total Clean Emails', 'numOfRecords' => ($summary['totalRecordsAfterClean']));
+        //$data_of_summary['Total_Clean_Emails']['name'] = 'Total Clean Emails';
+        //$data_of_summary['Total_Clean_Emails']['value'] = $summary['totalPreCleanRecords'] - $summary['totalRecordsAfterClean'];
 
 
-            foreach ($reports as $report_key => $report_value) {
-                $chart_index = $report_value['reportName'];
-                $chart_index = strtolower($chart_index);
-                $chart_index = str_replace(" ", "_", $chart_index);
+        foreach ($reports as $report_key => $report_value) {
+            $chart_index = $report_value['reportName'];
+            $chart_index = strtolower($chart_index);
+            $chart_index = str_replace(" ", "_", $chart_index);
 
-                $data_of_summary[$chart_index]['name'] = $report_value['reportName'];
-                $data_of_summary[$chart_index]['value'] = $report_value['numOfRecords'];
-                if ($chart_index != 'total_preclean_records') {
-                    $total_summary_value = $total_summary_value + $report_value['numOfRecords'];
-                    echo '
+            $data_of_summary[$chart_index]['name'] = $report_value['reportName'];
+            $data_of_summary[$chart_index]['value'] = $report_value['numOfRecords'];
+            if ($chart_index != 'total_preclean_records') {
+                $total_summary_value = $total_summary_value + $report_value['numOfRecords'];
+                echo '
                                 validation_chart_data[' . $validation_chart_data_counter . '][' . $inside_chart_index . '] = [];
                                 validation_chart_data[' . $validation_chart_data_counter . '][' . $inside_chart_index . '][0] = "' . $report_value['reportName'] . '";
                                 validation_chart_data[' . $validation_chart_data_counter . '][' . $inside_chart_index . '][1] = ' . $report_value['numOfRecords'] . ';
 
                                 ';
-                }
-                $inside_chart_index++;
             }
+            $inside_chart_index++;
+        }
 
-            echo '
+        echo '
                             validation_chart_data_conatiner[' . $validation_chart_data_counter . '] = "#conatiner_validation_pie_chart_' . $file_status_value_value['_id'] . '";
                             validation_chart_data_title[' . $validation_chart_data_counter . '] = "' . $file_status_value_value['file_name'] . '";
 
@@ -125,9 +124,9 @@ if ($view['msg'] != "")
 
                 ';
 
-            //echo $total_summary_value;
+        //echo $total_summary_value;
 
-            echo '
+        echo '
 
                 <div class="col-xs-12" id="conatiner_full_row_chart_' . $file_status_value_value['_id'] . '">
                     <div class="portlet box green">
@@ -139,12 +138,12 @@ if ($view['msg'] != "")
                         <div class="portlet-body" id="group_list">
                             <div class="row">
                             ';
-            if ($validation_chart_data_counter % 2 == 0) {
-                echo '
+        if ($validation_chart_data_counter % 2 == 0) {
+            echo '
                                 <div class="col-xs-6">
                                     <div style="width:100%;min-height:300px;" id="conatiner_validation_pie_chart_' . $file_status_value_value['_id'] . '" >
                                     </div>';
-                echo '
+            echo '
                                 </div>
                                 <div class="col-xs-6" >
                                     <div class="col-xs-12" >
@@ -172,7 +171,7 @@ if ($view['msg'] != "")
                                     <div class="col-xs-8 col-xs-offset-4 nopadding">
                                         ';
 
-                echo '
+            echo '
 
                                         <div class="col-xs-12" style="padding-bottom:5px;">
                                             <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_file_download/' . $file_status_value_value['clean_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
@@ -187,8 +186,8 @@ if ($view['msg'] != "")
                                     </div>
                                 </div>
                                 ';
-            } else {
-                echo '
+        } else {
+            echo '
                                 <div class="col-xs-6" >
                                     <div class="col-xs-12" >
                                         <table class="table nomargin">
@@ -213,7 +212,7 @@ if ($view['msg'] != "")
                                     </div>                      
                                     <div class="col-xs-8 nopadding">
                                         ';
-                echo '
+            echo '
                                         <div class="col-xs-12" style="padding-bottom:5px;">
                                             <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_file_download/' . $file_status_value_value['clean_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
                                                                     
@@ -229,12 +228,12 @@ if ($view['msg'] != "")
                                 <div class="col-xs-6">
                                     <div style="width:100%;min-height:300px;" id="conatiner_validation_pie_chart_' . $file_status_value_value['_id'] . '" >
                                     </div>';
-                echo '
+            echo '
                                 </div>
                                 
                                 ';
-            }
-            echo '
+        }
+        echo '
                             </div>
 
                         </div>
@@ -244,17 +243,17 @@ if ($view['msg'] != "")
                 ';
 
 
-            $i++;
-            $validation_chart_data_counter++;
+        $i++;
+        $validation_chart_data_counter++;
 
-        }
     }
+}
 
 
-    ?>
-    <div class="col-xs-12">
-        <div class="pagination_box text-right">
-            <?php echo $pagination_links; ?>
-        </div>
+?>
+<div class="col-xs-12">
+    <div class="pagination_box text-right">
+        <?php echo $pagination_links; ?>
     </div>
+</div>
 </div>
