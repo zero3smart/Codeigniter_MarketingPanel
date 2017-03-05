@@ -735,103 +735,103 @@ class User_controller extends CI_Controller
         $contactfile_line = file($contactfile);
         $contactfile_length = count($contactfile_line);
         $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
-        if (count($file_check) > 0) {
+        /*if (count($file_check) > 0) {
             echo 'Sorry, You already uploded this file.';
         }
-        else{
-        if(!$containsHeader) {
-            $containsHeader = false;
-        }
-        else {
-            --$contactfile_length;
-        }
-
-        if ($column_number_2 == "") {
-            echo 'Sorry, Phone not found in this file.';
-        }
-        else {
-            $column_number_2 = $column_number_2 - 1;
-            $dash_profile = $this->Mdl_user->fetch_user_profile();
-            $current_package = $this->Mdl_user->fetch_current_package();
-            $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
-
-            if ($daily_limit > -1) {
-                $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
-            } else {
-                $daily_limit_left = 0;
+        else {*/
+            if(!$containsHeader) {
+                $containsHeader = false;
+            }
+            else {
+                --$contactfile_length;
             }
 
-            $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
-
-            if ($contactfile_length > $total_usable_credit) {
-                redirect("User_controller/have_not_balance");
+            if ($column_number_2 == "") {
+                echo 'Sorry, Phone not found in this file.';
             }
+            else {
+                $column_number_2 = $column_number_2 - 1;
+                $dash_profile = $this->Mdl_user->fetch_user_profile();
+                $current_package = $this->Mdl_user->fetch_current_package();
+                $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
 
-            $i = 0;
-            $status = array();
-            $status['stage'] = "not done";
-
-            if ($_FILES["contactfile"]["error"] == 0) {
-                $name = trim($_FILES["contactfile"]["name"]);
-                $csv_files_total_row = $contactfile_length;
-                $csv_files_total_row = intval($csv_files_total_row);
-
-                try {
-                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
-                }
-                catch (Exception $e) {
-                    echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
-                    return;
-                }
-                if (!$uploadToFtp) {
-                    echo '
-                        Failed to upload file to FTP. 
-                        ';
+                if ($daily_limit > -1) {
+                    $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
                 } else {
-
-                  //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
-
-                   // $apiResponse = json_decode($apiResponse, true);
-                    // print_r($apiResponse);die();
-                    /*$this->console_log("success: " . $apiResponse["success"]);
-                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
-                    //$this->console_log($apiResponse["success"]);
-                    //if ($apiResponse["success"]) {
-                       // $clean_id = $apiResponse["data"]["cleanId"];
-                        $clean_id = new MongoId($clean_id);
-                        $data = array(
-                            "clean_id" => $clean_id,
-                            "user" => $user_id,
-                            "file_name" => $name,
-                            "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
-                            "process_end_time" => "",
-                            "status" => "processing",
-                            "progress" => (double)0,
-                            "columnOfNumbers" => $column_number_2,
-                            "isphonenumberfile" => '1'
-                        );
-
-                        $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
-
-                        $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
-
-                        $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
-
-                        $user_file_data_id = $user_file_data['_id'];
-                        $status['stage'] = "ok";
-                        echo 'Successfully Uploaded "' . $name . '"';
-                       //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
-                    //}
-                   // else {
-                       // echo 'Sorry, Try again';
-                   // }
+                    $daily_limit_left = 0;
                 }
-            } else {
-                echo 'Sorry, Try again';
-            }
 
-        }
-        }
+                $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+                if ($contactfile_length > $total_usable_credit) {
+                    redirect("User_controller/have_not_balance");
+                }
+
+                $i = 0;
+                $status = array();
+                $status['stage'] = "not done";
+
+                if ($_FILES["contactfile"]["error"] == 0) {
+                    $name = trim($_FILES["contactfile"]["name"]);
+                    $csv_files_total_row = $contactfile_length;
+                    $csv_files_total_row = intval($csv_files_total_row);
+
+                    try {
+                        $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                    }
+                    catch (Exception $e) {
+                        echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
+                        return;
+                    }
+                    if (!$uploadToFtp) {
+                        echo '
+                            Failed to upload file to FTP. 
+                            ';
+                    } else {
+
+                      //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
+
+                       // $apiResponse = json_decode($apiResponse, true);
+                        // print_r($apiResponse);die();
+                        /*$this->console_log("success: " . $apiResponse["success"]);
+                        $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
+                        //$this->console_log($apiResponse["success"]);
+                        //if ($apiResponse["success"]) {
+                           // $clean_id = $apiResponse["data"]["cleanId"];
+                            $clean_id = new MongoId($clean_id);
+                            $data = array(
+                                "clean_id" => $clean_id,
+                                "user" => $user_id,
+                                "file_name" => $name,
+                                "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
+                                "process_end_time" => "",
+                                "status" => "processing",
+                                "progress" => (double)0,
+                                "columnOfNumbers" => $column_number_2,
+                                "isphonenumberfile" => '1'
+                            );
+
+                            $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
+
+                            $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
+
+                            $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
+
+                            $user_file_data_id = $user_file_data['_id'];
+                            $status['stage'] = "ok";
+                            echo 'Successfully Uploaded "' . $name . '"';
+                           //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
+                        //}
+                       // else {
+                           // echo 'Sorry, Try again';
+                       // }
+                    }
+                } else {
+                    echo 'Sorry, Try again';
+                }
+
+            }
+        // }
     }
     // public function processFile($host, $usr, $pw, $fid, $name)
     public function processFile()

@@ -520,7 +520,7 @@ class Mdl_user extends CI_Model {
 	{
 		$user_id = $this->session->email_lookup_user_id;
 		$result_2 = array();
-		$result = $this->user_file->find(array('user'=>new MongoId($user_id), 'status' => 'processed'))->limit($limit)->skip($start)->sort(array('_id' => -1));
+		$result = $this->user_file->find(array('user'=>new MongoId($user_id), 'status' => 'processed', "isphonenumberfile"=> array('$exists' => false)))->limit($limit)->skip($start)->sort(array('_id' => -1));
 		$i=0;
 		foreach ($result as $result_key => $result_value) {
 			$result_2[$i][$result_key] = $result_value;
