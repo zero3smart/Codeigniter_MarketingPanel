@@ -92,8 +92,6 @@
                 <!-- BEGIN password FORM -->
                 <form class="password-form" action="<?php echo base_url(); ?>forgot_password" method="post">
                     <h3 class="form-title font-green">Forgot Password</h3>
-                    <p>Please enter your email address and we'll send you instructions on how to reset your password</p>
-                   
                     <div class="form-group" style="color: red;">
                         <?php echo $this->session->flashdata('flash_message');?>
                     </div>
