@@ -66,14 +66,14 @@ class Login extends CI_Controller {
 
                 # Make the call to the client.
                 $result = $mgClient->sendMessage($domain, array(
-                    'from'    => 'alex@verifyrocket.com',
+                    'from'    => 'notifications@verifyrocket.com',
                     'to'      => $email,
                     'subject' => 'Reset Password',
                     'text'    => $message
                 ));
 
                 if ($result) {
-                    $this->session->set_flashdata('flash_message', 'Sent email successfully, please confirm your email');
+                    $this->session->set_flashdata('flash_message', 'Please check your email.');
                 }
                 else {
                     $this->session->set_flashdata('flash_message', 'Sorry, can not send email, please try again.');
