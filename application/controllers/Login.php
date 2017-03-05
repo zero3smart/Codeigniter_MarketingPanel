@@ -73,7 +73,7 @@ class Login extends CI_Controller {
                 ));
 
                 if ($result) {
-                    $this->session->set_flashdata('flash_message', 'Please check your email.');
+                    $this->session->set_flashdata('flash_message', 'please check your email for password reset instructions.');
                 }
                 else {
                     $this->session->set_flashdata('flash_message', 'Sorry, can not send email, please try again.');
