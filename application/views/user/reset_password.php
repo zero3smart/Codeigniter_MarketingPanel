@@ -103,7 +103,7 @@
                         <label class="control-label visible-ie8 visible-ie9">password</label>
                         <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password1" />
                         <label class="control-label visible-ie8 visible-ie9">Confirmation password</label>
-                        <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Confirmation Password" name="password2" />
+                        <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Confirm Password" name="password2" />
                         <input type="hidden" name="token" value="<?php echo $token;?>">
                     </div>
 
