@@ -69,6 +69,7 @@ License: You must have a valid license purchased only from themeforest(the above
         .login_panel a:hover{color:#666 !important;text-decoration:none;}
         .copyright{color:#999 !important;text-decoration:none;}
         .login_panel_con{padding:20px 60px;}
+        .forgotPasswordLink {text-align: center; margin-top:20px;}
         @media (max-width:767px)
         {
             .login_panel_con{padding:20px 0;}
@@ -121,11 +122,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                 </div>
 
+                <div class="forgotPasswordLink">
+                    <a href="<?php echo base_url(); ?>forgot_password">Forgot Password?</a>
+                </div>
+
                 <div class="create-account">
                     <p>
 
                     </p>
-                </div>
+                </div></div>
             </form>
             <!-- END LOGIN FORM -->
 
