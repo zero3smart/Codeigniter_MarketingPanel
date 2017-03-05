@@ -67,6 +67,10 @@ $route['logout'] = 'Login/user_logout';
 //$route['admin/logout'] = 'Login/admin_logout';
 $route['dashboard'] = 'User_controller';
 $route['user_login'] = 'Login/do_login_user';
+$route['forgot_password'] = 'Login/forgot_password';
+$route['reset_password/token/(:any)'] = 'Login/reset_password/$1';
+$route['new_password'] = 'Login/new_password';
+//$route['forgot_password']['POST'] = 'Login/forgot_password_post';
 $route['user_login_first/(:any)/(:any)'] = 'Login/do_login_user_after_signup/$1/$2';
 //$route['admin_login'] = 'Login/do_login_sa';
 /*
