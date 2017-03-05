@@ -119,7 +119,7 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('token', 'Token', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password1', 'Password', 'required');
-        $this->form_validation->set_rules('password2', 'Confirmation Password', 'required');
+        $this->form_validation->set_rules('password2', 'Confirm Password', 'required');
         $data = array(
             'token' => $token
         );
