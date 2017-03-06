@@ -25,7 +25,7 @@
             "satooshi/php-coveralls": "~0.6.1",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2016-03-15 18:33:48",
+        "time": "2016-03-15T18:33:48+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -74,7 +74,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2012-08-25 12:49:29",
+        "time": "2012-08-25T12:49:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -117,7 +117,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2016-01-27 05:14:19",
+        "time": "2016-01-27T05:14:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -206,7 +206,7 @@
         "suggest": {
             "guzzlehttp/guzzle": "Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated."
         },
-        "time": "2015-03-18 18:23:50",
+        "time": "2015-03-18T18:23:50+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -245,7 +245,8 @@
             "http client",
             "rest",
             "web service"
-        ]
+        ],
+        "abandoned": "guzzlehttp/guzzle"
     },
     {
         "name": "guzzlehttp/promises",
@@ -268,7 +269,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2016-03-08 01:15:46",
+        "time": "2016-03-08T01:15:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -318,7 +319,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-05-04 20:22:00",
+        "time": "2015-05-04T20:22:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -376,7 +377,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2016-02-18 21:54:00",
+        "time": "2016-02-18T21:54:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -436,7 +437,7 @@
             "phpunit/phpunit": "~4.0",
             "psr/log": "~1.0"
         },
-        "time": "2016-03-21 20:02:09",
+        "time": "2016-03-21T20:02:09+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -474,5 +475,47 @@
             "rest",
             "web service"
         ]
+    },
+    {
+        "name": "mailgun/mailgun-php",
+        "version": "v1.7.2",
+        "version_normalized": "1.7.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mailgun/mailgun-php.git",
+            "reference": "45ec0c8f3a2a6554b4987e97889f44991e4f75b4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/45ec0c8f3a2a6554b4987e97889f44991e4f75b4",
+            "reference": "45ec0c8f3a2a6554b4987e97889f44991e4f75b4",
+            "shasum": ""
+        },
+        "require": {
+            "guzzle/guzzle": "<4.0,>=3.8"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2014-11-19T22:31:03+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Mailgun\\Tests": "tests/",
+                "Mailgun": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Travis Swientek",
+                "email": "travis@mailgunhq.com"
+            }
+        ],
+        "description": "The Mailgun SDK provides methods for all API functions."
     }
 ]

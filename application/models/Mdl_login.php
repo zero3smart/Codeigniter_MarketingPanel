@@ -54,6 +54,43 @@ class Mdl_login extends CI_Model {
 			return false;
 	}
 
+    public function getUserInfoByEmail($email)
+    {
+        $data = array(
+            'email' => $email
+        );
+        $result = $this->user->findOne($data);
+        if($result && $result['active'] == true)
+        {
+            return $result;
+        }
+        else{
+            error_log('no user found getUserInfo('.$email.')');
+            return false;
+        }
+    }
+
+    public function setForgotPwdToken ($userInfo, $code)
+    {
+        $this->user->update(array('_id' => new MongoId($userInfo[_id])), array('$set'=> $code));
+    }
+
+    public function does_token_match ($email, $token)
+    {
+        $data = array(
+            'email' => $email
+        );
+        $result = $this->user->findOne($data);
+        if ($result['forgot_password'] == $token) {
+            return true;
+        }
+        else return false;
+    }
+
+    public function set_password($email, $new_pass){
+        $this->user->update(array('email' => $email), array('$set'=> array('password' => $new_pass)), array("multiple" => false));
+    }
+
 
 }
 

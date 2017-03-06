@@ -87,90 +87,25 @@
             <span class="title">Instant Lookup</span>
         </a>                 
     </li>-->
-    <li class="nav-item menu_store">
-        <a class="nav-link nav-toggle" href="javascript:;">
-            <i class="fa fa-database"></i>
-            <span class="title">Purchase Credit</span>
-            <span class="arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li class="nav-item submenu_packages">
-                <a class="nav-link " href="<?php echo base_url(); ?>packages">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Monthly Package</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_buy_credit">
-                <a class="nav-link " href="<?php echo base_url(); ?>buy_credit">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Pay as you go</span>
-                </a>
-            </li>
-
-        </ul>
-    </li>
-    <li class="nav-item menu_report">
-        <a class="nav-link nav-toggle" href="javascript:;">
-            <i class="fa fa-file-text-o"></i>
-            <span class="title">Reports</span>
-            <span class="arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li class="nav-item submenu_file_upload_status">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/file_upload_status">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Cleaned Files</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_phone_file_upload_status">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/phone_file_upload_status">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Cleaned Phone Files</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_file_upload_status">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/failed_upload">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Failed Upload</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_report_instant_lookup">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/instant_lookup">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Instant Lookup</span>
-                </a>
-            </li>
-            
-            <li class="nav-item submenu_report_invoice">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/invoice">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Invoices</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_report_credit_buy">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/credit/buy">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Credit Purchases</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_report_credit_expense">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/credit/expense">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Credit Usage</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_report_package_buy">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/package/buy">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Package Purchases</span>
-                </a>
-            </li>
-            <li class="nav-item submenu_report_daily_limit_expense">
-                <a class="nav-link" href="<?php echo base_url(); ?>report/daily_limit/expense">
-                    <i class="icon-bar-chart"></i>
-                    <span class="title">Daily Limit Expense</span>
-                </a>
-            </li>
+<li class="nav-item menu_store">
+    <a class="nav-link nav-toggle" href="javascript:;">
+        <i class="fa fa-database"></i>
+        <span class="title">Purchase Credit</span>
+        <span class="arrow"></span>
+    </a>
+    <ul class="sub-menu">
+        <li class="nav-item submenu_packages">
+            <a class="nav-link " href="<?php echo base_url(); ?>packages">
+                <i class="icon-bar-chart"></i>
+                <span class="title">Monthly Package</span>
+            </a>
+        </li>
+        <li class="nav-item submenu_buy_credit">
+            <a class="nav-link " href="<?php echo base_url(); ?>buy_credit">
+                <i class="icon-bar-chart"></i>
+                <span class="title">Pay as you go</span>
+            </a>
+        </li>
 
     </ul>
 </li>
