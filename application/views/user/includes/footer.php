@@ -1708,7 +1708,10 @@
                 fileReader.onload = function (e) {
                     var fileContents = document.getElementById('filecontents');
                     fileContents_data_array = [];
-                    fileContents_data_array = fileReader.result.split("\n");
+                    fileContents_data_array = fileReader.result.split('\n');
+                    //console.log(fileContents_data_array[fileContents_data_array.length-1]);
+                    
+                    console.log("length: " ,fileContents_data_array.length);
                     fileContents_data_str = "";
                     position_track = [];
                     get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
@@ -1850,15 +1853,32 @@
                     console.log('here');*/
                     uploadable = 0;
                     have_balance = 0;
-
-                    if (position_track[0] == false)
+                  //  console.log(fileContents_data_array_count);
+                    /*if (position_track[0] == false)
+                    {
+                        console.log("-2");
                         fileContents_data_array_count = fileContents_data_array.length - 2;
+                        }
                     else
+                    {
+                        console.log("-1");
                         fileContents_data_array_count = fileContents_data_array.length - 1;
-
+                        }*/
+                    /*if(fileContents_data_array[fileContents_data_array.length-1] === "")
+                    {
+                        fileContents_data_array_count = fileContents_data_array.length - 1;
+                    }*/
+                    fileContents_data_array_count =0;
+                    for (var i = 0; i < fileContents_data_array.length ; i++) {
+                        if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != "")
+                        {
+                            fileContents_data_array_count=fileContents_data_array_count+1;
+                        }
+                    }
+              
                     if (fileContents_data_array_count <= global_total_usable_credit)
                         have_balance = 1;
-
+                   // console.log(fileContents_data_array_count);
                     if (set_column_number == 0) {
                         if (test_column_check != 0) {
                             document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain numbers in column ' + test_column_check;
@@ -2281,6 +2301,7 @@
                     $("#instant_check_field_respose_con").slideDown("slow");
                     $(".instant_check_btn .fa-circle-o-notch").remove();
                     $(".instant_check_btn").removeClass("disabled");
+                    get_balance_and_limit();
 
                 }, 
                 error: function(a, b, c) {

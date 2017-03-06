@@ -1246,7 +1246,7 @@ class User_controller extends CI_Controller
        ->send();
         $res = json_decode($response); 
         $numbers = 1;
-        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Number Lookup", $number);
+        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
         echo json_encode($res->aerialink->transactions[0]);
         
         // echo 'Successfully Uploaded./';
