@@ -46,7 +46,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <form id="instant_check_number_form" action="<?php echo base_url(); ?>sendInstantRequest" method="POST">
-                            <textarea  class="col-xs-12 col-md-9" id="instant_check_field" onkeyup="instant_check_field_validation()" placeholder="Write Numbers here . . . Example (19419622134,12022002994)"></textarea>
+                            <input type="text" style="line-height: 2.75" class="col-xs-12 col-md-9" id="instant_check_field" onkeyup="instant_check_field_validation()" placeholder="Write Number here . . . Example (19419622134)" />
                             <div class="col-xs-12 col-md-3 nopadding text-right"><button  type="submit" class="btn dark col-xs-12 instant_check_btn" style="line-height: 2.2" id="">Check</button></div>
                         </form>
                     </div>
@@ -93,7 +93,7 @@
                                         <!--[if !IE]>-->
 
                                         <div id="drop-zone" class="drop_area">
-                                            <span style="font-size:16px">Drag CSV or TXT file with email addresses here to upload and begin list verification.</span><br>or
+                                            <span style="font-size:16px">Drag CSV or TXT file with phone numbers here to upload and begin list verification.</span><br>or
                                             
                                             <div  id="clickHere">
                                                 <i class="fa fa-plus"></i>

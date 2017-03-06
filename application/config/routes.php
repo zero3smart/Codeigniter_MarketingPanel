@@ -172,6 +172,10 @@ $route['smtp_clean_file_download/(:any)'] = 'User_controller/smtp_clean_file_dow
 /* BEGIN : Route for Number file report download */
 /*************************************************/
 $route['clean_numberfile_report/(:any)'] = 'User_controller/smtp_clean_numberfile_report/$1';    //edited
+$route['upload_phone_file'] = 'User_controller/upload_phone_file';
+$route['processFile'] = 'User_controller/processFile';
+$route['report/phone_file_upload_status'] = 'User_controller/phone_file_upload_status';
+$route['report/phone_file_upload_status/(:any)'] = 'User_controller/phone_file_upload_status/$1';
 /**************************************************/
 /* // END : Route for Number file report download */
 /**************************************************/

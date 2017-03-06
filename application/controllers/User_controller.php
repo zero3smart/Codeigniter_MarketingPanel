@@ -724,6 +724,7 @@ class User_controller extends CI_Controller
     }
 
     public function upload_phone_file () {
+
         session_write_close();
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
@@ -819,7 +820,9 @@ class User_controller extends CI_Controller
 
                             $user_file_data_id = $user_file_data['_id'];
                             $status['stage'] = "ok";
-                            echo 'Successfully Uploaded "' . $name . '"';
+                            $fid = $data['_id']->{'$id'};
+                            echo 'Successfully Uploaded "' . $name . '"' . '/' . $fid;
+                         //   echo 'Successfully Uploaded "' . $name . '"';
                            //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
                         //}
                        // else {
@@ -836,7 +839,10 @@ class User_controller extends CI_Controller
     // public function processFile($host, $usr, $pw, $fid, $name)
     public function processFile()
     {
+        // echo "here";die();
         $name = $this->input->get('name');
+        $fid = $this->input->get('fid');
+        // $this->console_log($fid);die();
         $totalClean = 0;
         $totalInvalid = 0;
         //echo "Hi i'm here".$name;
@@ -850,7 +856,7 @@ class User_controller extends CI_Controller
         $greaterThanHundred = true;
         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
         $handle = fopen($filename, "r");
-        $file = $this->Mdl_user->fetch_user_file_by_name($name);
+        $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
         $numbers = '';
 
         $j=98;
@@ -1240,7 +1246,7 @@ class User_controller extends CI_Controller
        ->send();
         $res = json_decode($response); 
         $numbers = 1;
-        $credit_reduce = $this->credit_reduce_number($numbers, "File Cleanup", $number);
+        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Number Lookup", $number);
         echo json_encode($res->aerialink->transactions[0]);
         
         // echo 'Successfully Uploaded./';
