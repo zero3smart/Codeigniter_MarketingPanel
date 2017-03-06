@@ -1,16 +1,10 @@
 RewriteEngine On
-#RewriteBase /
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteCond $1 !^(index\.php|images|robots\.txt|css|docs|js|system)
-
-#RewriteRule ^(.*)$ /index.php?/$1 [L]
-
-RewriteBase /verifyrocket
+RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule .* index.php/$0 [PT,L]
+RewriteCond $1 !^(index\.php|images|robots\.txt|css|docs|js|system)
 
+RewriteRule ^(.*)$ /index.php?/$1 [L]
 # RewriteRule ^(.*)$ /verifyrocket/index.php?/$1 [L]
 
 php_value upload_max_filesize 200M
