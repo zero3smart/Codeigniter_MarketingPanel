@@ -531,8 +531,6 @@ class Mdl_user extends CI_Model {
 	}
 
 
-
-
 	/**********************************************************/
 	/* BEGIN : This function return user's Phone Number files */
 	/**********************************************************/
@@ -547,6 +545,21 @@ class Mdl_user extends CI_Model {
 			$i++;
 		}
 
+		return $result_2;
+	}
+	//user's file by file id
+	public function fetch_user_file_by_fileid($fid)
+	{
+		$result_2 = array();
+		$result = $this->user_file->findOne(array('_id'=>new MongoId($fid)));
+		$i=0;
+		if(count($result)>0)
+		{
+			foreach ($result as $result_key => $result_value) {
+				$result_2[$i][$result_key] = $result_value;
+				$i++;
+			}
+		}
 		return $result_2;
 	}
 	/***********************************************************/
@@ -608,7 +621,7 @@ class Mdl_user extends CI_Model {
     function microseconds() {
     $mt = explode(' ', microtime());
     return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
-}
+	}
 
     public function set_status_on_failure($id, $message)
     {

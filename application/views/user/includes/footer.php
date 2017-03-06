@@ -1773,7 +1773,7 @@
                         }
                         catch(Exception)
                         {
-                            console.log("Exception is hrere...");
+                            console.log("Exception is here...");
                             console.log(Exception);
                         }
                     }
@@ -1995,15 +1995,15 @@
         $("#contact_upload_form").on('submit', (function (event) {
                 event.preventDefault();
 
-                //url_ = $(this).attr("action");
+                url_ = $(this).attr("action");
                 send_form_data = new FormData(this);
                 //console.log(url_);
-               url_ = '<?php echo base_url();?>User_controller/upload_phone_file'
+               //url_ = '<?php echo base_url();?>User_controller/upload_phone_file'
                 var files = document.getElementById("contact_upload_file").files;
                 file_size = parseInt(files[0].size);
                 if (isNaN(file_size))
                     file_size = 0;
-
+                fid = '';
                 file_size_to_show = file_size_show(file_size);
 
                 //alert(file_size_to_show);
@@ -2081,6 +2081,9 @@
                                         //console.log(result);
                                         //console.log("called fn_file_process_progress");
                                         alert(result_array[0]);
+                                        fid = result_array[1];
+                                       //console.log(result);
+                                       //console.log(result);
                                     },
                                     complete: function (result) {
                                             if (result.responseText.substring(0, 5) == 'Sorry')
@@ -2092,13 +2095,15 @@
                                             {
                                                 fn_file_process_progress();
                                                 console.log('Successfully');
+                                                
                                                   $.ajax({
                                                  type: 'GET',
                                                  dataType: 'JSON',
                                                     data: {
-                                                    name: files[0].name
+                                                    name: files[0].name,
+                                                    fid: fid
                                                     },
-                                                url: '<?php echo base_url();?>User_controller/processFile',
+                                                url: '<?php echo base_url();?>processFile',
                                                 success: function (result) {
                                                    // console.log(result);
                                                     fn_file_process_progress();
