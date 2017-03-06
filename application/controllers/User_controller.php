@@ -945,7 +945,8 @@ class User_controller extends CI_Controller
 
         $j=98;
          for ($i=0;($line = fgets($handle)) !== false;$i++) {
-            if($i==0 || ($i-1)==($j-100))
+            if(trim($line) != ""){
+            if($i==0 || ($i-1)==($j-100) || $numbers == "")
             {
                 $test = explode(",", $line);
                 $numbers = $test[$file[8]['columnOfNumbers']];
@@ -977,6 +978,7 @@ class User_controller extends CI_Controller
         }
        }
 
+            }
             }
          }
 

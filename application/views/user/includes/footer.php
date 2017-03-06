@@ -1732,6 +1732,7 @@
                         fileContents_data_array[i] = fileContents_data_array[i].replace(/\s+/g, ' ').trim();
                         
                         try{
+                            if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != ""){
                             get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
                             fileContents_data_array_2 = [];
@@ -1773,6 +1774,7 @@
 
 
                             get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                            }
                         }
                         catch(Exception)
                         {
