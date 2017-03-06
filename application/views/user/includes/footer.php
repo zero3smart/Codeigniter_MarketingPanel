@@ -1708,7 +1708,10 @@
                 fileReader.onload = function (e) {
                     var fileContents = document.getElementById('filecontents');
                     fileContents_data_array = [];
-                    fileContents_data_array = fileReader.result.split("\n");
+                    fileContents_data_array = fileReader.result.split('\n');
+                    //console.log(fileContents_data_array[fileContents_data_array.length-1]);
+                    
+                   // console.log("length: " ,fileContents_data_array.length);
                     fileContents_data_str = "";
                     position_track = [];
                     get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
@@ -1729,6 +1732,7 @@
                         fileContents_data_array[i] = fileContents_data_array[i].replace(/\s+/g, ' ').trim();
                         
                         try{
+                            if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != ""){
                             get_data_from_csv_file = get_data_from_csv_file + '<tr>';
 
                             fileContents_data_array_2 = [];
@@ -1770,6 +1774,7 @@
 
 
                             get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                            }
                         }
                         catch(Exception)
                         {
@@ -1850,15 +1855,32 @@
                     console.log('here');*/
                     uploadable = 0;
                     have_balance = 0;
-
-                    if (position_track[0] == false)
+                  //  console.log(fileContents_data_array_count);
+                    /*if (position_track[0] == false)
+                    {
+                        console.log("-2");
                         fileContents_data_array_count = fileContents_data_array.length - 2;
+                        }
                     else
+                    {
+                        console.log("-1");
                         fileContents_data_array_count = fileContents_data_array.length - 1;
-
+                        }*/
+                    /*if(fileContents_data_array[fileContents_data_array.length-1] === "")
+                    {
+                        fileContents_data_array_count = fileContents_data_array.length - 1;
+                    }*/
+                    fileContents_data_array_count =0;
+                    for (var i = 0; i < fileContents_data_array.length ; i++) {
+                        if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != "")
+                        {
+                            fileContents_data_array_count=fileContents_data_array_count+1;
+                        }
+                    }
+              
                     if (fileContents_data_array_count <= global_total_usable_credit)
                         have_balance = 1;
-
+                   // console.log(fileContents_data_array_count);
                     if (set_column_number == 0) {
                         if (test_column_check != 0) {
                             document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain numbers in column ' + test_column_check;
@@ -1935,12 +1957,12 @@
          alert("Files are not supported");
          }
          }*/
-        function fn_file_process_progress() {
+        function fn_file_process_progress_phone() {
             console.log("fn_file_process_progress");
             console.log(base_url);
             $.ajax({
 
-                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_file_process_progress', // Url to which the request is send
+                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_phone_file_process_progress', // Url to which the request is send
                 type: "GET",
                 //dataType: "JSON",
                 success: function (progress) {
@@ -1969,8 +1991,8 @@
 
         }
 
-        fn_file_process_progress();
-        setInterval(fn_file_process_progress, 30000);
+        fn_file_process_progress_phone();
+        setInterval(fn_file_process_progress_phone, 30000);
 
         function file_size_show(size) {
             size = parseInt(size);
@@ -2061,7 +2083,7 @@
 
                                     success: function (result)   // A function to be called if request succeeds
                                     {
-                                        fn_file_process_progress();
+                                        fn_file_process_progress_phone();
                                         //console.log(result);
                                         //document.getElementById("response_test").innerHTML = result;
                                         result_array = [];
@@ -2093,7 +2115,7 @@
                                             }
                                             if (result.responseText.substring(0, 12) == 'Successfully')
                                             {
-                                                fn_file_process_progress();
+                                                fn_file_process_progress_phone();
                                                 console.log('Successfully');
                                                 
                                                   $.ajax({
@@ -2106,7 +2128,7 @@
                                                 url: '<?php echo base_url();?>processFile',
                                                 success: function (result) {
                                                    // console.log(result);
-                                                    fn_file_process_progress();
+                                                    fn_file_process_progress_phone();
                                                     }
                                                 });
                                             }
@@ -2281,6 +2303,7 @@
                     $("#instant_check_field_respose_con").slideDown("slow");
                     $(".instant_check_btn .fa-circle-o-notch").remove();
                     $(".instant_check_btn").removeClass("disabled");
+                    get_balance_and_limit();
 
                 }, 
                 error: function(a, b, c) {
