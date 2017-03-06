@@ -562,6 +562,36 @@ class Mdl_user extends CI_Model {
 		}
 		return $result_2;
 	}
+
+
+    public function set_status_complete($id, $status, $totalPreCleanRecords, $totalRecordsAfterClean, $totalInvalid)
+    {
+    	 try{
+
+            $result = (object)null;
+            $result->status = $status;
+            $result->messsage = "File processed successful";
+            $result->totalPreCleanRecords = "File processed successful";
+            if(isset($response)) {
+              //  $result->result = $response;
+
+            }
+            
+            $result->result["data"]['summary']['endTime'] = new MongoDate($this->microseconds()/1000000);
+            $result->result["data"]['summary']['totalPreCleanRecords'] = $totalPreCleanRecords;
+            $result->result["data"]['summary']['totalRecordsAfterClean'] = $totalRecordsAfterClean;
+            $result->result["data"]['summary']['totalInvalid'] = $totalInvalid;
+                // return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=> array('status' => $status)));
+            // print_r($result->result["data"]['summary']['endTime']);
+            // print_r(microtime());
+            print_r($this->microseconds());
+            return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
+                }
+        catch (MongoCursorException $e){
+        }
+    }
+
+
 	/***********************************************************/
 	/* // END : This function return user's Phone Number files */
 	/***********************************************************/
@@ -592,32 +622,9 @@ class Mdl_user extends CI_Model {
         catch (MongoCursorException $e){
         }
     }
-    public function set_status_complete($id, $status, $totalPreCleanRecords, $totalRecordsAfterClean, $totalInvalid)
-    {
-    	 try{
 
-            $result = (object)null;
-            $result->status = $status;
-            $result->messsage = "File processed successful";
-            $result->totalPreCleanRecords = "File processed successful";
-            if(isset($response)) {
-              //  $result->result = $response;
 
-            }
-            
-            $result->result["data"]['summary']['endTime'] = new MongoDate($this->microseconds()/1000000);
-            $result->result["data"]['summary']['totalPreCleanRecords'] = $totalPreCleanRecords;
-            $result->result["data"]['summary']['totalRecordsAfterClean'] = $totalRecordsAfterClean;
-            $result->result["data"]['summary']['totalInvalid'] = $totalInvalid;
-                // return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=> array('status' => $status)));
-            // print_r($result->result["data"]['summary']['endTime']);
-            // print_r(microtime());
-            print_r($this->microseconds());
-            return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
-                }
-        catch (MongoCursorException $e){
-        }
-    }
+
     function microseconds() {
     $mt = explode(' ', microtime());
     return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
