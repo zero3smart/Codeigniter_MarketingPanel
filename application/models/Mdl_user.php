@@ -592,6 +592,42 @@ class Mdl_user extends CI_Model {
     }
 
 
+    public function fetch_user_phone_file_by_status($status)
+	{
+		$user_id = $this->session->email_lookup_user_id;
+		$result_2 = array();
+		$result_3 = array();
+		$result = $this->user_file->find(array('user'=>new MongoId($user_id), 'status' => $status, 'isphonenumberfile'=>'1'))->sort(array('_id' => -1));
+		$i=0;
+		foreach ($result as $result_key => $result_value) {
+			$result_2[$i][$result_key] = $result_value;
+			$i++;
+		}
+		$i=0;
+		foreach ($result_2 as $file_status_key => $file_status_value) 
+        {
+            foreach ($file_status_value as $file_status_value_key => $file_status_value_value) 
+            {
+
+                $date_2 = "";
+                $date_2_array = array();
+                if($file_status_value_value['upload_time'] != "")
+                {
+                    $date_2_array = explode(" ",$file_status_value_value['upload_time']);
+                    $date_2 = date('F j, Y, g:i a',$date_2_array[1]);
+                }
+            	$result_3[$i]['_id'] = "".$file_status_value_value['_id']."";
+            	$result_3[$i]['upload_time'] = $date_2;
+            	$result_3[$i]['file_name'] = $file_status_value_value['file_name'];
+                $result_3[$i]['status'] = $file_status_value_value['status'];
+            	$result_3[$i]['progress'] = $file_status_value_value['progress'];
+            	$result_3[$i]['clean_id'] = isset($file_status_value_value['clean_id']) ? $file_status_value_value['clean_id']->{'$id'} : null;
+            }
+            $i++;
+
+         }
+		return $result_3;
+	}
 	/***********************************************************/
 	/* // END : This function return user's Phone Number files */
 	/***********************************************************/

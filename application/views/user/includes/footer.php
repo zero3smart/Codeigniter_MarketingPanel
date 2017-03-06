@@ -1711,7 +1711,7 @@
                     fileContents_data_array = fileReader.result.split('\n');
                     //console.log(fileContents_data_array[fileContents_data_array.length-1]);
                     
-                    console.log("length: " ,fileContents_data_array.length);
+                   // console.log("length: " ,fileContents_data_array.length);
                     fileContents_data_str = "";
                     position_track = [];
                     get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
@@ -1955,12 +1955,12 @@
          alert("Files are not supported");
          }
          }*/
-        function fn_file_process_progress() {
+        function fn_file_process_progress_phone() {
             console.log("fn_file_process_progress");
             console.log(base_url);
             $.ajax({
 
-                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_file_process_progress', // Url to which the request is send
+                url: '<?php echo base_url(); ?>' + 'User_controller/get_all_phone_file_process_progress', // Url to which the request is send
                 type: "GET",
                 //dataType: "JSON",
                 success: function (progress) {
@@ -1989,8 +1989,8 @@
 
         }
 
-        fn_file_process_progress();
-        setInterval(fn_file_process_progress, 30000);
+        fn_file_process_progress_phone();
+        setInterval(fn_file_process_progress_phone, 30000);
 
         function file_size_show(size) {
             size = parseInt(size);
@@ -2081,7 +2081,7 @@
 
                                     success: function (result)   // A function to be called if request succeeds
                                     {
-                                        fn_file_process_progress();
+                                        fn_file_process_progress_phone();
                                         //console.log(result);
                                         //document.getElementById("response_test").innerHTML = result;
                                         result_array = [];
@@ -2113,7 +2113,7 @@
                                             }
                                             if (result.responseText.substring(0, 12) == 'Successfully')
                                             {
-                                                fn_file_process_progress();
+                                                fn_file_process_progress_phone();
                                                 console.log('Successfully');
                                                 
                                                   $.ajax({
@@ -2126,7 +2126,7 @@
                                                 url: '<?php echo base_url();?>processFile',
                                                 success: function (result) {
                                                    // console.log(result);
-                                                    fn_file_process_progress();
+                                                    fn_file_process_progress_phone();
                                                     }
                                                 });
                                             }

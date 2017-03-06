@@ -156,6 +156,90 @@ class User_controller extends CI_Controller
         echo  $htmlToReturn;
     }
 
+    public function get_all_phone_file_process_progress()
+    {
+        session_write_close();
+        $icon_array = array();
+        $icon_array[0] = "fa fa-spin fa-spinner";
+        $result = $this->Mdl_user->fetch_user_phone_file_by_status('processing');
+        $htmlToReturn = '';
+
+        foreach ($result as $key => $value) {
+            if (isset($value['clean_id'])) {
+                $response = $this->callStatusAPI($value['clean_id']);
+                $response = json_decode($response, true);
+
+                if(!$response["success"]) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
+                }
+                else if($response["success"] && isset($response["data"]["errorMessage"])) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
+                }
+                else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
+                    //lets update the record with the result and progress=processed
+                    $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
+                } else {
+                    /*if ($value['progress'] > 0)
+                        $progress = intval(($value['progress'] * 180) / 100);
+                    else
+                        $progress = 0;
+
+                    $progress_percent = intval($value['progress']);
+                    shuffle($icon_array);*/
+                    $htmlToReturn = $htmlToReturn . '
+                        <tr>
+                            <td>'. $value['file_name'] .'</td>
+                            <td>'. $value['upload_time'] .'</td>
+                            <td>'. $value['status'] .'</td>
+                            <td><a href="'.base_url().'report/file_upload_status">'.'Download Clean Files'.'</a></td>
+                        </tr>
+                    ';
+
+                /*echo '<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 file_data">
+                                            <div class="col-xs-12" style="padding:10px 15px 20px 15px;">
+                                                <b>File Name : </b>
+                                                <span>' . $value['file_name'] . '</span>
+                                            </div>
+                                            <div class="col-xs-12" style="padding-bottom:10px">
+                                                <b>Uploaded at : </b>
+                                                <span>' . $value['upload_time'] . '</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="icon"><span class="' . $icon_array[0] . '"></span></div>
+                                    </div>
+                                </div>
+            ';*/
+                }
+
+            }
+        }
+        if(strlen($htmlToReturn) > 0) {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th><th>Status</th><th>Link</th></tr>'
+                . $htmlToReturn
+                .'</table></div></div>';
+        }else
+        {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th colspan="2">No file is processing.</th></tr>'
+                .'</table></div></div>';
+        }
+        echo  $htmlToReturn;
+    }
+
     public function getdate_all()
     {
 
