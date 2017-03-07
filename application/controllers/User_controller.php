@@ -191,7 +191,7 @@ class User_controller extends CI_Controller
                             <td>'. $value['file_name'] .'</td>
                             <td>'. $value['upload_time'] .'</td>
                             <td>'. $value['status'] .'</td>
-                            <td><a href="'.base_url().'report/file_upload_status">'.'Download Clean Files'.'</a></td>
+                            <td><a href="'.base_url().'report/phone_file_upload_status">'.'Download Clean Files'.'</a></td>
                         </tr>
                     ';
 
@@ -812,12 +812,14 @@ class User_controller extends CI_Controller
         session_write_close();
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
-        $column_number_2 = $this->input->post("column_number_2");
+        $column_number_2 = $this->input->post("column_number");
+        $header = $this->input->post("header");
         $containsHeader = $this->input->post("header");
         $line_break = $this->input->post("line_break");
         $line_break = $this->input->post("line_break");
         $contactfile = $_FILES['contactfile']['tmp_name'];
         $contactfile_line = file($contactfile);
+
         $contactfile_length = count($contactfile_line);
         $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
         /*if (count($file_check) > 0) {
@@ -858,8 +860,8 @@ class User_controller extends CI_Controller
 
                 if ($_FILES["contactfile"]["error"] == 0) {
                     $name = trim($_FILES["contactfile"]["name"]);
-                    $csv_files_total_row = $contactfile_length;
-                    $csv_files_total_row = intval($csv_files_total_row);
+                   // $csv_files_total_row = $contactfile_length;
+                    // $csv_files_total_row = intval($csv_files_total_row);
 
                     try {
                         $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
@@ -883,6 +885,23 @@ class User_controller extends CI_Controller
                         //$this->console_log($apiResponse["success"]);
                         //if ($apiResponse["success"]) {
                            // $clean_id = $apiResponse["data"]["cleanId"];
+                        $csv_files_total_row=0;
+                        for($i=0; $i<sizeof($contactfile_line);$i++)
+                        {
+                            if(trim($contactfile_line[$i]) != "")
+                            {
+                                $csv_files_total_row=$csv_files_total_row+1;
+                            }
+                        }
+                        if($header == true)
+                        {
+                            $header = 1;
+                            $csv_files_total_row = $csv_files_total_row-1;
+                        }
+                        else
+                        {
+                            $header = 0;
+                        }
                             $clean_id = new MongoId($clean_id);
                             $data = array(
                                 "clean_id" => $clean_id,
@@ -893,7 +912,8 @@ class User_controller extends CI_Controller
                                 "status" => "processing",
                                 "progress" => (double)0,
                                 "columnOfNumbers" => $column_number_2,
-                                "isphonenumberfile" => '1'
+                                "isphonenumberfile" => '1',
+                                "isContainHeaders" => $header
                             );
 
                             $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
@@ -937,13 +957,16 @@ class User_controller extends CI_Controller
         print_r($array[0]['transaction']['validNumber']);*/
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
-        $greaterThanHundred = true;
+        $smallerThanHundred = true;
         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
         $handle = fopen($filename, "r");
         $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
         $numbers = '';
-
-        $j=98;
+        if($file[10]['isContainHeaders'] == 1)
+        {
+            $line = fgets($handle);
+        }
+        $j=99;
          for ($i=0;($line = fgets($handle)) !== false;$i++) {
             if(trim($line) != ""){
             if($i==0 || ($i-1)==($j-100) || $numbers == "")
@@ -957,7 +980,7 @@ class User_controller extends CI_Controller
             }
             if($i>=$j)
             {
-                $greaterThanHundred = false;
+                $smallerThanHundred = false;
                 $j=$j+100;
                  $numbers = trim(preg_replace('/\s+/', '', $numbers));
                  $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
@@ -984,7 +1007,7 @@ class User_controller extends CI_Controller
 
 
 
-       if($greaterThanHundred)
+       if($smallerThanHundred)
        {
          $numbers = trim(preg_replace('/\s+/', '', $numbers));
                  $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
@@ -1021,7 +1044,11 @@ class User_controller extends CI_Controller
         }
          $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
         $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
-    
+        $fileContents = $this->Mdl_user->numberfile_lookup_by_id($fid);
+         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/clean/".$fid;
+        $create = fopen($filename.'.csv', "w");
+        fwrite($create, $fileContents["final_result"]);
+        fclose($create);
         echo "Successfully Processed";
        // print_r(sizeof($r));
        // echo json_encode($response);
@@ -1197,6 +1224,9 @@ class User_controller extends CI_Controller
         }
 
     }
+
+
+
 
     public function contact_upload()
     {
@@ -2485,13 +2515,58 @@ class User_controller extends CI_Controller
     public function smtp_clean_numberfile_report($id)
     {
 
-        $result = $this->Mdl_user->numberfile_lookup_by_id($id);
+        /*$result = $this->Mdl_user->numberfile_lookup_by_id($id);
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=" . $result['_id'] . ".csv");
 
         // do your Db stuff here to get the content into $content
 
-        print_r($result["final_result"]);
+        print_r($result["final_result"]);*/
+        $this->download_clean_numberfile_from_ftp($id);
+
+    }
+    public function download_clean_numberfile_from_ftp($cleanId, $onlyReport = false)
+    {
+
+        $user = $this->Mdl_user->fetch_user_profile();
+
+        $conn_id = ftp_connect($user["ftphost"], 21);
+
+        ftp_login($conn_id, $user["username"], $user["ftppassword"]);
+        ftp_pasv($conn_id, true);
+
+       // $extension = ($onlyReport ? '.pdf' : '.zip');
+        $extension = '.csv';
+
+
+        $fileTo = getcwd(). '/tmp/' . $cleanId . $extension;
+
+        //$fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
+        $fileFrom = '/clean/' . $cleanId . $extension;
+
+        $contentType = ($onlyReport ? 'application/pdf' : 'application/octet-stream');
+
+        $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_BINARY);
+        ftp_close($conn_id);
+        //fclose($handle);
+        if($downloadFromFTP) {
+            //if (file_exists($fileTo)) {
+            header('Content-Description: File Transfer');
+             header('Content-Type: ' . $contentType);
+            //header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileTo));
+            readfile($fileTo);
+            //}
+        }
+        else {
+            echo '
+                Failed to download file from FTP. 
+                ';
+        }
 
     }
     /************************************************************/
