@@ -2260,8 +2260,8 @@
             $(".instant_check_btn").html('<i class="fa fa-spin fa-circle-o-notch"></i> Check');
             $(".instant_check_btn").addClass("disabled");
             e.preventDefault();
-            // url_ = $(this).attr("action");
-            url_ = '<?php echo base_url(); ?>User_controller/sendInstantRequest';
+            url_ = $(this).attr("action");
+            // url_ = '<?php echo base_url(); ?>User_controller/sendInstantRequest';
             var form = $(this);
             $("#instant_check_field_respose_con").slideUp("slow");
             var submit_btn = form.find('.submit_btn');
@@ -2294,11 +2294,12 @@
                     //alert(result);
 
                     // var result_json = JSON.stringify(result, undefined, 4);
-                    var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+                    // var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+                    var result_json = JSON.stringify(result.transaction, undefined, 4)
 
                     //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
                     document.getElementById("instant_check_field_request").innerHTML = 'Number: '+ data_number;
-                    document.getElementById("instant_check_field_response").innerHTML = 'Valid Number: ' + result_json;
+                    document.getElementById("instant_check_field_response").innerHTML = result_json;
                     custom_spinner_hide();
                     $("#instant_check_field_respose_con").slideDown("slow");
                     $(".instant_check_btn .fa-circle-o-notch").remove();

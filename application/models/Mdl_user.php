@@ -584,7 +584,6 @@ class Mdl_user extends CI_Model {
                 // return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=> array('status' => $status)));
             // print_r($result->result["data"]['summary']['endTime']);
             // print_r(microtime());
-            print_r($this->microseconds());
             return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
                 }
         catch (MongoCursorException $e){
@@ -628,6 +627,10 @@ class Mdl_user extends CI_Model {
          }
 		return $result_3;
 	}
+	function microseconds() {
+    $mt = explode(' ', microtime());
+    return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
+	}
 	/***********************************************************/
 	/* // END : This function return user's Phone Number files */
 	/***********************************************************/
@@ -659,12 +662,6 @@ class Mdl_user extends CI_Model {
         }
     }
 
-
-
-    function microseconds() {
-    $mt = explode(' ', microtime());
-    return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
-	}
 
     public function set_status_on_failure($id, $message)
     {
