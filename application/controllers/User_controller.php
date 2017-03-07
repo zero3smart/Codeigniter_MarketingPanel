@@ -156,6 +156,90 @@ class User_controller extends CI_Controller
         echo  $htmlToReturn;
     }
 
+    public function get_all_phone_file_process_progress()
+    {
+        session_write_close();
+        $icon_array = array();
+        $icon_array[0] = "fa fa-spin fa-spinner";
+        $result = $this->Mdl_user->fetch_user_phone_file_by_status('processing');
+        $htmlToReturn = '';
+
+        foreach ($result as $key => $value) {
+            if (isset($value['clean_id'])) {
+                $response = $this->callStatusAPI($value['clean_id']);
+                $response = json_decode($response, true);
+
+                if(!$response["success"]) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
+                }
+                else if($response["success"] && isset($response["data"]["errorMessage"])) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
+                }
+                else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
+                    //lets update the record with the result and progress=processed
+                    $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
+                } else {
+                    /*if ($value['progress'] > 0)
+                        $progress = intval(($value['progress'] * 180) / 100);
+                    else
+                        $progress = 0;
+
+                    $progress_percent = intval($value['progress']);
+                    shuffle($icon_array);*/
+                    $htmlToReturn = $htmlToReturn . '
+                        <tr>
+                            <td>'. $value['file_name'] .'</td>
+                            <td>'. $value['upload_time'] .'</td>
+                            <td>'. $value['status'] .'</td>
+                            <td><a href="'.base_url().'report/file_upload_status">'.'Download Clean Files'.'</a></td>
+                        </tr>
+                    ';
+
+                /*echo '<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 file_data">
+                                            <div class="col-xs-12" style="padding:10px 15px 20px 15px;">
+                                                <b>File Name : </b>
+                                                <span>' . $value['file_name'] . '</span>
+                                            </div>
+                                            <div class="col-xs-12" style="padding-bottom:10px">
+                                                <b>Uploaded at : </b>
+                                                <span>' . $value['upload_time'] . '</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="icon"><span class="' . $icon_array[0] . '"></span></div>
+                                    </div>
+                                </div>
+            ';*/
+                }
+
+            }
+        }
+        if(strlen($htmlToReturn) > 0) {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th><th>Status</th><th>Link</th></tr>'
+                . $htmlToReturn
+                .'</table></div></div>';
+        }else
+        {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th colspan="2">No file is processing.</th></tr>'
+                .'</table></div></div>';
+        }
+        echo  $htmlToReturn;
+    }
+
     public function getdate_all()
     {
 
@@ -724,6 +808,7 @@ class User_controller extends CI_Controller
     }
 
     public function upload_phone_file () {
+
         session_write_close();
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
@@ -735,108 +820,113 @@ class User_controller extends CI_Controller
         $contactfile_line = file($contactfile);
         $contactfile_length = count($contactfile_line);
         $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
-        if (count($file_check) > 0) {
+        /*if (count($file_check) > 0) {
             echo 'Sorry, You already uploded this file.';
         }
-        else{
-        if(!$containsHeader) {
-            $containsHeader = false;
-        }
-        else {
-            --$contactfile_length;
-        }
-
-        if ($column_number_2 == "") {
-            echo 'Sorry, Phone not found in this file.';
-        }
-        else {
-            $column_number_2 = $column_number_2 - 1;
-            $dash_profile = $this->Mdl_user->fetch_user_profile();
-            $current_package = $this->Mdl_user->fetch_current_package();
-            $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
-
-            if ($daily_limit > -1) {
-                $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
-            } else {
-                $daily_limit_left = 0;
+        else {*/
+            if(!$containsHeader) {
+                $containsHeader = false;
+            }
+            else {
+                --$contactfile_length;
             }
 
-            $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
-
-            if ($contactfile_length > $total_usable_credit) {
-                redirect("User_controller/have_not_balance");
+            if ($column_number_2 == "") {
+                echo 'Sorry, Phone not found in this file.';
             }
+            else {
+                $column_number_2 = $column_number_2 - 1;
+                $dash_profile = $this->Mdl_user->fetch_user_profile();
+                $current_package = $this->Mdl_user->fetch_current_package();
+                $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
 
-            $i = 0;
-            $status = array();
-            $status['stage'] = "not done";
-
-            if ($_FILES["contactfile"]["error"] == 0) {
-                $name = trim($_FILES["contactfile"]["name"]);
-                $csv_files_total_row = $contactfile_length;
-                $csv_files_total_row = intval($csv_files_total_row);
-
-                try {
-                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
-                }
-                catch (Exception $e) {
-                    echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
-                    return;
-                }
-                if (!$uploadToFtp) {
-                    echo '
-                        Failed to upload file to FTP. 
-                        ';
+                if ($daily_limit > -1) {
+                    $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
                 } else {
-
-                  //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
-
-                   // $apiResponse = json_decode($apiResponse, true);
-                    // print_r($apiResponse);die();
-                    /*$this->console_log("success: " . $apiResponse["success"]);
-                    $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
-                    //$this->console_log($apiResponse["success"]);
-                    //if ($apiResponse["success"]) {
-                       // $clean_id = $apiResponse["data"]["cleanId"];
-                        $clean_id = new MongoId($clean_id);
-                        $data = array(
-                            "clean_id" => $clean_id,
-                            "user" => $user_id,
-                            "file_name" => $name,
-                            "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
-                            "process_end_time" => "",
-                            "status" => "processing",
-                            "progress" => (double)0,
-                            "columnOfNumbers" => $column_number_2,
-                            "isphonenumberfile" => '1'
-                        );
-
-                        $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
-
-                        $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
-
-                        $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
-
-                        $user_file_data_id = $user_file_data['_id'];
-                        $status['stage'] = "ok";
-                        echo 'Successfully Uploaded "' . $name . '"';
-                       //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
-                    //}
-                   // else {
-                       // echo 'Sorry, Try again';
-                   // }
+                    $daily_limit_left = 0;
                 }
-            } else {
-                echo 'Sorry, Try again';
-            }
 
-        }
-        }
+                $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+                if ($contactfile_length > $total_usable_credit) {
+                    redirect("User_controller/have_not_balance");
+                }
+
+                $i = 0;
+                $status = array();
+                $status['stage'] = "not done";
+
+                if ($_FILES["contactfile"]["error"] == 0) {
+                    $name = trim($_FILES["contactfile"]["name"]);
+                    $csv_files_total_row = $contactfile_length;
+                    $csv_files_total_row = intval($csv_files_total_row);
+
+                    try {
+                        $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                    }
+                    catch (Exception $e) {
+                        echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
+                        return;
+                    }
+                    if (!$uploadToFtp) {
+                        echo '
+                            Failed to upload file to FTP. 
+                            ';
+                    } else {
+
+                      //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
+
+                       // $apiResponse = json_decode($apiResponse, true);
+                        // print_r($apiResponse);die();
+                        /*$this->console_log("success: " . $apiResponse["success"]);
+                        $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
+                        //$this->console_log($apiResponse["success"]);
+                        //if ($apiResponse["success"]) {
+                           // $clean_id = $apiResponse["data"]["cleanId"];
+                            $clean_id = new MongoId($clean_id);
+                            $data = array(
+                                "clean_id" => $clean_id,
+                                "user" => $user_id,
+                                "file_name" => $name,
+                                "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
+                                "process_end_time" => "",
+                                "status" => "processing",
+                                "progress" => (double)0,
+                                "columnOfNumbers" => $column_number_2,
+                                "isphonenumberfile" => '1'
+                            );
+
+                            $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
+
+                            $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
+
+                            $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
+
+                            $user_file_data_id = $user_file_data['_id'];
+                            $status['stage'] = "ok";
+                            $fid = $data['_id']->{'$id'};
+                            echo 'Successfully Uploaded "' . $name . '"' . '/' . $fid;
+                         //   echo 'Successfully Uploaded "' . $name . '"';
+                           //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
+                        //}
+                       // else {
+                           // echo 'Sorry, Try again';
+                       // }
+                    }
+                } else {
+                    echo 'Sorry, Try again';
+                }
+
+            }
+        // }
     }
     // public function processFile($host, $usr, $pw, $fid, $name)
     public function processFile()
     {
+        // echo "here";die();
         $name = $this->input->get('name');
+        $fid = $this->input->get('fid');
+        // $this->console_log($fid);die();
         $totalClean = 0;
         $totalInvalid = 0;
         //echo "Hi i'm here".$name;
@@ -850,12 +940,13 @@ class User_controller extends CI_Controller
         $greaterThanHundred = true;
         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
         $handle = fopen($filename, "r");
-        $file = $this->Mdl_user->fetch_user_file_by_name($name);
+        $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
         $numbers = '';
 
         $j=98;
          for ($i=0;($line = fgets($handle)) !== false;$i++) {
-            if($i==0 || ($i-1)==($j-100))
+            if(trim($line) != ""){
+            if($i==0 || ($i-1)==($j-100) || $numbers == "")
             {
                 $test = explode(",", $line);
                 $numbers = $test[$file[8]['columnOfNumbers']];
@@ -887,6 +978,7 @@ class User_controller extends CI_Controller
         }
        }
 
+            }
             }
          }
 
@@ -1240,7 +1332,7 @@ class User_controller extends CI_Controller
        ->send();
         $res = json_decode($response); 
         $numbers = 1;
-        $credit_reduce = $this->credit_reduce_number($numbers, "File Cleanup", $number);
+        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
         echo json_encode($res->aerialink->transactions[0]);
         
         // echo 'Successfully Uploaded./';

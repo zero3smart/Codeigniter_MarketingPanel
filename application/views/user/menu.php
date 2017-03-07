@@ -123,7 +123,6 @@
                 <span class="title">Cleaned Files</span>
             </a>
         </li>
-
     </ul>
 </li>
 
@@ -134,7 +133,16 @@
         <span class="arrow"></span>
     </a>
     <ul class="sub-menu">
-        <li class="nav-item submenu_file_upload_failed_status">
+        <!-- BEGIN : Added menu for phone number report -->
+        <li class="nav-item submenu_phone_file_upload_status">
+            <a class="nav-link" href="<?php echo base_url(); ?>report/phone_file_upload_status">
+                <i class="icon-bar-chart"></i>
+                <span class="title">Cleaned Phone Files</span>
+            </a>
+        </li>
+        <!-- // END : Added menu for phone number report -->
+
+        <li class="nav-item submenu_file_upload_status">
             <a class="nav-link" href="<?php echo base_url(); ?>report/failed_upload">
                 <i class="icon-bar-chart"></i>
                 <span class="title">Failed Upload</span>
