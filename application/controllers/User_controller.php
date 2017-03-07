@@ -2152,14 +2152,16 @@ class User_controller extends CI_Controller
 
         //$fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
         // $dir = getcwd().'/clean';
-        $dir = '/clean';
-        $fileFrom = '/clean/' . $cleanId . $extension;
-        if (!file_exists($dir)) {
+       // $dir = '/clean';
+        $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
+        $fileFrom = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean/' . $cleanId . $extension;
+       // $fileFrom = '/clean/' . $cleanId . $extension;
+        if (!is_dir($dir)) {
             echo "The following directory doesn't exist: ". $dir;
         } else {
-            if(!file_exists($fileFrom))
+            if(!is_dir($fileFrom))
             {
-                echo "The following file doesn't exist on clean directory: ". $fileFrom. "  .    Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);
+                echo "The following file doesn't exist on clean directory: ". $fileFrom. "  .    Directory Permissions: ". substr(decoct( fileperms($fileFrom) ), 1);
 
             }
             else
@@ -2576,8 +2578,10 @@ class User_controller extends CI_Controller
          $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
         $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
         $fileContents = $this->Mdl_user->numberfile_lookup_by_id($fid);
-        $dir = '/clean';
-         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].$dir.'/'.$fid;
+        $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
+        if(is_dir($dir))
+        {
+        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean'.'/'.$fid;
         $create = fopen($filename.'.csv', "w");
         if($create != false)
         {
@@ -2585,6 +2589,7 @@ class User_controller extends CI_Controller
             if($write != false)
             {
                 echo "Successfully Processed";
+                // echo "Successfully Processed".substr(decoct( fileperms($dir) ), 1); 
             }
             else
             {
@@ -2594,15 +2599,12 @@ class User_controller extends CI_Controller
         }
         else
         {
-            if(file_exists($dir))
-                {
                 echo "Unable to upload clean file to ftp. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);
-                }
-                else
-                {
-                    echo "Following directory does'nt exist: ". $dir; 
-                }
-
+        }
+        }
+        else
+        {
+             echo "Following directory does'nt exist: ". $dir . " . Or Have not Permissions";
         }
        
        // print_r(sizeof($r));
