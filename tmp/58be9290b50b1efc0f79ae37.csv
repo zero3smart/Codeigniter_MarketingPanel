@@ -1,0 +1,4 @@
+"guid","number","mcc","mnc","ocn","operator","operatorID","operatorType","wireless","country","countryCode","countryUTCOffsetStart","countryUTCOffsetEnd","state","stateAbbreviation","city","timezone","daylightSavingTimeObserver","validNumber","lastUpdated"
+"8657994e-fd62-497b-bd3a-fd823b765bdb","00000000000","","","","","","","","","","","","","","","","","","false","2017-03-07T10:59:54.482Z"
+"40db6112-df6a-458f-bb8a-73166e4c0367","12345678999","","","","FIRST COMMUNICATIONS LLC","382637","Fixed","","United States of America","1","US","-4","10","Ohio","OH","Salem","-5","1","true","2017-03-07T10:59:54.638Z"
+"832b1848-3b83-4a6d-b0c3-5d300b4a4b38","12345678999","","","","FIRST COMMUNICATIONS LLC","382637","Fixed","","United States of America","1","US","-4","10","Ohio","OH","Salem","-5","1","true","2017-03-07T10:59:54.809Z"

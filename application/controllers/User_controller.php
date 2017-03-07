@@ -813,6 +813,7 @@ class User_controller extends CI_Controller
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
         $column_number_2 = $this->input->post("column_number");
+        $header = $this->input->post("header");
         $containsHeader = $this->input->post("header");
         $line_break = $this->input->post("line_break");
         $line_break = $this->input->post("line_break");
@@ -892,6 +893,15 @@ class User_controller extends CI_Controller
                                 $csv_files_total_row=$csv_files_total_row+1;
                             }
                         }
+                        if($header == true)
+                        {
+                            $header = 1;
+                            $csv_files_total_row = $csv_files_total_row-1;
+                        }
+                        else
+                        {
+                            $header = 0;
+                        }
                             $clean_id = new MongoId($clean_id);
                             $data = array(
                                 "clean_id" => $clean_id,
@@ -902,7 +912,8 @@ class User_controller extends CI_Controller
                                 "status" => "processing",
                                 "progress" => (double)0,
                                 "columnOfNumbers" => $column_number_2,
-                                "isphonenumberfile" => '1'
+                                "isphonenumberfile" => '1',
+                                "isContainHeaders" => $header
                             );
 
                             $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
@@ -951,7 +962,10 @@ class User_controller extends CI_Controller
         $handle = fopen($filename, "r");
         $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
         $numbers = '';
-
+        if($file[10]['isContainHeaders'] == 1)
+        {
+            $line = fgets($handle);
+        }
         $j=99;
          for ($i=0;($line = fgets($handle)) !== false;$i++) {
             if(trim($line) != ""){

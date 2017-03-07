@@ -1,0 +1,5 @@
+"guid","number","mcc","mnc","ocn","operator","operatorID","operatorType","wireless","country","countryCode","countryAbbreviation","countryUTCOffsetStart","countryUTCOffsetEnd","state","stateAbbreviation","city","timezone","daylightSavingTimeObserver","validNumber","lastUpdated"
+"f478f6d8-b4b5-4acc-ae5c-14c215a189eb","19547880393","310","160","","T-MOBILE USA INC.","3816291","Mobile","1","United States of America","1","US","-4","10","Florida","FL","Pompano Beach","-5","1","true","2017-03-07T12:11:57.470Z"
+"6996a80d-452b-45f8-bece-dfb0ae851a66","19548737456","310","012","","VERIZON WIRELESS","381125","Mobile","1","United States of America","1","US","-4","10","Florida","FL","Fort Lauderdale","-5","1","true","2017-03-07T12:11:57.672Z"
+"cbf8803a-832f-4d51-916c-333d0ea4643c","19549370036","310","160","","T-MOBILE USA INC.","3816291","Mobile","1","United States of America","1","US","-4","10","Florida","FL","Fort Lauderdale","-5","1","true","2017-03-07T12:11:57.844Z"
+"754dbedb-044f-4b2b-88b6-d6c88a05d2d6","19548870909","","","","","","","","","","","","","","","","","","false","2017-03-07T12:11:58.031Z"
