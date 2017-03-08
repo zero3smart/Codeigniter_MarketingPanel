@@ -2139,38 +2139,46 @@ class User_controller extends CI_Controller
 
         $user = $this->Mdl_user->fetch_user_profile();
 
-        $conn_id = ftp_connect($user["ftphost"], 21);
+        /*$conn_id = ftp_connect($user["ftphost"], 21);
 
         ftp_login($conn_id, $user["username"], $user["ftppassword"]);
-        ftp_pasv($conn_id, true);
+        ftp_pasv($conn_id, true);*/
 
        // $extension = ($onlyReport ? '.pdf' : '.zip');
         $extension = '.csv';
 
 
         $fileTo = getcwd(). '/tmp/' . $cleanId . $extension;
+        // echo $fileTo;
 
         //$fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
         // $dir = getcwd().'/clean';
        // $dir = '/clean';
         $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
         $fileFrom = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean/' . $cleanId . $extension;
+
        // $fileFrom = '/clean/' . $cleanId . $extension;
         if (!is_dir($dir)) {
             echo "The following directory doesn't exist: ". $dir;
         } else {
-            if(!is_dir($fileFrom))
+            if(!file_exists($fileFrom))
             {
                 echo "The following file doesn't exist on clean directory: ". $fileFrom. "  .    Directory Permissions: ". substr(decoct( fileperms($fileFrom) ), 1);
-
             }
             else
             {
-                 $contentType = ($onlyReport ? 'application/pdf' : 'application/octet-stream');
+                $contentType = ($onlyReport ? 'application/pdf' : 'application/octet-stream');
 
-                $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_BINARY);
-                ftp_close($conn_id);
+                // $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_BINARY);
+                // ftp_close($conn_id);
                 //fclose($handle);
+                $handle = fopen($fileFrom, "r");
+                $downloadFromFTP = "";
+                for ($i=0;($line = fgets($handle)) !== false;$i++) {
+                    $downloadFromFTP .=  $line;
+                }
+                fclose($handle);
+
                 if($downloadFromFTP) {
                     //if (file_exists($fileTo)) {
                     header('Content-Description: File Transfer');
@@ -2180,8 +2188,9 @@ class User_controller extends CI_Controller
                     header('Expires: 0');
                     header('Cache-Control: must-revalidate');
                     header('Pragma: public');
-                    header('Content-Length: ' . filesize($fileTo));
-                    readfile($fileTo);
+                    // header('Content-Length: ' . filesize($fileTo));
+                    // readfile($fileTo);
+                    echo $downloadFromFTP;
             //}
                 }
                 else {
