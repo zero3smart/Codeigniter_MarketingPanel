@@ -178,7 +178,7 @@ if ($view['msg'] != "")
                 echo '
 
                                         <div class="col-xs-12" style="padding-bottom:5px;">
-                                            <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_numberfile_report/' . $file_status_value_value['_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
+                                            <a class="col-xs-12 btn yellow" href="' . base_url() . 'clean_numberfile_report/' . $file_status_value_value['_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
                                                                     
                                         </div>
                                         <!--<div class="col-xs-12" style="padding-bottom:5px;">
@@ -218,7 +218,7 @@ if ($view['msg'] != "")
                                         ';
                 echo '
                                         <div class="col-xs-12" style="padding-bottom:5px;">
-                                            <a class="col-xs-12 btn yellow" target="new" href="' . base_url() . 'clean_numberfile_report/' . $file_status_value_value['_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
+                                            <a class="col-xs-12 btn yellow" href="' . base_url() . 'clean_numberfile_report/' . $file_status_value_value['_id'] . '" ><i class="fa fa-download"></i> Clean File Download</a>
                                                                     
                                         </div>
                                         <!--<div class="col-xs-12" style="padding-bottom:5px;">

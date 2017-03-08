@@ -584,7 +584,6 @@ class Mdl_user extends CI_Model {
                 // return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=> array('status' => $status)));
             // print_r($result->result["data"]['summary']['endTime']);
             // print_r(microtime());
-            print_r($this->microseconds());
             return $this->db->user_file->update(array('_id'=> new MongoId($id)),array('$set'=>$result));
                 }
         catch (MongoCursorException $e){
@@ -628,6 +627,10 @@ class Mdl_user extends CI_Model {
          }
 		return $result_3;
 	}
+	function microseconds() {
+    $mt = explode(' ', microtime());
+    return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
+	}
 	/***********************************************************/
 	/* // END : This function return user's Phone Number files */
 	/***********************************************************/
@@ -659,12 +662,6 @@ class Mdl_user extends CI_Model {
         }
     }
 
-
-
-    function microseconds() {
-    $mt = explode(' ', microtime());
-    return ((int)$mt[1]) * 1000000 + ((int)round($mt[0] * 1000000));
-	}
 
     public function set_status_on_failure($id, $message)
     {
@@ -1189,6 +1186,8 @@ class Mdl_user extends CI_Model {
 		$columns = "";
 		$all_values = "";
 		$i=0;
+		$j=0;
+		$countryAbbrevation = false;
 		foreach($result["response"] as $single_trans) {
 			$single_values = "";
 			foreach($single_trans["transaction"] as $key => $val) {
@@ -1196,12 +1195,23 @@ class Mdl_user extends CI_Model {
 				if($key=="validNumber") {
 					$val = ($val==1) ? "true" : "false";
 				}
+				if($j==11 && $key=="countryUTCOffsetStart")
+				{
+					$single_values = (strlen($single_values)==0) ? "\"" .addslashes("") ."\"" : ($single_values ."," ."\"" .addslashes("") ."\"");
+				}
+				if($i==0 && $j==11 && $key!="countryAbbreviation") {
+					// set columns 
+					$columns = (strlen($columns)==0) ? "\"".addslashes("countryAbbreviation") ."\"" : ($columns ."," ."\"" .addslashes("countryAbbreviation") ."\"");
+				}
 				if($i==0) {
 					// set columns 
 					$columns = (strlen($columns)==0) ? "\"".addslashes($key) ."\"" : ($columns ."," ."\"" .addslashes($key) ."\"");
 				}
 				$single_values = (strlen($single_values)==0) ? "\"" .addslashes($val) ."\"" : ($single_values ."," ."\"" .addslashes($val) ."\"");
+				$j++;
+
 			}
+			$j=0;
 			// echo "<br><br>";
 			// if($i==0) echo $columns ."<br><br>";
 			// echo $single_values ."<br><br>";

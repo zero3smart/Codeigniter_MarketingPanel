@@ -156,89 +156,6 @@ class User_controller extends CI_Controller
         echo  $htmlToReturn;
     }
 
-    public function get_all_phone_file_process_progress()
-    {
-        session_write_close();
-        $icon_array = array();
-        $icon_array[0] = "fa fa-spin fa-spinner";
-        $result = $this->Mdl_user->fetch_user_phone_file_by_status('processing');
-        $htmlToReturn = '';
-
-        foreach ($result as $key => $value) {
-            if (isset($value['clean_id'])) {
-                $response = $this->callStatusAPI($value['clean_id']);
-                $response = json_decode($response, true);
-
-                if(!$response["success"]) {
-                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
-                }
-                else if($response["success"] && isset($response["data"]["errorMessage"])) {
-                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
-                }
-                else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
-                    //lets update the record with the result and progress=processed
-                    $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
-                } else {
-                    /*if ($value['progress'] > 0)
-                        $progress = intval(($value['progress'] * 180) / 100);
-                    else
-                        $progress = 0;
-
-                    $progress_percent = intval($value['progress']);
-                    shuffle($icon_array);*/
-                    $htmlToReturn = $htmlToReturn . '
-                        <tr>
-                            <td>'. $value['file_name'] .'</td>
-                            <td>'. $value['upload_time'] .'</td>
-                            <td>'. $value['status'] .'</td>
-                            <td><a href="'.base_url().'report/file_upload_status">'.'Download Clean Files'.'</a></td>
-                        </tr>
-                    ';
-
-                /*echo '<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="col-xs-12 file_data">
-                                            <div class="col-xs-12" style="padding:10px 15px 20px 15px;">
-                                                <b>File Name : </b>
-                                                <span>' . $value['file_name'] . '</span>
-                                            </div>
-                                            <div class="col-xs-12" style="padding-bottom:10px">
-                                                <b>Uploaded at : </b>
-                                                <span>' . $value['upload_time'] . '</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="icon"><span class="' . $icon_array[0] . '"></span></div>
-                                    </div>
-                                </div>
-            ';*/
-                }
-
-            }
-        }
-        if(strlen($htmlToReturn) > 0) {
-            $htmlToReturn =
-                '<div style="background-color: #fff;padding: 15px;">'.
-                '<div class="table-responsive">'.
-
-                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
-                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th><th>Status</th><th>Link</th></tr>'
-                . $htmlToReturn
-                .'</table></div></div>';
-        }else
-        {
-            $htmlToReturn =
-                '<div style="background-color: #fff;padding: 15px;">'.
-                '<div class="table-responsive">'.
-
-                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
-                '<thead></thead><tr><th colspan="2">No file is processing.</th></tr>'
-                .'</table></div></div>';
-        }
-        echo  $htmlToReturn;
-    }
 
     public function getdate_all()
     {
@@ -807,225 +724,7 @@ class User_controller extends CI_Controller
         }
     }
 
-    public function upload_phone_file () {
-
-        session_write_close();
-        $user_id = $this->session->email_lookup_user_id;
-        $user = $this->Mdl_user->fetch_user_profile();
-        $column_number_2 = $this->input->post("column_number_2");
-        $containsHeader = $this->input->post("header");
-        $line_break = $this->input->post("line_break");
-        $line_break = $this->input->post("line_break");
-        $contactfile = $_FILES['contactfile']['tmp_name'];
-        $contactfile_line = file($contactfile);
-        $contactfile_length = count($contactfile_line);
-        $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
-        /*if (count($file_check) > 0) {
-            echo 'Sorry, You already uploded this file.';
-        }
-        else {*/
-            if(!$containsHeader) {
-                $containsHeader = false;
-            }
-            else {
-                --$contactfile_length;
-            }
-
-            if ($column_number_2 == "") {
-                echo 'Sorry, Phone not found in this file.';
-            }
-            else {
-                $column_number_2 = $column_number_2 - 1;
-                $dash_profile = $this->Mdl_user->fetch_user_profile();
-                $current_package = $this->Mdl_user->fetch_current_package();
-                $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
-
-                if ($daily_limit > -1) {
-                    $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
-                } else {
-                    $daily_limit_left = 0;
-                }
-
-                $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
-
-                if ($contactfile_length > $total_usable_credit) {
-                    redirect("User_controller/have_not_balance");
-                }
-
-                $i = 0;
-                $status = array();
-                $status['stage'] = "not done";
-
-                if ($_FILES["contactfile"]["error"] == 0) {
-                    $name = trim($_FILES["contactfile"]["name"]);
-                    $csv_files_total_row = $contactfile_length;
-                    $csv_files_total_row = intval($csv_files_total_row);
-
-                    try {
-                        $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
-                    }
-                    catch (Exception $e) {
-                        echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
-                        return;
-                    }
-                    if (!$uploadToFtp) {
-                        echo '
-                            Failed to upload file to FTP. 
-                            ';
-                    } else {
-
-                      //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
-
-                       // $apiResponse = json_decode($apiResponse, true);
-                        // print_r($apiResponse);die();
-                        /*$this->console_log("success: " . $apiResponse["success"]);
-                        $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
-                        //$this->console_log($apiResponse["success"]);
-                        //if ($apiResponse["success"]) {
-                           // $clean_id = $apiResponse["data"]["cleanId"];
-                            $clean_id = new MongoId($clean_id);
-                            $data = array(
-                                "clean_id" => $clean_id,
-                                "user" => $user_id,
-                                "file_name" => $name,
-                                "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
-                                "process_end_time" => "",
-                                "status" => "processing",
-                                "progress" => (double)0,
-                                "columnOfNumbers" => $column_number_2,
-                                "isphonenumberfile" => '1'
-                            );
-
-                            $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
-
-                            $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
-
-                            $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
-
-                            $user_file_data_id = $user_file_data['_id'];
-                            $status['stage'] = "ok";
-                            $fid = $data['_id']->{'$id'};
-                            echo 'Successfully Uploaded "' . $name . '"' . '/' . $fid;
-                         //   echo 'Successfully Uploaded "' . $name . '"';
-                           //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
-                        //}
-                       // else {
-                           // echo 'Sorry, Try again';
-                       // }
-                    }
-                } else {
-                    echo 'Sorry, Try again';
-                }
-
-            }
-        // }
-    }
-    // public function processFile($host, $usr, $pw, $fid, $name)
-    public function processFile()
-    {
-        // echo "here";die();
-        $name = $this->input->get('name');
-        $fid = $this->input->get('fid');
-        // $this->console_log($fid);die();
-        $totalClean = 0;
-        $totalInvalid = 0;
-        //echo "Hi i'm here".$name;
-        /*$file = $this->Mdl_user->get_api_log_single('58b69a71b50b1eff0ec72678');
-        // echo $file[4]['response'];
-        $array = json_decode(json_encode(json_decode($file['response'])), True);
-        //$result= json_decode($file['response']);
-        print_r($array[0]['transaction']['validNumber']);*/
-        $user_id = $this->session->email_lookup_user_id;
-        $user = $this->Mdl_user->fetch_user_profile();
-        $greaterThanHundred = true;
-        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
-        $handle = fopen($filename, "r");
-        $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
-        $numbers = '';
-
-        $j=98;
-         for ($i=0;($line = fgets($handle)) !== false;$i++) {
-            if(trim($line) != ""){
-            if($i==0 || ($i-1)==($j-100) || $numbers == "")
-            {
-                $test = explode(",", $line);
-                $numbers = $test[$file[8]['columnOfNumbers']];
-            }
-            else{
-               $test = explode(",", $line);
-                $numbers = $numbers.','.$test[$file[8]['columnOfNumbers']];
-            }
-            if($i>=$j)
-            {
-                $greaterThanHundred = false;
-                $j=$j+100;
-                 $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-       $numbers = '';
-       $response = json_decode($response);
-
-       if($i<=99)
-       {
-       $r = $response->aerialink->transactions;
-       }
-       else
-       {
-        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
-            array_push($r, $response->aerialink->transactions[$k]);
-        }
-       }
-
-            }
-            }
-         }
-
-
-
-       if($greaterThanHundred)
-       {
-         $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-       $response = json_decode($response);
-        $r = $response->aerialink->transactions;
-       }
-        else{
-            $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-       
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-        $response = json_decode($response);
-        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
-            array_push($r, $response->aerialink->transactions[$k]);
-        }
-        }
-        $request = 'URL : "http://localhost:8080/NumberCleanupAPI/cleanup",<br>Data : { "form_params" : { "file_id" : "' . $file[1]['_id'] . '" } }';
-
-       
-        for ($k=0; $k < sizeof($r); $k++) { 
-            if($r[$k]->transaction->validNumber == 1)
-            {
-                $totalClean = $totalClean +1;
-            }
-            else
-            {
-                $totalInvalid = $totalInvalid + 1;
-            }
-        }
-         $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
-        $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
     
-        echo "Successfully Processed";
-       // print_r(sizeof($r));
-       // echo json_encode($response);
-    }
     public function callStatusAPI($clean_id)
     {
         $statusURL = 'http://64.187.105.90:3000/status?cleanId=' . $clean_id;
@@ -1198,6 +897,9 @@ class User_controller extends CI_Controller
 
     }
 
+
+
+
     public function contact_upload()
     {
         $file_name = $_FILES["contactfile"]["name"];
@@ -1323,23 +1025,7 @@ class User_controller extends CI_Controller
         //{'form_params' => {  'file_id' => $fileID } }
 
     }
-    public function sendInstantRequest()
-    {
-        $number = $this->input->get('number');
-        $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$number;
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-        $res = json_decode($response); 
-        $numbers = 1;
-        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
-        echo json_encode($res->aerialink->transactions[0]);
-        
-        // echo 'Successfully Uploaded./';
-        //['form_params' => [  'file_id' => $fileID ] ]
-        //{'form_params' => {  'file_id' => $fileID } }
-
-    }
+    
     public function sendInstantCheckupRequest()
     {
 
@@ -2074,7 +1760,7 @@ class User_controller extends CI_Controller
 
         $data['view']['page_title'] = 'Reports';
         $data['view']['page_sub_title'] = 'Cleaned Files';
-        $data['view']['menu'] = 'report';
+        $data['view']['menu'] = 'download';
         $data['view']['submenu'] = 'file_upload_status';
         $data['view']['section'] = 'file_upload_status';
         $data['view']['msg'] = $this->session->flashdata('msg');
@@ -2112,54 +1798,7 @@ class User_controller extends CI_Controller
 
     }
 
-    public function phone_file_upload_status($parm1 = '')
-    {
-
-        if ($parm1 == '')
-            $data['serial'] = 0;
-        else
-            $data['serial'] = $parm1;
-        $this->load->library("pagination");
-
-        $data['view']['page_title'] = 'Reports';
-        $data['view']['page_sub_title'] = 'Cleaned Files';
-        $data['view']['menu'] = 'report';
-        $data['view']['submenu'] = 'phone_file_upload_status';
-        $data['view']['section'] = 'phone_file_upload_status';
-        $data['view']['msg'] = $this->session->flashdata('msg');
-        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
-        $config = array();
-
-        $config["base_url"] = base_url() . 'report/phone_file_upload_status';
-        $config["total_rows"] = $this->Mdl_user->count_all_rows_user_file();
-        //print $config["total_rows"];die();
-        $config["per_page"] = 5;
-        $config["uri_segment"] = 3;
-        $config['num_links'] = 3;
-        $config['first_link'] = 'First';
-        $config['last_link'] = 'Last';
-        $config['cur_tag_open'] = '<a  class="btn btn-square btn-primary">';
-        $config['cur_tag_close'] = '</a>';
-        $config['attributes'] = array('class' => 'group_pagination_link btn btn-square btn-warning');
-
-        $this->pagination->initialize($config);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data["file_status"] = $this->Mdl_user->fetch_user_phonenumber_file($config["per_page"], $page);
-        // print_r($data["file_status"]);die();
-       // print_r($config["per_page"]);die();
-        $data["pagination_links"] = $this->pagination->create_links();
-        //print_r($data["pagination_links"]);
-        //die();
-
-        $this->load->view("user/dashboard", $data);
-
-
-        //$data['groups_document'] = $this->Mdl_user->fetch_groups();
-        //print_r($data['groups_document']);die();
-
-    }
+    
     public function file_upload_status_ajax($parm1 = '')
     {
         if ($parm1 == '')
@@ -2479,24 +2118,423 @@ class User_controller extends CI_Controller
     }
 
 
-    /***********************************************************/
-    /* BEGIN : Function to download User's number file reports */
-    /***********************************************************/
+    /*******************************************/
+    /* BEGIN : Functions to User's number file */
+    /*******************************************/
     public function smtp_clean_numberfile_report($id)
     {
 
-        $result = $this->Mdl_user->numberfile_lookup_by_id($id);
+        /*$result = $this->Mdl_user->numberfile_lookup_by_id($id);
         header("Content-type: text/plain");
         header("Content-Disposition: attachment; filename=" . $result['_id'] . ".csv");
 
         // do your Db stuff here to get the content into $content
 
-        print_r($result["final_result"]);
+        print_r($result["final_result"]);*/
+        $this->download_clean_numberfile_from_ftp($id);
 
     }
-    /************************************************************/
-    /* // END : Function to download User's number file reports */
-    /************************************************************/
+    public function download_clean_numberfile_from_ftp($cleanId, $onlyReport = false)
+    {
+
+        $user = $this->Mdl_user->fetch_user_profile();
+        $extension = '.csv';
+
+        $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
+        $fileFrom = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean/' . $cleanId . $extension;
+
+        if (!is_dir($dir)) {
+            echo "The following directory doesn't exist: ". $dir;
+        } else {
+            if(!file_exists($fileFrom))
+            {
+                echo "The following file doesn't exist on clean directory: ". $fileFrom. "  .    Directory Permissions: ". substr(decoct( fileperms($fileFrom) ), 1);
+            }
+            else
+            {
+                $contentType = ($onlyReport ? 'application/pdf' : 'application/octet-stream');
+
+                $handle = fopen($fileFrom, "r");
+                $downloadFromFTP = "";
+                for ($i=0;($line = fgets($handle)) !== false;$i++) {
+                    $downloadFromFTP .=  $line;
+                }
+                fclose($handle);
+
+                if($downloadFromFTP) {
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: ' . $contentType);
+                    header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    echo $downloadFromFTP;
+                }
+                else {
+                    echo 'Failed to download file from FTP. Directory Permissions: '. substr(decoct( fileperms($dir) ), 1);
+                }
+
+            }
+        }
+       
+    }
+    public function sendInstantRequest()
+    {
+        $number = $this->input->get('number');
+        $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$number;
+        $response = \Httpful\Request::get($url)
+       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
+       ->send();
+        $res = json_decode($response); 
+        $numbers = 1;
+        $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
+        echo json_encode($res->aerialink->transactions[0]);
+
+    }
+    public function get_all_phone_file_process_progress()
+    {
+        session_write_close();
+        $icon_array = array();
+        $icon_array[0] = "fa fa-spin fa-spinner";
+        $result = $this->Mdl_user->fetch_user_phone_file_by_status('processing');
+        $htmlToReturn = '';
+
+        foreach ($result as $key => $value) {
+            if (isset($value['clean_id'])) {
+                $response = $this->callStatusAPI($value['clean_id']);
+                $response = json_decode($response, true);
+
+                if(!$response["success"]) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["message"]);
+                }
+                else if($response["success"] && isset($response["data"]["errorMessage"])) {
+                    $this->Mdl_user->set_status_on_failure($value['_id'], $response["data"]["errorMessage"]);
+                }
+                else if ($response["success"] && $response["data"]["status"] == "completion") { //completed
+                    //lets update the record with the result and progress=processed
+                    $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
+                } else {
+                    $htmlToReturn = $htmlToReturn . '
+                        <tr>
+                            <td>'. $value['file_name'] .'</td>
+                            <td>'. $value['upload_time'] .'</td>
+                            <td>'. $value['status'] .'</td>
+                            <td><a href="'.base_url().'report/phone_file_upload_status">'.'Download Clean Files'.'</a></td>
+                        </tr>
+                    ';
+                }
+
+            }
+        }
+        if(strlen($htmlToReturn) > 0) {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th>File Name</th><th>Uploaded At</th><th>Status</th><th>Link</th></tr>'
+                . $htmlToReturn
+                .'</table></div></div>';
+        }else
+        {
+            $htmlToReturn =
+                '<div style="background-color: #fff;padding: 15px;">'.
+                '<div class="table-responsive">'.
+
+                '<table class="table_all_center table table-bordered table-striped table-condensed flip-content" width="100%" style="word-break:break-all;" cellspacing="0">'.
+                '<thead></thead><tr><th colspan="2">No file is processing.</th></tr>'
+                .'</table></div></div>';
+        }
+        echo  $htmlToReturn;
+    }
+    public function phone_file_upload_status($parm1 = '')
+    {
+
+        if ($parm1 == '')
+            $data['serial'] = 0;
+        else
+            $data['serial'] = $parm1;
+        $this->load->library("pagination");
+
+        $data['view']['page_title'] = 'Reports';
+        $data['view']['page_sub_title'] = 'Cleaned Files';
+        $data['view']['menu'] = 'report';
+        $data['view']['submenu'] = 'phone_file_upload_status';
+        $data['view']['section'] = 'phone_file_upload_status';
+        $data['view']['msg'] = $this->session->flashdata('msg');
+        $data['view']['msg_type'] = $this->session->flashdata('msg_type');
+        $config = array();
+
+        $config["base_url"] = base_url() . 'report/phone_file_upload_status';
+        $config["total_rows"] = $this->Mdl_user->count_all_rows_user_file();
+        //print $config["total_rows"];die();
+        $config["per_page"] = 5;
+        $config["uri_segment"] = 3;
+        $config['num_links'] = 3;
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['cur_tag_open'] = '<a  class="btn btn-square btn-primary">';
+        $config['cur_tag_close'] = '</a>';
+        $config['attributes'] = array('class' => 'group_pagination_link btn btn-square btn-warning');
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data["file_status"] = $this->Mdl_user->fetch_user_phonenumber_file($config["per_page"], $page);
+        $data["pagination_links"] = $this->pagination->create_links();
+        $this->load->view("user/dashboard", $data);
+
+    }
+    public function upload_phone_file () {
+
+        session_write_close();
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        $column_number_2 = $this->input->post("column_number");
+        $header = $this->input->post("header");
+        $containsHeader = $this->input->post("header");
+        $line_break = $this->input->post("line_break");
+        $line_break = $this->input->post("line_break");
+        $contactfile = $_FILES['contactfile']['tmp_name'];
+        $contactfile_line = file($contactfile);
+
+        $contactfile_length = count($contactfile_line);
+        $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
+            if(!$containsHeader) {
+                $containsHeader = false;
+            }
+            else {
+                --$contactfile_length;
+            }
+
+            if ($column_number_2 == "") {
+                echo 'Sorry, Phone not found in this file.';
+            }
+            else {
+                $column_number_2 = $column_number_2 - 1;
+                $dash_profile = $this->Mdl_user->fetch_user_profile();
+                $current_package = $this->Mdl_user->fetch_current_package();
+                $daily_limit = $this->Mdl_user->fetch_user_daily_limit();
+
+                if ($daily_limit > -1) {
+                    $daily_limit_left = $current_package['daily_limit'] - $daily_limit;
+                } else {
+                    $daily_limit_left = 0;
+                }
+
+                $total_usable_credit = $daily_limit_left + $dash_profile['balance'];
+
+                if ($contactfile_length > $total_usable_credit) {
+                    redirect("User_controller/have_not_balance");
+                }
+
+                $i = 0;
+                $status = array();
+                $status['stage'] = "not done";
+
+                if ($_FILES["contactfile"]["error"] == 0) {
+                    $name = trim($_FILES["contactfile"]["name"]);
+
+                    try {
+                        $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                    }
+                    catch (Exception $e) {
+                        echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
+                        return;
+                    }
+                    if (!$uploadToFtp) {
+                        echo '
+                            Failed to upload file to FTP. 
+                            ';
+                    } else {
+
+                        $csv_files_total_row=0;
+                        for($i=0; $i<sizeof($contactfile_line);$i++)
+                        {
+                            if(trim($contactfile_line[$i]) != "")
+                            {
+                                $csv_files_total_row=$csv_files_total_row+1;
+                            }
+                        }
+                        if($header == true)
+                        {
+                            $header = 1;
+                            $csv_files_total_row = $csv_files_total_row-1;
+                        }
+                        else
+                        {
+                            $header = 0;
+                        }
+                            $clean_id = new MongoId($clean_id);
+                            $data = array(
+                                "clean_id" => $clean_id,
+                                "user" => $user_id,
+                                "file_name" => $name,
+                                "upload_time" => new MongoDate(strtotime(date('Y-m-d H:i:s'))),
+                                "process_end_time" => "",
+                                "status" => "processing",
+                                "progress" => (double)0,
+                                "columnOfNumbers" => $column_number_2,
+                                "isphonenumberfile" => '1',
+                                "isContainHeaders" => $header
+                            );
+
+                            $upload = $this->Mdl_user->contact_upload_file_mdl($data); // inserts the $data
+
+                            $user_file_data = $this->Mdl_user->fetch_user_file_id($clean_id); //the same as just inserted
+
+                            $credit_reduce = $this->credit_reduce($csv_files_total_row, "File Cleanup", $user_file_data['_id']); //reduces credit, lets call it after getting the cleanId from the api
+
+                            $user_file_data_id = $user_file_data['_id'];
+                            $status['stage'] = "ok";
+                            $fid = $data['_id']->{'$id'};
+                            echo 'Successfully Uploaded "' . $name . '"' . '/' . $fid;
+                    }
+                } else {
+                    echo 'Sorry, Try again';
+                }
+
+            }
+    
+    }
+    public function processFile()
+    {
+        $name = $this->input->get('name');
+        $fid = $this->input->get('fid');
+        $totalClean = 0;
+        $totalInvalid = 0;
+        $user_id = $this->session->email_lookup_user_id;
+        $user = $this->Mdl_user->fetch_user_profile();
+        $smallerThanHundred = true;
+        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
+        $handle = fopen($filename, "r");
+        $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
+        $file2 = $this->Mdl_user->fetch_user_file_by_fileid($fid);
+        $numbers = '';
+        $containsHeader = false;
+        $coulumnOfNumbers =-1;
+        foreach($file2 as $v) {
+            if(key($v) == "isContainHeaders" && current($v) == 1)
+            {
+                $containsHeader = true;
+            }
+            if(key($v) == "columnOfNumbers")
+            {
+                $coulumnOfNumbers =current($v);
+            }
+
+           // $output[key($v)] = current($v);
+        }
+       // $file2 = json_decode($file2);
+       // echo "file2: ".$file2->isContainHeaders;
+        if($containsHeader)
+        {
+            $line = fgets($handle);
+        }
+        $j=99;
+        for ($i=0;($line = fgets($handle)) !== false;$i++) {
+            if(trim($line) != ""){
+                if($i==0 || ($i-1)==($j-100) || $numbers == "")
+                {
+                    $test = explode(",", $line);
+                    $numbers = $test[$coulumnOfNumbers];
+                }
+                else{
+                    $test = explode(",", $line);
+                    $numbers = $numbers.','.$test[$coulumnOfNumbers];
+                }
+                if($i>=$j)
+                {
+                    $smallerThanHundred = false;
+                    $j=$j+100;
+                    $numbers = trim(preg_replace('/\s+/', '', $numbers));
+                    $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+                    $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+                    $numbers = '';
+                    $response = json_decode($response);
+
+                if($i<=99)
+                {
+                    $r = $response->aerialink->transactions;
+                }
+                else
+                {
+                    for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+                        array_push($r, $response->aerialink->transactions[$k]);
+                    }
+                }
+
+                }
+            }
+         }
+
+        if($smallerThanHundred)
+        {
+            $numbers = trim(preg_replace('/\s+/', '', $numbers));
+            $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+            $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+            $response = json_decode($response);
+            $r = $response->aerialink->transactions;
+        }
+        else{
+            $numbers = trim(preg_replace('/\s+/', '', $numbers));
+            $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+            $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+            $response = json_decode($response);
+            for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+                array_push($r, $response->aerialink->transactions[$k]);
+            }
+        }
+        $request = 'URL : "http://localhost:8080/NumberCleanupAPI/cleanup",<br>Data : { "form_params" : { "file_id" : "' . $file[1]['_id'] . '" } }';
+
+       
+        for ($k=0; $k < sizeof($r); $k++) { 
+            if($r[$k]->transaction->validNumber == 1)
+            {
+                $totalClean = $totalClean +1;
+            }
+            else
+            {
+                $totalInvalid = $totalInvalid + 1;
+            }
+        }
+        $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
+        $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
+        $fileContents = $this->Mdl_user->numberfile_lookup_by_id($fid);
+        $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
+        if(is_dir($dir))
+        {
+            $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean'.'/'.$fid;
+            $create = fopen($filename.'.csv', "w");
+            if($create != false)
+            {
+                $write = fwrite($create, $fileContents["final_result"]);
+                if($write != false)
+                {
+                    echo "Successfully Processed";
+                // echo "Successfully Processed".substr(decoct( fileperms($dir) ), 1); 
+                }
+                else
+                {
+                    echo "Error during writing to clean file. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);   
+                }
+                fclose($create);
+            }
+            else
+            {
+                echo "Unable to upload clean file to ftp. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);
+            }
+        }
+        else
+        {
+             echo "Following directory does'nt exist: ". $dir . " . Or Have not Permissions";
+        }
+       
+    }
+    /********************************************/
+    /* // END : Functions to User's number file */
+    /********************************************/
 
 
 

@@ -27,6 +27,9 @@
                 <div class="caption">
                     <i class="fa fa-globe"></i>Files Currently Processing
                 </div>
+                <div class="caption downCleanLink">
+                <a href="<?php echo base_url() . 'report/phone_file_upload_status'; ?>">Download Clean Files</a>
+            </div>
             </div>
             <div class="portlet-body" id="file_process_progress_container" style="height: 150px;overflow: auto;">
                 <div class="row">
@@ -203,7 +206,7 @@
                                                 <input value="1" name="column_number_2" type="hidden" id="set_column_number_2">
                                             </div>
                                             <div class="col-xs-3 text-left">
-                                                <a class="btn yellow" href="#" id="get_column_number" onclick="fn_contact_upload_file()">Change</a>
+                                                <a class="btn yellow" id="get_column_number" onclick="change_column()">Change</a>
                                             </div>
                                         </div>
                                     </div>
@@ -214,7 +217,7 @@
                                                 <span>This file contains header</span>
                                             </div>
                                             <div class="col-xs-3">
-                                                <input type="checkbox" name="header" value="true">
+                                                <input type="checkbox" id="is_contains_header" name="header" value="true" onchange="check_header()">
                                             </div>
                                         </div>
                                     </div>

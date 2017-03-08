@@ -1747,7 +1747,6 @@
                                     get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
                                 else
                                     get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
-
                                 test = fileContents_data_array_2[j];
 
                                 test = test.replace("(", '');
@@ -1930,6 +1929,7 @@
 
                             $(".show_file_upload_button").slideDown("slow");
                             document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
+                            $('#balance_deduction_part').attr('value', fileContents_data_array_count);
 
                         }
                     }
@@ -1957,6 +1957,302 @@
          alert("Files are not supported");
          }
          }*/
+         function check_header()
+         {
+            global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
+            var deduction = parseInt($("#balance_deduction_part").attr('value'));
+
+            if($('#is_contains_header').is(':checked'))
+            {
+                remains_credit = global_balance - deduction + 1;
+                deduction = deduction -1;
+                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + deduction + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
+                            $('#balance_deduction_part').attr('value', deduction);   
+            }
+            else{
+                remains_credit = global_balance - (deduction + 1);
+                deduction = deduction +1;
+                document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + deduction + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
+                            $('#balance_deduction_part').attr('value', deduction);
+            }
+           // console.log(header);
+         }
+         function change_column() {
+            // event.preventDefault();
+            global_balance = parseInt(document.getElementById('top_menu_global_balance').innerHTML);
+            global_daily_limit_left = parseInt(document.getElementById('top_menu_global_daily_limit').innerHTML);
+            global_total_usable_credit = parseInt(document.getElementById('top_menu_global_usable_credit').innerHTML);
+
+
+            //alert(global_balance+' | '+global_daily_limit_left+' | '+global_total_usable_credit);
+
+            set_column_number = document.getElementById("set_column_number").value;
+            set_column_number = parseInt(set_column_number);
+            if (isNaN(set_column_number))
+                set_column_number = 0;
+            var fileSelected = document.getElementById('contact_upload_file');
+            //Set the extension for the file
+            var fileExtension = 'application/vnd.ms-excel';
+            var fileExtension_2 = 'text/csv';
+            var fileExtension_3 = 1;
+
+
+            //Get the file object
+            var fileTobeRead = fileSelected.files[0];
+
+
+            //Check of the extension match
+
+            if (fileExtension_3 == 1) {
+                //Initialize the FileReader object to read the 2file
+                var fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    var fileContents = document.getElementById('filecontents');
+                    fileContents_data_array = [];
+                    fileContents_data_array = fileReader.result.split('\n');
+                    //console.log(fileContents_data_array[fileContents_data_array.length-1]);
+                    
+                   // console.log("length: " ,fileContents_data_array.length);
+                    fileContents_data_str = "";
+                    position_track = [];
+                    get_data_from_csv_file = '<table class="table table-striped table-bordered table-hover"><tr>';
+                    data_for_serial = [];
+                    data_for_serial = fileContents_data_array[0].split(',');
+                    for (i = 1; i <= data_for_serial.length; i++) {
+
+                        get_data_from_csv_file = get_data_from_csv_file + '<th class="text-center column_' + i + '_for_selected">' + i + '</th>';
+                    }
+                    get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                    if (fileContents_data_array.length > 11)
+                        loop_length = 11;
+                    else
+                        loop_length = fileContents_data_array.length;
+                    for (i = 0; i < loop_length; i++) {
+
+                        // Remove extra spaces 
+                        fileContents_data_array[i] = fileContents_data_array[i].replace(/\s+/g, ' ').trim();
+                        
+                        try{
+                            if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != ""){
+                            get_data_from_csv_file = get_data_from_csv_file + '<tr>';
+
+                            fileContents_data_array_2 = [];
+                            fileContents_data_str = fileContents_data_str + fileContents_data_array[i] + "\n";
+                            fileContents_data_array_2 = fileContents_data_array[i].split(',');
+
+                            position_track[i] = false;
+
+                            for (j = 0; j < fileContents_data_array_2.length; j++) {
+                                jj = j + 1;
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + '<td class="column_' + jj + '_for_selected">';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + '<th class="column_' + jj + '_for_selected">';
+                                test = fileContents_data_array_2[j];
+
+                                test = test.replace("(", '');
+                                test = test.replace(")", '');
+                                test = test.replace("#", '');
+                                test = test.replace("-", '');
+                                test = test.replace("+", '');
+                                test = test.replace(" ", '');
+                                // test = test.replace(chr(13),'');
+                                var isnum = /^\d+$/.test(test);
+                                var isnum = /^\d+$/.test(test);
+
+                                if (isnum) {
+                                    position_track[i] = j + 1;
+                                    // console.log(position_track[i]);
+                                }
+
+                                if (i > 0)
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</td>';
+                                else
+                                    get_data_from_csv_file = get_data_from_csv_file + fileContents_data_array_2[j] + '</th>';
+                                //if(fileContents_data_array_2[j].length )
+                            }
+
+
+                            get_data_from_csv_file = get_data_from_csv_file + '</tr>';
+                            }
+                        }
+                        catch(Exception)
+                        {
+                            console.log("Exception is here...");
+                            console.log(Exception);
+                        }
+                    }
+                    position_track_str = position_track.join(",");
+
+
+
+
+
+
+                    var test_column = position_track[1];
+                    var test_column_check = 0;
+
+
+                    var uniqueFn = function(value, index, self) {
+                        return self.indexOf(value) === index;
+                    };
+
+                    var positioin_ob = {};
+
+                    for(var i = 0; i< position_track.length; i++) {
+                        if(typeof(position_track[i]) == 'number') {
+                            if(!positioin_ob[position_track[i]]) {
+                                positioin_ob[position_track[i]] = 1;
+                            }
+                            else {
+                                positioin_ob[position_track[i]] = positioin_ob[position_track[i]] + 1;
+                            }
+
+                        }
+                    }
+
+                    var maxOccurence = -1;
+
+
+                    for(var key in positioin_ob) {
+                        if(maxOccurence < positioin_ob[key]) {
+                            maxOccurence = positioin_ob[key];
+                            test_column_check = key;
+                        }
+                    }
+
+                    // for time being...
+                    /*test_column = true;
+                    test_column_check=1;*/
+
+
+
+
+
+                    //document.getElementById("csv_contact_column_no").innerHTML = position_track_str;
+                    /*test_column = position_track[1];
+                    test_column_check = 0;
+                    for (i = 1; i < position_track.length; i++) {
+                        if (position_track[i] != false) {
+                            if (test_column == position_track[i])
+                            {
+                                console.log(test_column);
+                                test_column_check = position_track[i];
+                                break;
+                                }
+                            else {
+                                test_column_check = 0;
+                                break;
+                            }
+                        }
+                        else {
+                            test_column_check = 0;
+                            break;
+                        }
+
+                    }*/
+                    /*console.log(test_column);
+                    console.log('here');*/
+                    uploadable = 0;
+                    have_balance = 0;
+                    test_column_check = set_column_number;
+                  //  console.log(fileContents_data_array_count);
+                    /*if (position_track[0] == false)
+                    {
+                        console.log("-2");
+                        fileContents_data_array_count = fileContents_data_array.length - 2;
+                        }
+                    else
+                    {
+                        console.log("-1");
+                        fileContents_data_array_count = fileContents_data_array.length - 1;
+                        }*/
+                    /*if(fileContents_data_array[fileContents_data_array.length-1] === "")
+                    {
+                        fileContents_data_array_count = fileContents_data_array.length - 1;
+                    }*/
+                    fileContents_data_array_count =0;
+                    for (var i = 0; i < fileContents_data_array.length ; i++) {
+                        if(fileContents_data_array[i].replace(/\s+/g, ' ').trim() != "")
+                        {
+                            fileContents_data_array_count=fileContents_data_array_count+1;
+                        }
+                    }
+              
+                    if (fileContents_data_array_count <= global_total_usable_credit)
+                        have_balance = 1;
+                   // console.log(fileContents_data_array_count);
+                    if (set_column_number == 0) {
+                        if (test_column_check != 0) {
+                            document.getElementById("suggetion_part").innerHTML = 'Your file appears to contain numbers in column ' + test_column_check;
+                            document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
+                            document.getElementById("set_column_number").value = test_column_check;
+                            document.getElementById("set_column_number_2").value = test_column_check;
+                            document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                            $(".show_file_upload_button").slideDown("slow");
+                            uploadable = 1;
+                        }
+                        else {
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("set_csv_files_total_row").value = 0;
+                            document.getElementById("suggetion_part").innerHTML = 'Sorry, We can\'t recognize the column no of Numbers.';
+                            document.getElementById("command_part").innerHTML = 'Please write here the column number : ';
+                            document.getElementById("set_column_number").value = '';
+                            document.getElementById("set_column_number_2").value = '';
+                        }
+                    }
+                    else if (set_column_number == test_column_check) {
+                        document.getElementById("set_csv_files_total_row").value = fileContents_data_array_count;
+                        document.getElementById("suggetion_part").innerHTML = 'Yes, Your file appears to contain Numbers in column ' + test_column_check;
+                        document.getElementById("command_part").innerHTML = 'If this is wrong please enter the correct numbers column here : ';
+                        document.getElementById("set_column_number").value = test_column_check;
+                        document.getElementById("set_column_number_2").value = test_column_check;
+                        $(".show_file_upload_button").slideDown("slow");
+                        uploadable = 1;
+                    }
+                    else {
+                        document.getElementById("set_csv_files_total_row").value = 0;
+                        $(".show_file_upload_button").slideUp("slow");
+                        document.getElementById("suggetion_part").innerHTML = 'Sorry, Something is going wrong';
+                        document.getElementById("command_part").innerHTML = 'Please write here the Number\'s column number again : ';
+                        document.getElementById("set_column_number").value = '';
+                        document.getElementById("set_column_number_2").value = '';
+                    }
+
+                    if (uploadable == 1) {
+                        if (have_balance == 0) {
+                            $(".show_file_upload_button").slideUp("slow");
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, Sorry You do not have sufficient credit to process this file.";
+                        }
+                        else {
+                            remains_credit = global_balance;
+                            if (fileContents_data_array_count > global_daily_limit_left)
+                                remains_credit = global_total_usable_credit - fileContents_data_array_count;
+
+                            $(".show_file_upload_button").slideDown("slow");
+                            document.getElementById("balance_deduction_part").innerHTML = "This file contains <b>" + fileContents_data_array_count + " Numbers</b>, You will have " + remains_credit + " credits after this process.";
+
+                        }
+                    }
+                    //fileContents.innerText = position_track_str;
+                    get_data_from_csv_file = get_data_from_csv_file + '</table>';
+
+                    document.getElementById("get_data_from_csv_file").innerHTML = get_data_from_csv_file;
+                    if (test_column_check > 0) {
+                        $(".column_" + test_column_check + "_for_selected").css({"background": "#DBF0F2"});
+                    }
+                    $(".get_data_from_csv_file_container").slideDown("slow");
+                    $("#show_contacts_status_at_file").slideDown("slow");
+                } //  fileReader.onload
+
+                fileReader.readAsText(fileTobeRead);
+            }   //if (fileTobeRead.type.match(fileExtension))
+            else {
+                alert("Please select csv file");
+            }
+
+            //fileSelected.addEventListener('change', function (e) {
+        }
         function fn_file_process_progress_phone() {
             console.log("fn_file_process_progress");
             console.log(base_url);
@@ -2260,8 +2556,8 @@
             $(".instant_check_btn").html('<i class="fa fa-spin fa-circle-o-notch"></i> Check');
             $(".instant_check_btn").addClass("disabled");
             e.preventDefault();
-            // url_ = $(this).attr("action");
-            url_ = '<?php echo base_url(); ?>User_controller/sendInstantRequest';
+            url_ = $(this).attr("action");
+            // url_ = '<?php echo base_url(); ?>User_controller/sendInstantRequest';
             var form = $(this);
             $("#instant_check_field_respose_con").slideUp("slow");
             var submit_btn = form.find('.submit_btn');
@@ -2294,11 +2590,12 @@
                     //alert(result);
 
                     // var result_json = JSON.stringify(result, undefined, 4);
-                    var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+                    // var result_json = JSON.stringify(result.transaction.validNumber, undefined, 4)
+                    var result_json = JSON.stringify(result.transaction, undefined, 4)
 
                     //document.getElementById("instant_check_field_request").innerHTML = base_url+'sendInstantCheckupRequest/';
                     document.getElementById("instant_check_field_request").innerHTML = 'Number: '+ data_number;
-                    document.getElementById("instant_check_field_response").innerHTML = 'Valid Number: ' + result_json;
+                    document.getElementById("instant_check_field_response").innerHTML = result_json;
                     custom_spinner_hide();
                     $("#instant_check_field_respose_con").slideDown("slow");
                     $(".instant_check_btn .fa-circle-o-notch").remove();
