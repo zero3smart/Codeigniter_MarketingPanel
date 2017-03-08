@@ -2138,26 +2138,11 @@ class User_controller extends CI_Controller
     {
 
         $user = $this->Mdl_user->fetch_user_profile();
-
-        /*$conn_id = ftp_connect($user["ftphost"], 21);
-
-        ftp_login($conn_id, $user["username"], $user["ftppassword"]);
-        ftp_pasv($conn_id, true);*/
-
-       // $extension = ($onlyReport ? '.pdf' : '.zip');
         $extension = '.csv';
 
-
-        $fileTo = getcwd(). '/tmp/' . $cleanId . $extension;
-        // echo $fileTo;
-
-        //$fileFrom = 'clean/' . ($onlyReport ? 'report_' : '') . $cleanId . $extension;
-        // $dir = getcwd().'/clean';
-       // $dir = '/clean';
         $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
         $fileFrom = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean/' . $cleanId . $extension;
 
-       // $fileFrom = '/clean/' . $cleanId . $extension;
         if (!is_dir($dir)) {
             echo "The following directory doesn't exist: ". $dir;
         } else {
@@ -2169,9 +2154,6 @@ class User_controller extends CI_Controller
             {
                 $contentType = ($onlyReport ? 'application/pdf' : 'application/octet-stream');
 
-                // $downloadFromFTP = ftp_get($conn_id, $fileTo, $fileFrom, FTP_BINARY);
-                // ftp_close($conn_id);
-                //fclose($handle);
                 $handle = fopen($fileFrom, "r");
                 $downloadFromFTP = "";
                 for ($i=0;($line = fgets($handle)) !== false;$i++) {
@@ -2180,18 +2162,13 @@ class User_controller extends CI_Controller
                 fclose($handle);
 
                 if($downloadFromFTP) {
-                    //if (file_exists($fileTo)) {
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $contentType);
-                    //header('Content-Type: text/csv');
                     header('Content-Disposition: attachment; filename="'.$cleanId . $extension.'"');
                     header('Expires: 0');
                     header('Cache-Control: must-revalidate');
                     header('Pragma: public');
-                    // header('Content-Length: ' . filesize($fileTo));
-                    // readfile($fileTo);
                     echo $downloadFromFTP;
-            //}
                 }
                 else {
                     echo 'Failed to download file from FTP. Directory Permissions: '. substr(decoct( fileperms($dir) ), 1);
@@ -2212,10 +2189,6 @@ class User_controller extends CI_Controller
         $numbers = 1;
         $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
         echo json_encode($res->aerialink->transactions[0]);
-        
-        // echo 'Successfully Uploaded./';
-        //['form_params' => [  'file_id' => $fileID ] ]
-        //{'form_params' => {  'file_id' => $fileID } }
 
     }
     public function get_all_phone_file_process_progress()
@@ -2241,13 +2214,6 @@ class User_controller extends CI_Controller
                     //lets update the record with the result and progress=processed
                     $this->Mdl_user->set_status_on_completion($value['_id'], 'processed', $response);
                 } else {
-                    /*if ($value['progress'] > 0)
-                        $progress = intval(($value['progress'] * 180) / 100);
-                    else
-                        $progress = 0;
-
-                    $progress_percent = intval($value['progress']);
-                    shuffle($icon_array);*/
                     $htmlToReturn = $htmlToReturn . '
                         <tr>
                             <td>'. $value['file_name'] .'</td>
@@ -2256,26 +2222,6 @@ class User_controller extends CI_Controller
                             <td><a href="'.base_url().'report/phone_file_upload_status">'.'Download Clean Files'.'</a></td>
                         </tr>
                     ';
-
-                /*echo '<div class="col-xs-12 file_progress_row" style="border:1px solid #32c5d2;padding:15px;background:#fff;">
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="col-xs-12 file_data">
-                                            <div class="col-xs-12" style="padding:10px 15px 20px 15px;">
-                                                <b>File Name : </b>
-                                                <span>' . $value['file_name'] . '</span>
-                                            </div>
-                                            <div class="col-xs-12" style="padding-bottom:10px">
-                                                <b>Uploaded at : </b>
-                                                <span>' . $value['upload_time'] . '</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <div class="icon"><span class="' . $icon_array[0] . '"></span></div>
-                                    </div>
-                                </div>
-            ';*/
                 }
 
             }
@@ -2336,17 +2282,8 @@ class User_controller extends CI_Controller
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
         $data["file_status"] = $this->Mdl_user->fetch_user_phonenumber_file($config["per_page"], $page);
-        // print_r($data["file_status"]);die();
-       // print_r($config["per_page"]);die();
         $data["pagination_links"] = $this->pagination->create_links();
-        //print_r($data["pagination_links"]);
-        //die();
-
         $this->load->view("user/dashboard", $data);
-
-
-        //$data['groups_document'] = $this->Mdl_user->fetch_groups();
-        //print_r($data['groups_document']);die();
 
     }
     public function upload_phone_file () {
@@ -2364,10 +2301,6 @@ class User_controller extends CI_Controller
 
         $contactfile_length = count($contactfile_line);
         $file_check = $this->Mdl_user->fetch_user_file_by_name($_FILES["contactfile"]["name"]);
-        /*if (count($file_check) > 0) {
-            echo 'Sorry, You already uploded this file.';
-        }
-        else {*/
             if(!$containsHeader) {
                 $containsHeader = false;
             }
@@ -2402,8 +2335,6 @@ class User_controller extends CI_Controller
 
                 if ($_FILES["contactfile"]["error"] == 0) {
                     $name = trim($_FILES["contactfile"]["name"]);
-                   // $csv_files_total_row = $contactfile_length;
-                    // $csv_files_total_row = intval($csv_files_total_row);
 
                     try {
                         $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
@@ -2418,15 +2349,6 @@ class User_controller extends CI_Controller
                             ';
                     } else {
 
-                      //  $apiResponse = $this->callScrubberAPI($name, $user["username"], $column_number_2, $containsHeader, $user["ftphost"], $user["ftppassword"]);
-
-                       // $apiResponse = json_decode($apiResponse, true);
-                        // print_r($apiResponse);die();
-                        /*$this->console_log("success: " . $apiResponse["success"]);
-                        $this->console_log("cleanId: " . $apiResponse["data"]["cleanId"]);*/
-                        //$this->console_log($apiResponse["success"]);
-                        //if ($apiResponse["success"]) {
-                           // $clean_id = $apiResponse["data"]["cleanId"];
                         $csv_files_total_row=0;
                         for($i=0; $i<sizeof($contactfile_line);$i++)
                         {
@@ -2468,108 +2390,104 @@ class User_controller extends CI_Controller
                             $status['stage'] = "ok";
                             $fid = $data['_id']->{'$id'};
                             echo 'Successfully Uploaded "' . $name . '"' . '/' . $fid;
-                         //   echo 'Successfully Uploaded "' . $name . '"';
-                           //  $this->processFile($user["ftphost"], $user["username"], $user["ftppassword"],$user_file_data_id,$name);
-                        //}
-                       // else {
-                           // echo 'Sorry, Try again';
-                       // }
                     }
                 } else {
                     echo 'Sorry, Try again';
                 }
 
             }
-        // }
+    
     }
-    // public function processFile($host, $usr, $pw, $fid, $name)
     public function processFile()
     {
-        // echo "here";die();
         $name = $this->input->get('name');
         $fid = $this->input->get('fid');
-        // $this->console_log($fid);die();
         $totalClean = 0;
         $totalInvalid = 0;
-        //echo "Hi i'm here".$name;
-        /*$file = $this->Mdl_user->get_api_log_single('58b69a71b50b1eff0ec72678');
-        // echo $file[4]['response'];
-        $array = json_decode(json_encode(json_decode($file['response'])), True);
-        //$result= json_decode($file['response']);
-        print_r($array[0]['transaction']['validNumber']);*/
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
         $smallerThanHundred = true;
         $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"]."/dirty/".$name;
         $handle = fopen($filename, "r");
         $file = $this->Mdl_user->fetch_user_file_by_fileid($fid);
+        $file2 = $this->Mdl_user->fetch_user_file_by_fileid($fid);
         $numbers = '';
-        if($file[10]['isContainHeaders'] == 1)
+        $containsHeader = false;
+        $coulumnOfNumbers =-1;
+        foreach($file2 as $v) {
+            if(key($v) == "isContainHeaders")
+            {
+                if(current($v) == 1)
+                {
+                    $containsHeader = true;
+                }
+            }
+            if(key($v) == "columnOfNumbers")
+            {
+                $coulumnOfNumbers =current($v);
+            }
+
+           // $output[key($v)] = current($v);
+        }
+       // $file2 = json_decode($file2);
+       // echo "file2: ".$file2->isContainHeaders;
+        if($containsHeader)
         {
             $line = fgets($handle);
         }
         $j=99;
-         for ($i=0;($line = fgets($handle)) !== false;$i++) {
+        for ($i=0;($line = fgets($handle)) !== false;$i++) {
             if(trim($line) != ""){
-            if($i==0 || ($i-1)==($j-100) || $numbers == "")
-            {
-                $test = explode(",", $line);
-                $numbers = $test[$file[8]['columnOfNumbers']];
-            }
-            else{
-               $test = explode(",", $line);
-                $numbers = $numbers.','.$test[$file[8]['columnOfNumbers']];
-            }
-            if($i>=$j)
-            {
-                $smallerThanHundred = false;
-                $j=$j+100;
-                 $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-       $numbers = '';
-       $response = json_decode($response);
+                if($i==0 || ($i-1)==($j-100) || $numbers == "")
+                {
+                    $test = explode(",", $line);
+                    $numbers = $test[$coulumnOfNumbers];
+                }
+                else{
+                    $test = explode(",", $line);
+                    $numbers = $numbers.','.$test[$coulumnOfNumbers];
+                }
+                if($i>=$j)
+                {
+                    $smallerThanHundred = false;
+                    $j=$j+100;
+                    $numbers = trim(preg_replace('/\s+/', '', $numbers));
+                    $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+                    $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+                    $numbers = '';
+                    $response = json_decode($response);
 
-       if($i<=99)
-       {
-       $r = $response->aerialink->transactions;
-       }
-       else
-       {
-        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
-            array_push($r, $response->aerialink->transactions[$k]);
-        }
-       }
+                if($i<=99)
+                {
+                    $r = $response->aerialink->transactions;
+                }
+                else
+                {
+                    for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+                        array_push($r, $response->aerialink->transactions[$k]);
+                    }
+                }
 
-            }
+                }
             }
          }
 
-
-
-       if($smallerThanHundred)
-       {
-         $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-       $response = json_decode($response);
-        $r = $response->aerialink->transactions;
-       }
+        if($smallerThanHundred)
+        {
+            $numbers = trim(preg_replace('/\s+/', '', $numbers));
+            $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+            $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+            $response = json_decode($response);
+            $r = $response->aerialink->transactions;
+        }
         else{
             $numbers = trim(preg_replace('/\s+/', '', $numbers));
-                 $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
-       
-        $response = \Httpful\Request::get($url)
-       ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
-       ->send();
-        $response = json_decode($response);
-        for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
-            array_push($r, $response->aerialink->transactions[$k]);
-        }
+            $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
+            $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
+            $response = json_decode($response);
+            for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+                array_push($r, $response->aerialink->transactions[$k]);
+            }
         }
         $request = 'URL : "http://localhost:8080/NumberCleanupAPI/cleanup",<br>Data : { "form_params" : { "file_id" : "' . $file[1]['_id'] . '" } }';
 
@@ -2584,40 +2502,38 @@ class User_controller extends CI_Controller
                 $totalInvalid = $totalInvalid + 1;
             }
         }
-         $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
+        $result = $this->Mdl_user->contact_upload_file_api_response_mdl($request, $r, $file[0]['_id']);
         $completion = $this->Mdl_user->set_status_complete($file[0]['_id'], 'processed', sizeof($r), $totalClean, $totalInvalid);
         $fileContents = $this->Mdl_user->numberfile_lookup_by_id($fid);
         $dir = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean';
         if(is_dir($dir))
         {
-        $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean'.'/'.$fid;
-        $create = fopen($filename.'.csv', "w");
-        if($create != false)
-        {
-            $write = fwrite($create, $fileContents["final_result"]);
-            if($write != false)
+            $filename = "ftp://".$user["username"].":".$user["ftppassword"]."@".$user["ftphost"].'/clean'.'/'.$fid;
+            $create = fopen($filename.'.csv', "w");
+            if($create != false)
             {
-                echo "Successfully Processed";
+                $write = fwrite($create, $fileContents["final_result"]);
+                if($write != false)
+                {
+                    echo "Successfully Processed";
                 // echo "Successfully Processed".substr(decoct( fileperms($dir) ), 1); 
+                }
+                else
+                {
+                    echo "Error during writing to clean file. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);   
+                }
+                fclose($create);
             }
             else
             {
-                echo "Error during writing to clean file. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);   
-            }
-            fclose($create);
-        }
-        else
-        {
                 echo "Unable to upload clean file to ftp. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);
-        }
+            }
         }
         else
         {
              echo "Following directory does'nt exist: ". $dir . " . Or Have not Permissions";
         }
        
-       // print_r(sizeof($r));
-       // echo json_encode($response);
     }
     /********************************************/
     /* // END : Functions to User's number file */
