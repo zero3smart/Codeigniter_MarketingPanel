@@ -1760,7 +1760,7 @@ class User_controller extends CI_Controller
 
         $data['view']['page_title'] = 'Reports';
         $data['view']['page_sub_title'] = 'Cleaned Files';
-        $data['view']['menu'] = 'report';
+        $data['view']['menu'] = 'download';
         $data['view']['submenu'] = 'file_upload_status';
         $data['view']['section'] = 'file_upload_status';
         $data['view']['msg'] = $this->session->flashdata('msg');

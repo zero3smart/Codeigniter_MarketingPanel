@@ -109,10 +109,11 @@
 
     </ul>
 </li>
-<li class="nav-item menu_report">
+
+<li class="nav-item menu_download">
     <a class="nav-link nav-toggle" href="javascript:;">
-        <i class="fa fa-file-text-o"></i>
-        <span class="title">Reports</span>
+        <i class="fa fa-download"></i>
+        <span class="title">Downloads</span>
         <span class="arrow"></span>
     </a>
     <ul class="sub-menu">
@@ -122,7 +123,16 @@
                 <span class="title">Cleaned Files</span>
             </a>
         </li>
+    </ul>
+</li>
 
+<li class="nav-item menu_report">
+    <a class="nav-link nav-toggle" href="javascript:;">
+        <i class="fa fa-file-text-o"></i>
+        <span class="title">Reports</span>
+        <span class="arrow"></span>
+    </a>
+    <ul class="sub-menu">
         <!-- BEGIN : Added menu for phone number report -->
         <li class="nav-item submenu_phone_file_upload_status">
             <a class="nav-link" href="<?php echo base_url(); ?>report/phone_file_upload_status">
