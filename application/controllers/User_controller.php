@@ -2415,12 +2415,9 @@ class User_controller extends CI_Controller
         $containsHeader = false;
         $coulumnOfNumbers =-1;
         foreach($file2 as $v) {
-            if(key($v) == "isContainHeaders")
+            if(key($v) == "isContainHeaders" && current($v) == 1)
             {
-                if(current($v) == 1)
-                {
-                    $containsHeader = true;
-                }
+                $containsHeader = true;
             }
             if(key($v) == "columnOfNumbers")
             {
