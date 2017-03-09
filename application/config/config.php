@@ -24,9 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'http://test.app.verifyrocket.com/';
+// $config['base_url'] = 'http://test.app.verifyrocket.com/';
 //$config['base_url'] = 'http://localhost/verifyrocket';
-
+$config['base_url'] = 'http://test.app.verifyrocket.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File
