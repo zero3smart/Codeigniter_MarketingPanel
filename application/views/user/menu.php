@@ -64,12 +64,12 @@
                 <span class="title">Email Verification</span>
             </a>
         </li>
-        <li class="nav-item submenu_phone_upload_section">
-            <a class="nav-link " href="<?php echo site_url('phone_upload'); ?>">
-                <i class="fa fa-search"></i>
-                <span class="title">Carrier Lookup</span>
-            </a>
-        </li>
+<!--        <li class="nav-item submenu_phone_upload_section">-->
+<!--            <a class="nav-link " href="--><?php //echo site_url('phone_upload'); ?><!--">-->
+<!--                <i class="fa fa-search"></i>-->
+<!--                <span class="title">Carrier Lookup</span>-->
+<!--            </a>-->
+<!--        </li>-->
 
         <li class="nav-item submenu_data_append_section">
             <a class="nav-link " href="<?php echo site_url('data_append'); ?>">
@@ -134,12 +134,12 @@
     </a>
     <ul class="sub-menu">
         <!-- BEGIN : Added menu for phone number report -->
-        <li class="nav-item submenu_phone_file_upload_status">
-            <a class="nav-link" href="<?php echo base_url(); ?>report/phone_file_upload_status">
-                <i class="icon-bar-chart"></i>
-                <span class="title">Cleaned Phone Files</span>
-            </a>
-        </li>
+<!--        <li class="nav-item submenu_phone_file_upload_status">-->
+<!--            <a class="nav-link" href="--><?php //echo base_url(); ?><!--report/phone_file_upload_status">-->
+<!--                <i class="icon-bar-chart"></i>-->
+<!--                <span class="title">Cleaned Phone Files</span>-->
+<!--            </a>-->
+<!--        </li>-->
         <!-- // END : Added menu for phone number report -->
 
         <li class="nav-item submenu_file_upload_status">
