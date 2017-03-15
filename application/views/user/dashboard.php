@@ -81,7 +81,7 @@ if ($current_package) {
                     var global_daily_limit_left = ' . $daily_limit_left . ';
                     var global_total_usable_credit = ' . $total_usable_credit . ';
                     var base_url = "' . base_url() . '";
-                    
+
                     //localStorage[]
                 </script>
                 ';
@@ -94,7 +94,7 @@ if ($current_package) {
                     var global_daily_limit_left = 0;
                     var global_total_usable_credit = ' . $dash_profile['balance'] . ';
                     var base_url = "' . base_url() . '";
-                    
+
                     //localStorage[]
                 </script>
                 ';
@@ -238,7 +238,7 @@ if ($current_package) {
         ?>
         <?php
 
-                        if($view['section'] == 'dashboard')                         
+                        if($view['section'] == 'dashboard')
                         {
                             include_once'dashboard_content.php';
                         }
@@ -248,12 +248,12 @@ if ($current_package) {
                             include_once'activate_account.php';
                         }
 
-                        if($view['section'] == 'packages')                         
+                        if($view['section'] == 'packages')
                         {
                             include_once'package.php';
                         }
 
-                        if($view['section'] == 'profile')                         
+                        if($view['section'] == 'profile')
                         {
                             include_once'profile.php';
                         }
@@ -262,25 +262,22 @@ if ($current_package) {
                         if($view['section'] == 'contact_upload_section')
                         {
                             include_once'contact_upload_section.php';
-                    
-                        }
-                        
 
+                        }
                         if($view['section'] == 'email_verification_section')
                         {
                             include_once'email_verification_section.php';
-                    
-                        }                                                                                              
+                        }
 
 
-                        
+
                         /* ******************************************************/
                         /* BEGIN : Include main section for contact number page */
                         /* ******************************************************/
 
                         if($view['section'] == 'phone_upload_section')
                         {
-                            include_once'phone_upload_section.php';                    
+                            include_once'phone_upload_section.php';
                         }
                         /* *******************************************************/
                         /* // END : Include main section for contact number page */
@@ -288,44 +285,44 @@ if ($current_package) {
 
 
 
-                        
+
                         if($view['section'] == 'data_append_section')
                         {
-                            include_once'data_append_section.php';                    
+                            include_once'data_append_section.php';
                         }
 
                         if($view['section'] == 'file_upload_status')
                         {
                             include_once'file_upload_status.php';
-                        }     
+                        }
 
-                        
+
                         if($view['section'] == 'file_status')
                         {
                             include_once'email_lookup_file_status.php';
-                        }     
+                        }
 
-                        
+
                         if($view['section'] == 'instant_lookup')
                         {
                             include_once'instant_lookup.php';
-                        }     
+                        }
 
-                        
+
                         if($view['section'] == 'report_instant_lookup')
                         {
                             include_once'report_instant_lookup.php';
-                        }     
+                        }
 
                         if($view['section'] == 'package_stripe_form')
                         {
                             include_once'package_stripe_form.php';
-                        }  
+                        }
 
                         if($view['section'] == 'buy_credit')
                         {
                             include_once'buy_credit.php';
-                        }     
+                        }
 
                         if($view['section'] == 'report_credit_expense')
                         {
@@ -375,7 +372,7 @@ if ($current_package) {
                         {
                             include_once'report_invoice_by_date.php';
                         }
-                        
+
 
                         if($view['section'] == 'api_lookup_file')
                         {
@@ -393,7 +390,7 @@ if ($current_package) {
                         {
                             include_once'api_lookup_file_status.php';
                         }
-                        
+
                         if($view['section'] == 'pricing_contact_us')
                         {
                             include_once'pricing_contact_us.php';
@@ -403,8 +400,8 @@ if ($current_package) {
                             include_once'failed_upload.php';
                         }
 
-                        
-                        
+
+
                         /* ********************************************************/
                         /* BEGIN : Include status section for contact number page */
                         /* ********************************************************/
@@ -415,7 +412,7 @@ if ($current_package) {
                         /* *********************************************************/
                         /* // END : Include status section for contact number page */
                         /* *********************************************************/
-                    
+
 
 
 
@@ -425,7 +422,7 @@ if ($current_package) {
             </div>
             <!-- END CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->
-            
+
             <!-- END QUICK SIDEBAR -->
         </div>
         <!-- END CONTAINER -->

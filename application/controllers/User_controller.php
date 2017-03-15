@@ -15,7 +15,6 @@ include('httpful.phar');
 
 class User_controller extends CI_Controller
 {
-
     function __construct()
     {
         parent::__construct();
@@ -37,7 +36,6 @@ class User_controller extends CI_Controller
 
     public function get_balance_and_limit()
     {
-
         session_write_close();
         $dash_profile = $this->Mdl_user->fetch_user_profile();
         $current_package = $this->Mdl_user->fetch_current_package();
@@ -56,8 +54,6 @@ class User_controller extends CI_Controller
         $result['usable_credit'] = $total_usable_credit;
 
         echo json_encode($result);
-
-
     }
 
     public function global_balance()
@@ -554,7 +550,7 @@ class User_controller extends CI_Controller
 
         $this->load->view("user/dashboard", $data);
     }
-    
+
     public function email_verification_section()
     {
         $data['view']['page_title'] = 'Email Verification';
@@ -566,8 +562,8 @@ class User_controller extends CI_Controller
         $data['view']['msg_type'] = $this->session->flashdata('msg_type');
 
         $this->load->view("user/dashboard", $data);
-    }        
-    
+    }
+
     public function phone_upload_section()
     {
         $data['view']['page_title'] = 'Carrier Lookup';
@@ -580,7 +576,7 @@ class User_controller extends CI_Controller
 
         $this->load->view("user/dashboard", $data);
     }
-    
+
     public function data_append_section()
     {
         $data['view']['page_title'] = 'Data Append';
@@ -622,6 +618,7 @@ class User_controller extends CI_Controller
         $user_id = $this->session->email_lookup_user_id;
         $user = $this->Mdl_user->fetch_user_profile();
         $column_number_2 = $this->input->post("column_number_2");
+        $upload_dir = $this->input->post("upload_dir");
         $containsHeader = $this->input->post("header");
         $line_break = $this->input->post("line_break");
         $line_break = $this->input->post("line_break");
@@ -639,7 +636,7 @@ class User_controller extends CI_Controller
 
         if ($column_number_2 == "") {
             echo '
-            Sorry, Email not found in this file. 
+            Sorry, Email not found in this file.
             ';
         }
         else {
@@ -670,7 +667,7 @@ class User_controller extends CI_Controller
                 $csv_files_total_row = intval($csv_files_total_row);
 
                 try {
-                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name);
+                    $uploadToFtp = $this->upload_to_ftp($user["ftphost"], $user["username"], $user["ftppassword"], $contactfile, $name, $upload_dir);
                 }
                 catch (Exception $e) {
                     echo 'Caught exception on file uploading to FTP: ',  $e->getMessage(), "\n";
@@ -679,7 +676,7 @@ class User_controller extends CI_Controller
 
                 if (!$uploadToFtp) {
                     echo '
-                        Failed to upload file to FTP. 
+                        Failed to upload file to FTP.
                         ';
                 } else {
 
@@ -724,7 +721,7 @@ class User_controller extends CI_Controller
         }
     }
 
-    
+
     public function callStatusAPI($clean_id)
     {
         $statusURL = 'http://64.187.105.90:3000/status?cleanId=' . $clean_id;
@@ -790,17 +787,17 @@ class User_controller extends CI_Controller
         return $response;
     }
 
-    public function upload_to_ftp($host, $usr, $pwd, $local_file, $fileName)
+    public function upload_to_ftp($host, $usr, $pwd, $local_file, $fileName, $dirPath='/dirty/')
     {
         $fp = fopen($local_file, 'r');
-        $ftp_path = '/dirty/'.$fileName;
+        $ftp_path = $dirPath.$fileName;
         $conn_id = ftp_connect($host, 21);
         ftp_login($conn_id, $usr, $pwd);
         ftp_pasv($conn_id, true);
         $upload = ftp_fput($conn_id, $ftp_path, $fp, FTP_ASCII);
-        ftp_close($conn_id); 
+        ftp_close($conn_id);
         if($upload != "")
-        {   
+        {
         return $upload;
         }
         else
@@ -849,7 +846,7 @@ class User_controller extends CI_Controller
         }
         else {
             echo '
-                Failed to download file from FTP. 
+                Failed to download file from FTP.
                 ';
         }
 
@@ -891,7 +888,7 @@ class User_controller extends CI_Controller
         }
         else {
             echo '
-                Failed to download file from FTP. 
+                Failed to download file from FTP.
                 ';
         }
 
@@ -912,11 +909,11 @@ class User_controller extends CI_Controller
         $column_number_2 = $this->input->post("column_number_2");
         if ($column_number_2 == "") {
             echo '
-			Sorry, Email not found in this file. 
+			Sorry, Email not found in this file.
 			';
         } else if (count($file_check) > 0) {
             echo '
-			Sorry, You already uploded this file. 
+			Sorry, You already uploded this file.
 			';
         } else {
             $column_number_2 = $column_number_2 - 1;
@@ -1025,7 +1022,7 @@ class User_controller extends CI_Controller
         //{'form_params' => {  'file_id' => $fileID } }
 
     }
-    
+
     public function sendInstantCheckupRequest()
     {
 
@@ -1798,7 +1795,7 @@ class User_controller extends CI_Controller
 
     }
 
-    
+
     public function file_upload_status_ajax($parm1 = '')
     {
         if ($parm1 == '')
@@ -1876,7 +1873,7 @@ class User_controller extends CI_Controller
                                                             <td>' . $file_status_value_value['valid_contacts'] . '</td>
 			                                                <td>' . $file_status_value_value['invalid_contacts'] . '</td>
 			                                                <td><a class="btn btn-success" href="#api_log' . $file_status_value_value['_id'] . '" data-toggle="modal">API Log</a></td>
-			                                           
+
 			                                            </tr>
 	                                            		';
                 echo '<div id="api_log' . $file_status_value_value['_id'] . '" class="modal fade" tabindex="-1" data-width="760">
@@ -1899,7 +1896,7 @@ class User_controller extends CI_Controller
                 }
                 echo '
                                                                                         </div>
-                                                                                            
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
@@ -2176,7 +2173,7 @@ class User_controller extends CI_Controller
 
             }
         }
-       
+
     }
     public function sendInstantRequest()
     {
@@ -2185,7 +2182,7 @@ class User_controller extends CI_Controller
         $response = \Httpful\Request::get($url)
        ->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))
        ->send();
-        $res = json_decode($response); 
+        $res = json_decode($response);
         $numbers = 1;
         $credit_reduce = $this->credit_reduce_number($numbers, "Instant Lookup", $number);
         echo json_encode($res->aerialink->transactions[0]);
@@ -2345,7 +2342,7 @@ class User_controller extends CI_Controller
                     }
                     if (!$uploadToFtp) {
                         echo '
-                            Failed to upload file to FTP. 
+                            Failed to upload file to FTP.
                             ';
                     } else {
 
@@ -2396,7 +2393,7 @@ class User_controller extends CI_Controller
                 }
 
             }
-    
+
     }
     public function processFile()
     {
@@ -2460,7 +2457,7 @@ class User_controller extends CI_Controller
                 }
                 else
                 {
-                    for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+                    for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) {
                         array_push($r, $response->aerialink->transactions[$k]);
                     }
                 }
@@ -2482,14 +2479,14 @@ class User_controller extends CI_Controller
             $url = 'https://apix.aerialink.net/v4/numbers?numbers='.$numbers;
             $response = \Httpful\Request::get($url)->authenticateWith($this->config->item('Aerialink_Api_key'),$this->config->item('API_Sec'))->send();
             $response = json_decode($response);
-            for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) { 
+            for ($k=0; $k < sizeof($response->aerialink->transactions); $k++) {
                 array_push($r, $response->aerialink->transactions[$k]);
             }
         }
         $request = 'URL : "http://localhost:8080/NumberCleanupAPI/cleanup",<br>Data : { "form_params" : { "file_id" : "' . $file[1]['_id'] . '" } }';
 
-       
-        for ($k=0; $k < sizeof($r); $k++) { 
+
+        for ($k=0; $k < sizeof($r); $k++) {
             if($r[$k]->transaction->validNumber == 1)
             {
                 $totalClean = $totalClean +1;
@@ -2513,11 +2510,11 @@ class User_controller extends CI_Controller
                 if($write != false)
                 {
                     echo "Successfully Processed";
-                // echo "Successfully Processed".substr(decoct( fileperms($dir) ), 1); 
+                // echo "Successfully Processed".substr(decoct( fileperms($dir) ), 1);
                 }
                 else
                 {
-                    echo "Error during writing to clean file. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);   
+                    echo "Error during writing to clean file. Directory Permissions: ". substr(decoct( fileperms($dir) ), 1);
                 }
                 fclose($create);
             }
@@ -2530,7 +2527,7 @@ class User_controller extends CI_Controller
         {
              echo "Following directory does'nt exist: ". $dir . " . Or Have not Permissions";
         }
-       
+
     }
     /********************************************/
     /* // END : Functions to User's number file */

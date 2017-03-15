@@ -95,6 +95,7 @@ if ($view['msg'] != "")
                     <span> Browse File... </span>
                     <input name="contactfile" id="contact_upload_file" onchange="fn_contact_upload_file_name_set(event)"
                            type="file" accept=".txt,.csv">
+                    <input type="hidden" name="upload_dir" id="upload_dir" value="/verify_dirty/"/>
                 </div>
             </div>
             <!--<![endif]-->
